@@ -66,6 +66,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/").hasAnyRole("ADMIN", "LEARNER")
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/img/**").permitAll()
+                        .requestMatchers("/javascript/**").permitAll()
                         .anyRequest().authenticated()
         );
 

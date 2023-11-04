@@ -14,30 +14,28 @@ import java.util.List;
 public class ApplicationController {
 
     private DictionaryService dictionaryService;
+    private StageRepository stageRepository;
 
     @Autowired
-    public ApplicationController(DictionaryService dictionaryService) {
+    public ApplicationController(DictionaryService dictionaryService, StageRepository stageRepository) {
         this.dictionaryService = dictionaryService;
+        this.stageRepository = stageRepository;
     }
 
     // add default endpoint
 
     @GetMapping("/")
-    public String showMain(Model theModel) {
+    public String showMain(Model model) {
 
-//        List<Lexicon> result = dictionaryService.searchByWord("hel");
-//        for (Lexicon lex : result) {
-//            System.out.println(lex.getWord());
-//        }
+        return "redirect:/learn";
+    }
 
-
+    @GetMapping("/learn")
+    public String showMainTest(Model model) {
+        model.addAttribute("subPage", "/sub/learn.html");
+        model.addAttribute("stages", stageRepository.findAll());
         return "main.html";
     }
 
-    @GetMapping("/test")
-    public String showMainTest(Model theModel) {
-
-        return "main.html";
-    }
 
 }

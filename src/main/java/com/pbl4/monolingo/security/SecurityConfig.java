@@ -77,6 +77,7 @@ public class SecurityConfig {
 
 
         // use HTTP Basic authentication
+        http.httpBasic();
         http.formLogin();
 //        http.formLogin(formLogin -> formLogin
 //                /*.loginPage("/login")*/.permitAll());

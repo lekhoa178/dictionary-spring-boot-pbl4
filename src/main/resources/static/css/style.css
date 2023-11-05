@@ -60,7 +60,7 @@ span {
 
 .view-container {
     width: 100%;
-    height: 200%;
+    height: 125%;
     grid-row: 2/3;
     margin-top: 40px;
     display: grid;
@@ -69,6 +69,7 @@ span {
 }
 
 .content-container {
+    height: fit-content;
 }
 
 .aside-container {

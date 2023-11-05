@@ -10,6 +10,31 @@
     <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}">
 </head>
 <body>
-    <h1>Lesson</h1>
+    <div class="container">
+        <div class="top-container">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+
+            <div class="resource--items">
+                <img alt=""
+                     th:src="@{img/heart.png}"
+                     class="resource--items-icon">
+                <span class="
+                                resource--items-text
+                                resource--items-text-heart"
+                      th:text=5></span>
+            </div>
+        </div>
+
+        <div>
+
+        </div>
+
+        <div class="bottom-container">
+            <button class="btn btn--pass">BỎ QUA</button>
+            <button class="btn btn--check btn--check--inactive">KIỂM TRA</button>
+        </div>
+    </div>
 </body>
 </html>

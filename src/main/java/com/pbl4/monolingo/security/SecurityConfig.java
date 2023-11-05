@@ -63,7 +63,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers(HttpMethod.GET, "/").hasAnyRole("ADMIN", "LEARNER")
+//                        .requestMatchers(HttpMethod.GET, "/learn").permitAll()
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/img/**").permitAll()
                         .requestMatchers("/javascript/**").permitAll()

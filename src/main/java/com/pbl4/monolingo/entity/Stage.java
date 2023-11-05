@@ -1,9 +1,8 @@
 package com.pbl4.monolingo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "stage")
@@ -19,6 +18,11 @@ public class Stage {
     @Column(name = "depiction")
     private String depiction;
 
+    @OneToMany
+    @MapsId("stageId")
+    @JoinColumn(name = "stage_id")
+    private List<Level> levels;
+
     public Stage() {}
 
     public Stage(Integer stageId, String title, String depiction) {
@@ -28,7 +32,7 @@ public class Stage {
     }
 
     public Integer getStageId() {
-        return this.stageId;
+        return stageId;
     }
 
     public void setStageId(Integer stageId) {
@@ -36,7 +40,7 @@ public class Stage {
     }
 
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
     public void setTitle(String title) {
@@ -44,11 +48,19 @@ public class Stage {
     }
 
     public String getDepiction() {
-        return this.depiction;
+        return depiction;
     }
 
     public void setDepiction(String depiction) {
         this.depiction = depiction;
+    }
+
+    public List<Level> getLevels() {
+        return levels;
+    }
+
+    public void setLevels(List<Level> levels) {
+        this.levels = levels;
     }
 
     @Override
@@ -57,6 +69,7 @@ public class Stage {
                 "stageId=" + stageId +
                 ", title='" + title + '\'' +
                 ", depiction='" + depiction + '\'' +
+                ", levels=" + levels +
                 '}';
     }
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/sub/learn.css}">
+    <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}">
+</head>
+<body>
+    <div class="learn-container">
+        <div class="sub-learn-container" th:each="stage, stageStat : ${stages}">
+            <a class="stage-container"
+               th:style="'background-color:' + ${stageColors[stageStat.index % #lists.size(stageColors)]}">
+                <h2 th:text="${stage.title}"></h2>
+                <p th:text="${stage.depiction}"></p>
+            </a>
+
+            <div class="level-container">
+                <button th:each="level, itemStat : ${stage.levels}" th:text="__${itemStat.index + 1}__"
+                        th:class=" ${level.complete == false} ? 'level level--inactive' : 'level'"
+                        th:style="${level.complete} ?'background-color:' + ${stageColors[stageStat.index % #lists.size(stageColors)]}">
+
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+</html>

@@ -8,6 +8,8 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <title>Monolingo - Học tiếng anh vui vẻ</title>
     <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}">
+    <script async th:src="@{javascript/main.js}"></script>
+
 </head>
 <body class="container">
 
@@ -19,35 +21,35 @@
 
         <div class="menu">
 
-            <a href="#" class="menu--tabs menu--tab-active">
+            <a id="fragment-learn" th:href="@{fragments/learn.html}" class="menu--tabs">
                 <img alt=""
                      th:src="@{img/house.png}"
                      class="menu--tabs-icon">
                 <span class="menu--tabs-text">HỌC</span>
             </a>
 
-            <a href="#" class="menu--tabs">
+            <a id="fragment-practice" th:href="@{fragments/practice.html}" class="menu--tabs">
                 <img alt=""
                      th:src="@{img/dumbbell.png}"
                      class="menu--tabs-icon">
                 <span class="menu--tabs-text">LUYỆN TẬP</span>
             </a>
 
-            <a href="#" class="menu--tabs">
+            <a id="fragment-rank" th:href="@{fragments/rank.html}" class="menu--tabs">
                 <img alt=""
                      th:src="@{img/podium.png}"
                      class="menu--tabs-icon">
                 <span class="menu--tabs-text">BẢNG XẾP HẠNG</span>
             </a>
 
-            <a href="#" class="menu--tabs">
+            <a id="fragment-mission" th:href="@{fragments/mission.html}" class="menu--tabs">
                 <img alt=""
                      th:src="@{img/treasure-chest.png}"
                      class="menu--tabs-icon">
                 <span class="menu--tabs-text">NHIỆM VỤ</span>
             </a>
 
-            <a href="#" class="menu--tabs">
+            <a id="fragment-store" th:href="@{fragments/store.html}" class="menu--tabs">
                 <img alt=""
                      th:src="@{img/shop.png}"
                      class="menu--tabs-icon">
@@ -114,7 +116,7 @@
 
         <div class="view-container">
 
-            <div class="content-container" th:replace="${subPage}">
+            <div class="content-container">
 
             </div>
 

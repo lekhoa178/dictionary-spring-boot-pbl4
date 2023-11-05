@@ -45,7 +45,6 @@ menu.addEventListener('click', e => {
 
     const fragment = target.id.replace("fragment-", "");
     history.pushState(history.state, document.title, `/${fragment}`);
-    console.log(fragmentContainer);
     fetch(`/${fragment}`, {
         method: 'GET',
         headers: {

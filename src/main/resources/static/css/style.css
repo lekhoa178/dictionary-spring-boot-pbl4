@@ -49,6 +49,7 @@ span {
 
 .sticky-container {
     position: fixed;
+    z-index: 1;
     right: 100px;
     left: calc(17.5% + 120px);
     display: grid;

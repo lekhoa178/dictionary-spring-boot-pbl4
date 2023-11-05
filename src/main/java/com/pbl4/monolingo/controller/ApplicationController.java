@@ -119,6 +119,12 @@ public class ApplicationController {
             return "fragments/store";
     }
 
+    @GetMapping("/lesson")
+
+    public String showLesson(Model model) {
+        return "lesson.html";
+    }
+
 
     private List<String> StageColors = new ArrayList<>(Arrays.asList(
             "#58cc02",

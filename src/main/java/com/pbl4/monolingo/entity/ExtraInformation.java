@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class ExtraInformation {
 
     @Id
-    @Column(name = "accountId")
+    @Column(name = "account_id")
     private Integer accountId;
 
     @Column(name = "balance")
@@ -23,18 +23,18 @@ public class ExtraInformation {
     private Integer hearts;
 
     @OneToOne
+    @MapsId("accountId")
     @JoinColumn(name = "account_id")
     private Account account;
 
     public ExtraInformation() {}
 
-    public ExtraInformation(Integer accountId, Integer balance, Integer numberOfLoginDay, Integer numberOfConsecutiveDay, Integer hearts, Account account) {
+    public ExtraInformation(Integer accountId, Integer balance, Integer numberOfLoginDay, Integer numberOfConsecutiveDay, Integer hearts) {
         this.accountId = accountId;
         this.balance = balance;
         this.numberOfLoginDay = numberOfLoginDay;
         this.numberOfConsecutiveDay = numberOfConsecutiveDay;
         this.hearts = hearts;
-        this.account = account;
     }
 
     public Integer getAccountId() {

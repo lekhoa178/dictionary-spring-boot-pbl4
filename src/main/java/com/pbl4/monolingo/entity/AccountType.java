@@ -12,7 +12,7 @@ public class AccountType {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "type")
+    @Column(name = "role")
     private String type;
 
     public AccountType() {}

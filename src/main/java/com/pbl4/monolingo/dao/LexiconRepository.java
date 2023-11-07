@@ -15,8 +15,9 @@ public interface LexiconRepository extends JpaRepository<Lexicon, LexiconId> {
     List<Lexicon> findByWord(String word);
 
     List<Lexicon> findByWordStartsWith(String word);
-    @Query(value = "SELECT Distinct * FROM lexicon e where e.word like :word LIMIT :limit", nativeQuery=true)
-    List<Lexicon> findTopNByWordStartsWith(@Param("word") String word, @Param("limit") int limit);
+
+    @Query("SELECT DISTINCT word FROM Lexicon WHERE word LIKE :word%")
+    List<String> findDistinctByWordStartsWith(@Param("word") String word);
 
     List<Lexicon> findByIdSynsetId(BigDecimal synsetId);
 

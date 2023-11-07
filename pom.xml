@@ -54,7 +54,13 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
-	</dependencies>
+		<dependency>
+			<groupId>com.microsoft.cognitiveservices.speech</groupId>
+			<artifactId>client-sdk</artifactId>
+			<version>1.19.0</version>
+		</dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>

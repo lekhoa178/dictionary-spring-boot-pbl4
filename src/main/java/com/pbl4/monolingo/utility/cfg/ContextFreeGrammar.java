@@ -25,26 +25,26 @@ public class ContextFreeGrammar {
 
     public SentenceBuilder getSentenceBuilder() {
 
-        ProductionRule initRule = getRuleByLhs("S");
-        if (initRule == null) return null;
-        List<String> sentence = new ArrayList<>(initRule.getRHS());
+        List<String> sentence = new ArrayList<>(List.of("S"));
 
         Random random = new Random();
         while (true) {
+            boolean dirty = false;
             List<String> newSentences = new ArrayList<>();
             for (String l : sentence) {
-
                 ProductionRule rule = getRuleByLhs(l);
 
                 if (rule == null) {
+                    newSentences.add(l);
                     continue;
                 }
 
                 int rIndex = random.nextInt(0, rule.getRHS().size());
                 newSentences.addAll(List.of(rule.getRHS().get(rIndex).split(" ")));
+                dirty = true;
             }
 
-            if (newSentences.isEmpty()) break;
+            if (!dirty) break;
             sentence = newSentences;
         }
 

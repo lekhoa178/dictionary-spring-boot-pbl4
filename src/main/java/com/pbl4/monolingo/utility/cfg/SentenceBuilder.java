@@ -8,34 +8,35 @@ import java.util.Random;
 public class SentenceBuilder {
 
     private List<String> templateSentence;
+    private List<String> translatedTempSentence;
 
     private HashMap<String, List<String>> wordMap;
 
-    private List<String> pronouns;
-    private List<String> properNouns;
-    private List<String> verbs;
-    private List<String> objects;
-
     public SentenceBuilder(List<String> templateSentence) {
         this.templateSentence = templateSentence;
+        this.translatedTempSentence = new ArrayList<>();
 
-        InitData();
+//        for (String s : templateSentence) {
+//            if (s.equals("Ad"))
+//        }
+
+        initData();
     }
 
     public void setVerbs(List<String> verbs) {
-        this.verbs.addAll(verbs);
+        setWords("Verb", verbs);
     }
 
     public void setPronouns(List<String> pronouns) {
-        this.pronouns.addAll(pronouns);
+        setWords("Pronoun", pronouns);
     }
 
-    public void setProperNouns(List<String> properNouns) {
-        this.properNouns.addAll(properNouns);
+    public void setPeople(List<String> people) {
+        setWords("People", people);
     }
 
-    public void setObjects(List<String> objects) {
-        this.objects.addAll(objects);
+    public void setPlace(List<String> place) {
+        setWords("Place", place);
     }
 
     public SentenceResult build() {
@@ -43,7 +44,14 @@ public class SentenceBuilder {
         StringBuilder translatedSentence = new StringBuilder();
 
         for (String p : templateSentence) {
-            String[] rStrs = randomSelect(wordMap.get(p)).split(",");
+            List<String> words = wordMap.get(p);
+
+            String[] rStrs;
+            if (words == null) {
+                rStrs = p.split(",");
+            }
+            else
+                rStrs = randomSelect(words).split(",");
 
             sentence.append(rStrs[0]).append(" ");
             translatedSentence.append(rStrs[1]).append(" ");
@@ -54,7 +62,16 @@ public class SentenceBuilder {
         return new SentenceResult(sentence.toString(), translatedSentence.toString());
     }
 
-    private void InitData() {
+    private void setWords(String key, List<String> words) {
+        List<String> ws = wordMap.get(key);
+        if (words != null) {
+            ws.addAll(words);
+        }
+
+        wordMap.put(key, ws);
+    }
+
+    private void initData() {
         wordMap = new HashMap<>();
 
         wordMap.put("Pronoun", new ArrayList<>(List.of(
@@ -62,11 +79,21 @@ public class SentenceBuilder {
                 "you,bạn",
                 "we,chúng tôi",
                 "they,bọn họ",
-                "he,anh",
-                "she,cô",
+                "he,anh ấy",
+                "she,cô ấy",
                 "it,nó")));
 
-        wordMap.put("PNoun", new ArrayList<>(List.of("Vietnam,Việt Nam")));
+        wordMap.put("People", new ArrayList<>(List.of("Tom,Tom", "Alex,Alex", "Lạc,Lạc")));
+        wordMap.put("Place", new ArrayList<>(List.of("Tom's house,nhà của Tom", "Vietnam,Việt Nam")));
+
+        wordMap.put("Det1", new ArrayList<>(List.of("a,một", "the, ", " , ")));
+        wordMap.put("Det2", new ArrayList<>(List.of("an,một", "the, ", " , ")));
+        wordMap.put("Det3", new ArrayList<>(List.of("the, ", " , ")));
+
+        wordMap.put("Nor1", new ArrayList<>(List.of("house,ngôi nhà", "spoon,cái muỗng", "knife,cái dao")));
+        wordMap.put("Nor2", new ArrayList<>(List.of("apple,quả táo", "umbrella,cái ô")));
+        wordMap.put("Nor3", new ArrayList<>(List.of("knives,những cái dao", "spoons,những cái muỗng")));
+
         wordMap.put("Verb", new ArrayList<>(List.of("love,yêu", "want,muốn")));
         wordMap.put("O", new ArrayList<>(List.of("cake,bánh", "food,đồ ăn")));
     }

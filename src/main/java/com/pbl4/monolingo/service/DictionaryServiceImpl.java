@@ -48,6 +48,11 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
+    public List<Lexicon> searchLimitByWord(String word, int limit) {
+        return lexiconRepository.findTopNByWordStartsWith("%" + word + "%",limit);
+    }
+
+    @Override
     public List<Lexicon> getSimilarsBySynsetId(BigDecimal synsetId) {
 
         List<BigDecimal> synsetIds = similarRepository

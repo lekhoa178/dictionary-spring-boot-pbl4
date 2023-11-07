@@ -11,6 +11,7 @@ public interface DictionaryService {
     List<Synset> getSynsetsByWord(String word);
 
     List<Lexicon> searchByWord(String word);
+    List<Lexicon> searchLimitByWord(String word, int limit);
 
     List<Lexicon> getSimilarsBySynsetId(BigDecimal synsetId);
 

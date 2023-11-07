@@ -16,17 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-//    private final AuthenticationProvider authenticationProvider;
-//    private final Filter jwtAuthFilter;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new MD5PasswordEncoder();

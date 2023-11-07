@@ -35,7 +35,10 @@ public class ApiRestController {
     public List<Lexicon> searchLexicon(@PathVariable String word) {
         return dictionaryService.searchByWord(word);
     }
-
+    @GetMapping("search/{word}/{limit}")
+    public List<Lexicon> searchLimitLexicon(@PathVariable String word,@PathVariable int limit){
+        return dictionaryService.searchLimitByWord(word,limit);
+    }
     // expose "/synset/{word}" return a list of Synset
     @GetMapping("/synset/{word}")
     public List<Synset> getSynsetsByWord(@PathVariable String word) {

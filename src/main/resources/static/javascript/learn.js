@@ -50,8 +50,8 @@ fragmentContainer.addEventListener('click', function(e) {
 
 document.addEventListener('click', function(e) {
     const startPanel = document.querySelector('.floating-start-panel')
-    console.log(startPanel);
-    console.log(e.target);
+    // console.log(startPanel);
+    // console.log(e.target);
     if (startPanel == null) return;
 
     if (startPanel.contains(e.target)) return;

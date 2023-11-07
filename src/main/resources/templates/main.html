@@ -65,19 +65,26 @@
         <div class="sticky-container">
             <div>
                 <form class="search--form" method="GET">
+                    <div class="search--panel">
+                        <input type="text"
+                               name="word"
+                               class="search--bar"
+                               placeholder="Tìm kiếm từ vựng"
+                                autocomplete="false">
 
-                    <input type="text"
-                           name="word"
-                           class="search--bar"
-                           placeholder="Tìm kiếm từ vựng">
+                        <div class="search--results-panel">
+                            <ul class="search--results">
+                            </ul>
+                        </div>
+                    </div>
 
-                    <span>
-                            <button type="submit" class="search--btn">
-                                <img alt=""
-                                     th:src="@{/img/search.png}"
-                                     class="search--btn-icon">
-                            </button>
-                        </span>
+                    <span style="display: grid">
+                        <button type="submit" class="search--btn">
+                            <img alt=""
+                                 th:src="@{/img/search.png}"
+                                 class="search--btn-icon">
+                        </button>
+                    </span>
 
                 </form>
             </div>

@@ -161,6 +161,22 @@ public class ApplicationController {
 
         }
 
+        HashMap<String, HashMap<String, List<String>>> results = getDefExampleMap(defMap);
+
+        model.addAttribute("definitions", results);
+        model.addAttribute("word", word.replaceAll("_", " "));
+
+        if (requestSource == null) {
+            if (principal != null) {
+                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+            }
+            return "main.html";
+        }
+        else
+            return "fragments/meaning.html";
+    }
+
+    private HashMap<String, HashMap<String, List<String>>> getDefExampleMap(HashMap<String, List<String>> defMap) {
         HashMap<String, HashMap<String, List<String>>> results = new HashMap<>();
 
         for (Map.Entry<String, List<String>> d : defMap.entrySet()) {
@@ -179,18 +195,7 @@ public class ApplicationController {
                 results.put(d.getKey(), defExamples);
             }
         }
-
-        model.addAttribute("definitions", results);
-        model.addAttribute("word", word);
-
-        if (requestSource == null) {
-            if (principal != null) {
-                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-            }
-            return "main.html";
-        }
-        else
-            return "fragments/meaning.html";
+        return results;
     }
 
 

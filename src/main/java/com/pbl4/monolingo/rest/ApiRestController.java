@@ -36,6 +36,11 @@ public class ApiRestController {
         return dictionaryService.searchByWord(word);
     }
 
+    @GetMapping("/search/{word}/{count}")
+    public List<String> searchLexiconLimit(@PathVariable String word, @PathVariable int count) {
+        return dictionaryService.searchDistinctByWord(word).stream().limit(count).toList();
+    }
+
     // expose "/synset/{word}" return a list of Synset
     @GetMapping("/synset/{word}")
     public List<Synset> getSynsetsByWord(@PathVariable String word) {

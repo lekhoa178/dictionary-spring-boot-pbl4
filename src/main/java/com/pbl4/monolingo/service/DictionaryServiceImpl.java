@@ -48,6 +48,12 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
+    public List<String> searchDistinctByWord(String word) {
+        return lexiconRepository.findDistinctByWordStartsWith(word);
+    }
+
+
+    @Override
     public List<Lexicon> getSimilarsBySynsetId(BigDecimal synsetId) {
 
         List<BigDecimal> synsetIds = similarRepository

@@ -8,9 +8,9 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/learn.css}">
     <title>Monolingo - Học tiếng anh vui vẻ</title>
-    <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}">
-    <script defer th:src="@{javascript/main.js}"></script>
-    <script defer th:src="@{javascript/learn.js}"></script>
+    <link rel="shortcut icon" type="x-icon" th:href="@{/img/dart.png}">
+    <script defer th:src="@{/javascript/main.js}"></script>
+    <script defer th:src="@{/javascript/learn.js}"></script>
 </head>
 <body class="container">
 
@@ -24,35 +24,35 @@
 
             <a id="fragment-learn" th:href="@{fragments/learn.html}" class="menu--tabs">
                 <img alt=""
-                     th:src="@{img/house.png}"
+                     th:src="@{/img/house.png}"
                      class="menu--tabs-icon">
                 <span class="menu--tabs-text">HỌC</span>
             </a>
 
             <a id="fragment-practice" th:href="@{fragments/practice.html}" class="menu--tabs">
                 <img alt=""
-                     th:src="@{img/dumbbell.png}"
+                     th:src="@{/img/dumbbell.png}"
                      class="menu--tabs-icon">
                 <span class="menu--tabs-text">LUYỆN TẬP</span>
             </a>
 
             <a id="fragment-rank" th:href="@{fragments/rank.html}" class="menu--tabs">
                 <img alt=""
-                     th:src="@{img/podium.png}"
+                     th:src="@{/img/podium.png}"
                      class="menu--tabs-icon">
                 <span class="menu--tabs-text">BẢNG XẾP HẠNG</span>
             </a>
 
             <a id="fragment-mission" th:href="@{fragments/mission.html}" class="menu--tabs">
                 <img alt=""
-                     th:src="@{img/treasure-chest.png}"
+                     th:src="@{/img/treasure-chest.png}"
                      class="menu--tabs-icon">
                 <span class="menu--tabs-text">NHIỆM VỤ</span>
             </a>
 
             <a id="fragment-store" th:href="@{fragments/store.html}" class="menu--tabs">
                 <img alt=""
-                     th:src="@{img/shop.png}"
+                     th:src="@{/img/shop.png}"
                      class="menu--tabs-icon">
                 <span class="menu--tabs-text">CỬA HÀNG</span>
             </a>
@@ -64,20 +64,27 @@
 
         <div class="sticky-container">
             <div>
-                <form method="GET">
+                <form class="search--form" method="GET">
+                    <div class="search--panel">
+                        <input type="text"
+                               name="word"
+                               class="search--bar"
+                               placeholder="Tìm kiếm từ vựng"
+                                autocomplete="false">
 
-                    <input type="text"
-                           name="word"
-                           class="search--bar"
-                           placeholder="Tìm kiếm từ vựng">
+                        <div class="search--results-panel">
+                            <ul class="search--results">
+                            </ul>
+                        </div>
+                    </div>
 
-                    <span>
-                            <button type="submit" class="search--btn">
-                                <img alt=""
-                                     th:src="@{img/search.png}"
-                                     class="search--btn-icon">
-                            </button>
-                        </span>
+                    <span style="display: grid">
+                        <button type="submit" class="search--btn">
+                            <img alt=""
+                                 th:src="@{/img/search.png}"
+                                 class="search--btn-icon">
+                        </button>
+                    </span>
 
                 </form>
             </div>
@@ -86,7 +93,7 @@
 
                 <div class="resource--items">
                     <img alt=""
-                         th:src="@{img/flame.png}"
+                         th:src="@{/img/flame.png}"
                          class="resource--items-icon">
                     <span class="
                             resource--items-text
@@ -96,7 +103,7 @@
 
                 <div class="resource--items">
                     <img alt=""
-                         th:src="@{img/gems.png}"
+                         th:src="@{/img/gems.png}"
                          class="resource--items-icon">
                     <span class="
                             resource--items-text
@@ -106,7 +113,7 @@
 
                 <div class="resource--items">
                     <img alt=""
-                         th:src="@{img/heart.png}"
+                         th:src="@{/img/heart.png}"
                          class="resource--items-icon">
                     <span class="
                             resource--items-text
@@ -133,7 +140,7 @@
                     <div class="mission">
                         <div class="mission--items">
                             <img alt=""
-                                 th:src="@{img/dart.png}"
+                                 th:src="@{/img/dart.png}"
                                 class="mission--items-icon">
                             <h3>
                                 Kiếm 10 KN
@@ -146,14 +153,14 @@
                                 </div>
 
                                 <img alt=""
-                                     th:src="@{img/treasure-chest.png}"
+                                     th:src="@{/img/treasure-chest.png}"
                                      class="mission--progress-icon">
                             </div>
                         </div>
 
                         <div class="mission--items">
                             <img alt=""
-                                 th:src="@{img/dart.png}"
+                                 th:src="@{/img/dart.png}"
                                  class="mission--items-icon">
                             <h3>
                                 Hoàn thành 3 màn chơi có độ chính xác hơn 80%
@@ -166,7 +173,7 @@
                                 </div>
 
                                 <img alt=""
-                                     th:src="@{img/treasure-chest.png}"
+                                     th:src="@{/img/treasure-chest.png}"
                                      class="mission--progress-icon">
                             </div>
                         </div>

@@ -71,33 +71,44 @@ searchBar.addEventListener("keydown", (event) => {
 });
 
 searchBar.addEventListener('input', async function(e )  {
-    const data = await AJAX(`/dictionary/search/${e.target.value}/10`, true);
-    searchData = data;
+    if (e.target.value) {
+        if (searchResults.classList.contains('hidden')) {
+            searchResults.classList.remove("hidden");
+            searchSelected = 0;
+        }
 
-    let results = "";
+        const word = e.target.value.replaceAll('/', '');
+        const data = await AJAX(`/dictionary/search/${word}/10`, true);
+        searchData = data;
 
-    for (let i = 0; i < data.length; ++i) {
-        results += `
+        let results = "";
+
+        for (let i = 0; i < data.length; ++i) {
+            results += `
                         <li class="search--result
                             ${i === 0 ? "search--result--selected" : ""}
                             search--result--${i}">
                             ${data[i].replaceAll('_', ' ')}
                         </li>`;
-    }
+        }
 
-    if (data.length === 0) {
-        results += `
+        if (data.length === 0) {
+            results += `
                         <li class="search--result
                             search--result--selected
                             search--result--0">
                             ${e.target.value}
                         </li>`;
-    }
+        }
 
-    const oldOption = searchResults.querySelector(`.search--result--${searchSelected}`);
-    oldOption?.classList.remove("search--result--selected");
-    searchSelected = 0;
-    searchResults.innerHTML = results;
+        const oldOption = searchResults.querySelector(`.search--result--${searchSelected}`);
+        oldOption?.classList.remove("search--result--selected");
+        searchSelected = 0;
+        searchResults.innerHTML = results;
+    }
+    else {
+        searchResults.classList.add("hidden");
+    }
 })
 
 searchForm.addEventListener("submit", async function(e)  {
@@ -133,12 +144,6 @@ searchResults.addEventListener('click', async function(e) {
     searchBar.blur();
     searchResults.classList.add("hidden");
 })
-
-searchBar.addEventListener('focus', e => {
-    searchResults.classList.remove("hidden");
-    searchSelected = 0;
-})
-
 // ----------------- UTILITY --------------------
 
 async function AJAX(fragment, json = false) {
@@ -157,6 +162,6 @@ async function AJAX(fragment, json = false) {
         return data;
     }
     catch (e) {
-        console.error(e.message());
+        console.error(e.message);
     }
 }

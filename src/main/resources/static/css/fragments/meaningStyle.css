@@ -29,7 +29,7 @@ span {
 
 .word-container {
     display: grid;
-    grid-template-columns: 9fr 1fr;
+    grid-template-columns: 9fr 1fr 1fr;
     border-bottom: 3px solid #00ADFF;
 }
 
@@ -58,7 +58,7 @@ span {
     margin-left: 20px
 }
 
-.definitionPOS-container, .definition-container, .example-container {
+.definitionPOS-container, .definition-container, .example-container, .synonym-container {
     list-style: none;
 }
 
@@ -90,4 +90,22 @@ span {
     font-weight: 300;
     font-style: italic;
     margin-bottom: 10px;
+}
+
+.synonym-container, .antonym-container {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.synonym-item, .antonym-container {
+    list-style: none;
+    text-decoration: underline;
+    font-weight: 300;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.detail-meaning--container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }

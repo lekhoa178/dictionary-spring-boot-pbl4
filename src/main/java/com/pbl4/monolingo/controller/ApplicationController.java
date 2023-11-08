@@ -6,13 +6,12 @@ import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.AccountServiceImpl;
 import com.pbl4.monolingo.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -118,7 +117,39 @@ public class ApplicationController {
         else
             return "fragments/store";
     }
+    @GetMapping("/admin/account")
 
+    public String showAdmin(Model model, Principal principal,
+                            @RequestHeader(value = "request-source", required = false) String requestSource) {
+        return showAccountPerPage(model, principal,requestSource, 0);
+    }
+    @GetMapping("/admin/account/page/{pageNo}")
+
+    public String showAccountPerPage(Model model, Principal principal,
+                            @RequestHeader(value = "request-source", required = false) String requestSource,
+                            @PathVariable (value = "pageNo") int pageNo) {
+
+        Page<Account> pages = accountService.getAccountWithPage(pageNo, 7);
+        List<Account> accounts = pages.getContent();
+
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("totalPage", pages.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("newAccount", new Account());
+        if (requestSource == null) {
+            if (principal != null) {
+                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+            }
+            return "admin";
+        }
+        else
+            return "fragments_admin/account";
+    }
+    @PostMapping("/admin/account/save")
+    public String saveAccount(@ModelAttribute("account") Account  account) {
+        accountService.addAccount(account);
+        return "redirect:/admin/account";
+    }
     @GetMapping("/lesson")
 
     public String showLesson(Model model) {

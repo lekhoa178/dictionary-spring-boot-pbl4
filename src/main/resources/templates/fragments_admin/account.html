@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="account-container">
+        <form th:action="@{/admin/account/save}" th:object="${newAccount}" method="POST" class = "account-form">
+            <div class="input-field">
+                <div class="row">
+                    <input  type="text" th:field="*{username}" id="user-txt" placeholder="Tài khoản"/>
+                    <input type="text" th:field="*{password}" id="pass-txt" placeholder="Mật khẩu"/>
+                    <input type="text" th:field="*{email}" id="email-txt" placeholder="Email"/>
+                </div>
+                <div class="row">
+                    <input type="text" th:field="*{name}" id="name-txt" placeholder="Tên"/>
+                    <input type="datetime-local" th:field="*{birthdate}" id="date-picker" placeholder="Ngày sinh"/>
+                    <input style="width: 50px" type="text" th:field="*{type.id}" placeholder="Type"/>
+                    <div class="gender-field">
+                        <input type="radio"  th:field="*{gender}" value="true" name="gender-rd" id="male-btn">
+                        <label for="male-btn">Nam</label>
+                        <input type="radio"  th:field="*{gender}" value="false" name="gender-rd" id="fermale-btn">
+                        <label for="male-btn">Nữ</label>
+                    </div>
+                </div>
+            </div>
+            <div class="button-field">
+                <button type="submit" class="form-btn"><b>Submit</b></button>
+                <button type="reset" class="form-btn"><b>Reset</b></button>
+            </div>
+        </form>
+        <div class="data-field">
+            <div class="sub-field">
+                <div class="search-field">
+                    <input type="text" id="txt-search" class="search-txt" placeholder="Tìm kiếm">
+                    <button type="submit" class="search-btn">
+                    <img alt="" th:src="@{/img/search.png}" class="search-btn-icon">
+                    </button>
+                </div>
+                <button>Delete All</button>
+            </div>
+            <div class="table-container">
+                <table class="account-list">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>UID</th>
+                        <th>Tài khoản</th>
+                        <th>Email</th>
+                        <th>Tên</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="account : ${accounts}" >
+                        <th><input type="checkbox" id=""></th>
+                        <td th:text="*{account.accountId}"></td>
+                        <td th:text="*{account.username}"></td>
+                        <td th:text="*{account.email}"></td>
+                        <td th:text="*{account.name}"></td>
+                        <td > action</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="page-num">
+                <a th:if="${currentPage > 0}"  th:href="@{'/admin/account/page/' + ${currentPage  - 1}}">Back</a>
+                <span th:unless="${currentPage > 0}">Back</span>
+
+                <span th:text="${currentPage + 1}"></span>
+
+                <a th:if="${currentPage < totalPage - 1}"  th:href="@{'/admin/account/page/' + ${currentPage  + 1}}">Next</a>
+                <span th:unless="${currentPage < totalPage - 1}">Next</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

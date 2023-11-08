@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments_admin/account.css}">
+    <title>Monolingo - Học tiếng anh vui vẻ</title>
+    <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}">
+    <script defer th:src="@{/javascript/admin.js}"></script>
+    <script defer th:src="@{/javascript/learn.js}"></script>
+</head>
+<body class="container">
+
+<div class="menu-container">
+
+    <header>
+        <h1 class="logo">Monolingo</h1>
+    </header>
+
+    <div class="menu">
+
+        <a id="fragment-account" th:href="@{/fragment_admin/account.html}" class="menu--tabs">
+            <img alt=""
+                 th:src="@{/img/house.png}"
+                 class="menu--tabs-icon">
+            <span class="menu--tabs-text">TÀI KHOẢN</span>
+        </a>
+
+        <a id="fragment-practice" th:href="@{/fragments/practice.html}" class="menu--tabs">
+            <img alt=""
+                 th:src="@{/img/dumbbell.png}"
+                 class="menu--tabs-icon">
+            <span class="menu--tabs-text">GAME</span>
+        </a>
+
+    </div>
+</div>
+
+<main class="main-container">
+
+    <div class="sticky-container">
+        <div class="resource-panel">
+
+            <div class="resource--items">
+                <img alt=""
+                     th:src="@{/img/flame.png}"
+                     class="resource--items-icon">
+                <span class="
+                            resource--items-text
+                            resource--items-text-streak"
+                      th:text="${userData.numberOfConsecutiveDay}"></span>
+            </div>
+
+            <div class="resource--items">
+                <img alt=""
+                     th:src="@{/img/gems.png}"
+                     class="resource--items-icon">
+                <span class="
+                            resource--items-text
+                            resource--items-text-gem"
+                      th:text="${userData.balance}"></span>
+            </div>
+
+            <div class="resource--items">
+                <img alt=""
+                     th:src="@{/img/heart.png}"
+                     class="resource--items-icon">
+                <span class="
+                            resource--items-text
+                            resource--items-text-heart"
+                      th:text="${userData.hearts}"></span>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="view-container">
+
+        <div class="content-container">
+        </div>
+
+    </div>
+
+</main>
+
+
+</body>
+
+</html>

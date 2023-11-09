@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     font-family: 'Signika', sans-serif;
-    font-size: 17px;
+    font-size: 18px;
 }
 
 html, body {
@@ -59,9 +59,15 @@ span {
 .progress {
     width: 50%;
     height: 100%;
-    background-color: #64D014;
+    background-color: #00ADFF;
     position: absolute;
     border-radius: 15px;
+}
+
+.return--btn {
+    justify-self: end;
+    color: #AAAAAA;
+    cursor: pointer;
 }
 
 .resource--items {
@@ -81,6 +87,50 @@ span {
 
 .resource--items-text-heart {
     color: #FF4B4B;
+}
+
+.game--container {
+    padding: 20px 400px 80px;
+    display: grid;
+    grid-template-rows: 1fr 1fr 0.6fr 1fr;
+    align-items: center;
+}
+
+.request--title {
+    font-size: 30px;
+}
+
+.game--sentence {
+    padding: 20px 40px;
+    border-radius: 10px;
+    border: 2px solid #e4e4e4;
+    width: fit-content;
+    height: fit-content;
+    margin-left: 60px;
+    margin-bottom: 20px;
+}
+
+.answer--panel {
+    width: 100%;
+    height: 100%;
+    border-top: 2px solid #e4e4e4;
+    border-bottom: 2px solid #e4e4e4;
+}
+
+.game--cards {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-self: center;
+}
+
+.game--card {
+    padding: 15px;
+    background-color: white;
+    border: 2px solid #e4e4e4;
+    border-radius: 10px;
+    box-shadow: 0 3px 0 0 #e4e4e4;
+    cursor: pointer;
 }
 
 .btn {

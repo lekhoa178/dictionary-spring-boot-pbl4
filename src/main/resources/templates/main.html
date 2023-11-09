@@ -7,10 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/learn.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/meaningStyle.css}">
     <title>Monolingo - Học tiếng anh vui vẻ</title>
     <link rel="shortcut icon" type="x-icon" th:href="@{/img/dart.png}">
     <script defer th:src="@{/javascript/main.js}"></script>
-    <script defer th:src="@{/javascript/learn.js}"></script>
+    <script defer th:src="@{/javascript/fragments/learn.js}"></script>
+    <script defer th:src="@{/javascript/fragments/meaning.js}"></script>
 </head>
 <body class="container">
 
@@ -70,7 +72,8 @@
                                name="word"
                                class="search--bar"
                                placeholder="Tìm kiếm từ vựng"
-                                autocomplete="false">
+                               autocomplete="false"
+                               maxlength="50">
 
                         <div class="search--results-panel">
                             <ul class="search--results">

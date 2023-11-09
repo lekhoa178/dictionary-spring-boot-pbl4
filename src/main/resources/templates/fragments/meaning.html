@@ -1,37 +1,51 @@
-<head>
-    <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/fragments/meaningStyle.css}">
-</head>
-<body>
-    <div class="meaning-container">
-        <div class="word-container">
-            <h2 class="word" th:text="${word}"></h2>
-            <img th:src="@{/img/flame.png}" alt="" class="favorite-off--icon icon">
-            <img th:src="@{/img/flame.png}" alt="" class="favorite-on--icon icon" hidden="hidden">
-        </div>
-
-        <ul class="definitionPOS-container">
-            <li th:each="defPOS : ${definitions}">
-                <h2 class="part-of-speech" th:text="${defPOS.key}"></h2>
-
-                <ul class="definition-container">
-                    <li class="definition-item" th:each="def : ${defPOS.value}">
-
-                        <p th:text="${def.key}"></p>
-                        <ul class="example-container">
-                            <li th:each="example : ${def.value}">
-                                <p class="example-item" th:text="${example}"></p>
-                            </li>
-                        </ul>
-
-
-                    </li>
-                </ul>
-
-            </li>
-        </ul>
+<div class="meaning-container">
+    <div class="word-container">
+        <h2 class="word" th:text="${word}"></h2>
+        <img th:src="@{/img/flame.png}" alt="" class="favorite-off--icon icon">
+        <img th:src="@{/img/flame.png}" alt="" class="favorite-on--icon icon" hidden="hidden">
+        <img th:src="@{/img/flame.png}" alt="" class="volume--icon icon">
     </div>
-</body>
+
+    <ul class="definitionPOS-container">
+        <li th:each="defPOS : ${definitions}">
+            <h2 class="part-of-speech" th:text="${defPOS.key}"></h2>
+
+            <ul class="definition-container">
+                <li class="definition-item" th:each="def : ${defPOS.value}">
+
+                    <p th:text="${def.definition}"></p>
+                    <ul class="example-container">
+                        <li th:each="example : ${def.examples}">
+                            <p class="example-item" th:text="${example}"></p>
+                        </li>
+                    </ul>
+
+                    <div class="detail-meaning--container">
+
+                        <div th:if="${#lists.size(def.synonyms) != 0}">
+                            <p class="synonym--title">Đồng nghĩa</p>
+                            <ul class="synonym-container">
+                                <li th:each="syn : ${def.synonyms}">
+                                    <p class="synonym-item" th:text="${syn}"></p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div th:if="${#lists.size(def.antonyms) != 0}">
+                            <p class="antonym--title">Trái nghĩa</p>
+                            <ul class="antonym-container">
+                                <li th:each="syn : ${def.antonyms}">
+                                    <p class="antonym-item" th:text="${syn}"></p>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </li>
+
+            </ul>
+
+        </li>
+    </ul>
+</div>

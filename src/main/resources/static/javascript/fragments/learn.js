@@ -21,7 +21,7 @@ fragmentContainer.addEventListener('click', function(e) {
         startPanel.style.backgroundColor = color;
         startPanel.classList.remove('floating-start-panel--inactive');
         content =
-            `<h2>Cửa 1</h2>
+            `<h2>Cửa ${level}</h2>
                 <button class="floating-start--btn"
                 data-test="${stageId} ${level}">BẮT ĐẦU + 10 KN</button>`;
     }
@@ -45,13 +45,14 @@ fragmentContainer.addEventListener('click', function(e) {
     const el = e.target.closest('.floating-start--btn');
     if (el == null) return;
 
+    if (el.closest('.floating-start-panel--inactive')) return;
+
     window.location = '/lesson'
 });
 
 document.addEventListener('click', function(e) {
     const startPanel = document.querySelector('.floating-start-panel')
-    // console.log(startPanel);
-    // console.log(e.target);
+
     if (startPanel == null) return;
 
     if (startPanel.contains(e.target)) return;

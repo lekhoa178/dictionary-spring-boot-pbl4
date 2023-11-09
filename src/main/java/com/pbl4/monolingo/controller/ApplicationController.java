@@ -5,6 +5,7 @@ import com.pbl4.monolingo.entity.*;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.AccountServiceImpl;
 import com.pbl4.monolingo.service.DictionaryService;
+import com.pbl4.monolingo.utility.uimodel.DefinitionDetailView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
@@ -166,36 +167,8 @@ public class ApplicationController {
                               Principal principal,
                               @PathVariable String word,
                               @RequestHeader(value = "request-source", required = false) String requestSource) {
-        HashMap<String, List<String>> defMap = new HashMap<>();
-        defMap.put("DANH TỪ", new ArrayList<String>());
-        defMap.put("ĐỘNG TỪ", new ArrayList<String>());
-        defMap.put("TÍNH TỪ", new ArrayList<String>());
-        defMap.put("TRẠNG TỪ", new ArrayList<String>());
 
-        List<Synset> synsets = dictionaryService.getSynsetsByWord(word);
-
-        for (Synset syn : synsets) {
-            List<String> def = defMap.get("ADVERB");
-            switch ((int) Math.floor(syn.getSynsetId().divide(new BigDecimal(100000000)).intValue())) {
-                case 1:
-                    def = defMap.get("DANH TỪ");
-                    break;
-                case 2:
-                    def = defMap.get("ĐỘNG TỪ");
-                    break;
-                case 3:
-                    def = defMap.get("TÍNH TỪ");
-                    break;
-                case 4:
-                    def = defMap.get("TRẠNG TỪ");
-                    break;
-            }
-
-            def.add(syn.getDefinition());
-
-        }
-
-        HashMap<String, HashMap<String, List<String>>> results = getDefExampleMap(defMap);
+        HashMap<String, List<DefinitionDetailView>> results = dictionaryService.getDefinitionByWord(word);
 
         model.addAttribute("definitions", results);
         model.addAttribute("word", word.replaceAll("_", " "));
@@ -208,28 +181,6 @@ public class ApplicationController {
         }
         else
             return "fragments/meaning.html";
-    }
-
-    private HashMap<String, HashMap<String, List<String>>> getDefExampleMap(HashMap<String, List<String>> defMap) {
-        HashMap<String, HashMap<String, List<String>>> results = new HashMap<>();
-
-        for (Map.Entry<String, List<String>> d : defMap.entrySet()) {
-            if (d.getValue().isEmpty()) continue;
-            else {
-                HashMap<String, List<String>> defExamples = new HashMap<>();
-
-                List<String> str = d.getValue();
-                for (String s : str) {
-                    List<String> splt = List.of(s.split(";"));
-                    List<String> examples = splt.subList(1, splt.size());
-
-                    defExamples.put(splt.get(0), examples);
-                }
-
-                results.put(d.getKey(), defExamples);
-            }
-        }
-        return results;
     }
 
 

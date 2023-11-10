@@ -1,8 +1,11 @@
 <div class="meaning-container">
     <div class="word-container">
         <h2 class="word" th:text="${word}"></h2>
-        <img th:src="@{/img/flame.png}" alt="" class="favorite-off--icon icon">
-        <img th:src="@{/img/flame.png}" alt="" class="favorite-on--icon icon" hidden="hidden">
+<!--        <img th:src="@{/img/flame.png}" alt="" class="favorite-off&#45;&#45;icon icon">-->
+<!--        <img th:src="@{/img/flame.png}" alt="" class="favorite-on&#45;&#45;icon icon" hidden="hidden">-->
+        <i id="fv-icon" th:class="${isExist} ? 'fa-heart fa-solid icon' : 'fa-heart fa-regular icon'"></i>
+        <input type="hidden"th:value="${word}" id="word">
+        <input type="hidden"th:value="${isExist}" id="isExist">
         <img th:src="@{/img/flame.png}" alt="" class="volume--icon icon">
     </div>
 

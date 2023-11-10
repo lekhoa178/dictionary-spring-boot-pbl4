@@ -20,51 +20,6 @@ html, body {
     margin-bottom: 10px;
 
 }
-.input-field {
-    display: flex;
-    flex-direction: column;
-}
-.row {
-    display: flex;
-    line-height: 35px;
-    align-items: center;
-}
-.input-field input[type = text], input[type = datetime-local]{
-    width: 250px;
-    height: 40px;
-    margin: 15px 30px;
-    padding: 0 10px;
-    border: none;
-    border-bottom: 1px solid black;
-    outline: none;
-}
-.gender-field {
-    margin: 20px;
-    padding: 0 10px;
-}
-.button-field {
-    display: flex;
-    justify-content: right;
-    width: 100%;
-}
-.form-btn {
-    margin: 0 10px;
-    width: 100px;
-    height: 35px;
-    border-radius: 15px;
-}
-.form-btn[type = submit] {
-    background: #64D014;
-    box-shadow: 0px 2px 0px 0px #58A700;
-    border: none;
-    color: white;
-}
-.form-btn[type = reset] {
-    background: #FFF;
-    box-shadow: 0px 2px 0px 0px #E5E5E5;
-    color: #BBBBBB;
-    border: 1px solid #E5E5E5;
-}
 .data-field {
     display: flex;
     flex-direction: column;
@@ -72,7 +27,7 @@ html, body {
 .sub-field {
     display: flex;
     flex-direction: row;
-    width: 300px;
+    width: 100%;
     justify-content: space-between;
     margin-bottom: 20px;
 }
@@ -80,11 +35,11 @@ html, body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    border: none;
+    border-bottom: 1px solid #BBBBBB;
 }
 .search-txt {
     border: none;
-    border-bottom: 1px solid #BBBBBB;
+
     outline: none;
 }
 .search-btn {
@@ -97,7 +52,7 @@ html, body {
     height: 15px;
 }
 .table-container {
-    height: 350px;
+    height: 500px;
     overflow: auto;
 }
 .account-list {
@@ -108,15 +63,49 @@ html, body {
 }
 .account-list tr {
     border-bottom: 1px solid #BBBBBB;
-    height: fit-content;
+    height: 60px;
 }
 .account-list th, td {
     padding: 10px 0;
-
     text-align: center;
     width: fit-content;
 }
 .page-num {
     display: flex;
     justify-content: right;
+}
+.page-num a, .page-num span {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    margin: 15px 10px
+}
+.action-btn {
+    color: #64D014FF;
+    margin-left: 10px;
+    background-color: transparent;
+    border: none;
+}
+#add-btn, #delete-many-btn {
+    width: 70px;
+    border: none;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 5px;
+}
+#add-btn{
+    background: #64D014;
+    box-shadow: 0px 3px 0px 0px #58A700;
+}
+#delete-many-btn {
+    width: 100px;
+    background: #ff4b4b;
+    box-shadow: 0px 3px 0px 0px #e62323;
+}
+.action-field {
+    display: flex;
+    justify-content: right;
+    gap:50px
 }

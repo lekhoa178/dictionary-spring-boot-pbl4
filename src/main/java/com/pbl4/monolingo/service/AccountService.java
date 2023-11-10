@@ -11,5 +11,9 @@ public interface AccountService {
     ExtraInformation getAccountInfoByUsername(String username);
     List<Account> getAllAccount();
     Page<Account> getAccountWithPage(int offset, int size);
-    void addAccount(Account account);
-}
+    void saveAccount(Account account);
+    Account getAccountById(int id);
+    void deleteAccountById(int id);
+    List<Account> searchAccount(String keyword);
+    Account getAccountByUserName(String username);
+ }

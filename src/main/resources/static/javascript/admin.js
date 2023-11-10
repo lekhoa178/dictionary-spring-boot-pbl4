@@ -9,11 +9,20 @@ function init() {
     const fragment = parts[2]
     let pagePath = ''
 
-    if (parts.length > 3)
-    {
-        const pageNo = parts[parts.length - 1]
-        pagePath = pagePath + `/page/${pageNo}`
-    }
+    // if (parts.length == 5)
+    // {
+    //     const value = parts[parts.length - 1]
+    //     const sub = parts[parts.length - 2]
+    //     pagePath = pagePath + `/${sub}/${value}`
+    // }
+    // else if (parts.length == 4) {
+    //     const sub = parts[parts.length - 1]
+    //     pagePath = pagePath + `/${sub}`
+    // }
+    if (parts[3] != null)
+        pagePath = pagePath + `/${parts[3]}`
+    if (parts[4] != null)
+        pagePath = pagePath + `/${parts[4]}`
     // const fragment = "account";
     const fragmentEl = document.getElementById(`fragment-${fragment}`);
     for (let i = 0; i < tabs.length; ++i) {
@@ -71,3 +80,4 @@ menu.addEventListener('click', e => {
         });
 
 })
+

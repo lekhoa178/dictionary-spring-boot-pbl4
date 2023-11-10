@@ -24,5 +24,7 @@ public interface DictionaryService {
 
     List<Lexicon> getDerivedBySynsetId(BigDecimal synsetId);
 
-
+    Boolean checkIsExsitInNotebook(int accountId, String word);
+    void deleteNotebook(int accountId, String word);
+    void addNotebook(int accountId, String word);
 }

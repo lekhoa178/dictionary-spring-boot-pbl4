@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" th:href="@{/css/fragments_admin/test.css}">
+</head>
+<body>
+  <div class="container">
+    <ul>
+      <li th:each="account: ${accounts}" th:text="*{account.username}"></li>
+    </ul>
+  </div>
+</body>
+</html>

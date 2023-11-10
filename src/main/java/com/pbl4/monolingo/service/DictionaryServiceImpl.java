@@ -1,10 +1,7 @@
 package com.pbl4.monolingo.service;
 
 import com.pbl4.monolingo.dao.*;
-import com.pbl4.monolingo.entity.Derived;
-import com.pbl4.monolingo.entity.Lexicon;
-import com.pbl4.monolingo.entity.Similar;
-import com.pbl4.monolingo.entity.Synset;
+import com.pbl4.monolingo.entity.*;
 import com.pbl4.monolingo.utility.uimodel.DefinitionDetailView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,18 +19,20 @@ public class DictionaryServiceImpl implements DictionaryService {
     private final AntonymRepository antonymRepository;
     private final DerivedRepository derivedRepository;
 
-
+    private final NotebookRepository notebookRepository;
     @Autowired
     public DictionaryServiceImpl(LexiconRepository lexiconRepository,
                                  SynsetRepository synsetRepository,
                                  SimilarRepository similarRepository,
                                  AntonymRepository antonymRepository,
-                                 DerivedRepository derivedRepository) {
+                                 DerivedRepository derivedRepository,
+                                 NotebookRepository notebookRepository) {
         this.lexiconRepository = lexiconRepository;
         this.synsetRepository = synsetRepository;
         this.similarRepository = similarRepository;
         this.antonymRepository = antonymRepository;
         this.derivedRepository = derivedRepository;
+        this.notebookRepository = notebookRepository;
     }
 
     @Override
@@ -108,6 +107,20 @@ public class DictionaryServiceImpl implements DictionaryService {
                 .stream().map(sim -> sim.getId().getLexiconId2().getSynsetId()).toList();
 
         return getLexiconsBySynsetsId(synsetIds);
+    }
+
+    @Override
+    public Boolean checkIsExsitInNotebook(int accountId, String word) {
+        Notebook notebook = notebookRepository.findNotebookByAccount_AccountIdAndLexicon_Word(accountId, word);
+        return notebook != null;
+    }
+
+    @Override
+    public void deleteNotebook(int accountId, String word) {
+        notebookRepository.deleteByAccount_AccountIdAndLexicon_Word(accountId,word);
+    }
+    @Override
+    public void addNotebook(int accountId, String word) {
     }
 
 

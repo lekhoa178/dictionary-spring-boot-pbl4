@@ -1,10 +1,14 @@
 package com.pbl4.monolingo.entity;
 
 import jakarta.persistence.*;
+import org.springframework.context.annotation.Primary;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "account")
@@ -24,7 +28,8 @@ public class Account {
     private String name;
 
     @Column(name = "birthdate")
-    private LocalDateTime birthdate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date birthdate;
 
     @Column(name = "email")
     private String email;
@@ -43,9 +48,16 @@ public class Account {
     @JoinColumn(name = "type_id")
     private AccountType type;
 
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, optional = false)
+    @PrimaryKeyJoinColumn
+    private ExtraInformation extraInformation;
+
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private Set<DataPerDay> dataPerDay;
     public Account() {}
 
-    public Account(Integer accountId, String username, String password, String name, LocalDateTime birthdate, String email, Boolean gender, byte[] profilePicture, Boolean enabled, AccountType type) {
+    public Account(Integer accountId, String username, String password, String name, Date birthdate, String email, Boolean gender, byte[] profilePicture, Boolean enabled, AccountType type, Set<DataPerDay>  dataPerDay) {
         this.accountId = accountId;
         this.username = username;
         this.password = password;
@@ -56,6 +68,7 @@ public class Account {
         this.profilePicture = profilePicture;
         this.enabled = enabled;
         this.type = type;
+        this.dataPerDay = dataPerDay;
     }
 
     public Integer getAccountId() {
@@ -90,11 +103,11 @@ public class Account {
         this.name = name;
     }
 
-    public LocalDateTime getBirthdate() {
+    public Date getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(LocalDateTime birthdate) {
+    public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -134,10 +147,26 @@ public class Account {
         return type;
     }
 
+    public ExtraInformation getExtraInformation() {
+        return extraInformation;
+    }
+
+    public void setExtraInformation(ExtraInformation extraInformation) {
+        this.extraInformation = extraInformation;
+    }
+
     public void setType(AccountType type) {
         this.type = type;
     }
 
+
+    public Set<DataPerDay> getDataPerDay() {
+        return dataPerDay;
+    }
+
+    public void setDataPerDay(Set<DataPerDay> dataPerDay) {
+        this.dataPerDay = dataPerDay;
+    }
     @Override
     public String toString() {
         return "Account{" +

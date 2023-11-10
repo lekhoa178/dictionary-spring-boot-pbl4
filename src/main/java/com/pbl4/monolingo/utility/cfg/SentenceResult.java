@@ -19,6 +19,6 @@ public class SentenceResult {
 
     @Override
     public String toString() {
-        return sentence + "-----" + translatedSentence;
+        return sentence.trim() + "/" + translatedSentence.trim();
     }
 }

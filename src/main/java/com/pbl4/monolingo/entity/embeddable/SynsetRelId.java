@@ -2,6 +2,7 @@ package com.pbl4.monolingo.entity.embeddable;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class SynsetRelId implements Serializable {
 
@@ -29,5 +30,18 @@ public class SynsetRelId implements Serializable {
 
     public void setSynsetId2(BigDecimal synsetId2) {
         this.synsetId2 = synsetId2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SynsetRelId that = (SynsetRelId) o;
+        return Objects.equals(synsetId1, that.synsetId1) && Objects.equals(synsetId2, that.synsetId2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(synsetId1, synsetId2);
     }
 }

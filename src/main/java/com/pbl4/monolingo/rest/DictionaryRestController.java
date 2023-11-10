@@ -6,6 +6,7 @@ import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.Lexicon;
 import com.pbl4.monolingo.entity.Synset;
 import com.pbl4.monolingo.service.DictionaryService;
+import com.pbl4.monolingo.utility.uimodel.DefinitionDetailView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,18 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
 @RequestMapping("/dictionary")
-public class ApiRestController {
+public class DictionaryRestController {
 
     private final DictionaryService dictionaryService;
     private final LexiconRepository lexiconRepository;
     private final SynsetRepository synsetRepository;
 
     @Autowired
-    public ApiRestController(DictionaryService dictionaryService, LexiconRepository lexiconRepository, SynsetRepository synsetRepository) {
+    public DictionaryRestController(DictionaryService dictionaryService, LexiconRepository lexiconRepository, SynsetRepository synsetRepository) {
         this.dictionaryService = dictionaryService;
         this.lexiconRepository = lexiconRepository;
         this.synsetRepository = synsetRepository;
@@ -75,6 +77,11 @@ public class ApiRestController {
     @GetMapping("/antonym/{synsetId}")
     public List<Lexicon> getAntonymsWords(@PathVariable BigDecimal synsetId) {
         return dictionaryService.getAntonymsBySynsetId(synsetId);
+    }
+
+    @GetMapping("/definition/{word}")
+    public HashMap<String, List<DefinitionDetailView>> getDefinitions(@PathVariable String word) {
+        return dictionaryService.getDefinitionByWord(word);
     }
 
     @GetMapping("/login/{username}-{password}")

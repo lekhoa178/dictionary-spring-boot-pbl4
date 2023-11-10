@@ -11,10 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.swing.text.html.parser.Entity;
@@ -24,16 +21,12 @@ import java.util.*;
 
 @Controller
 public class ApplicationController {
-
-    private DictionaryService dictionaryService;
     private StageRepository stageRepository;
     private AccountService accountService;
 
     @Autowired
-    public ApplicationController(DictionaryService dictionaryService,
-                                 StageRepository stageRepository,
+    public ApplicationController(StageRepository stageRepository,
                                  AccountService accountService) {
-        this.dictionaryService = dictionaryService;
         this.stageRepository = stageRepository;
         this.accountService = accountService;
     }
@@ -119,34 +112,6 @@ public class ApplicationController {
         }
         else
             return "fragments/store";
-    }
-
-    @GetMapping("/lesson")
-
-    public String showLesson(Model model) {
-        return "lesson.html";
-    }
-
-    @GetMapping("/meaning/{word}")
-
-    public String showMeaning(Model model,
-                              Principal principal,
-                              @PathVariable String word,
-                              @RequestHeader(value = "request-source", required = false) String requestSource) {
-
-        HashMap<String, List<DefinitionDetailView>> results = dictionaryService.getDefinitionByWord(word);
-
-        model.addAttribute("definitions", results);
-        model.addAttribute("word", word.replaceAll("_", " "));
-
-        if (requestSource == null) {
-            if (principal != null) {
-                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-            }
-            return "main.html";
-        }
-        else
-            return "fragments/meaning.html";
     }
 
 

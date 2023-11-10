@@ -3,6 +3,7 @@ package com.pbl4.monolingo.entity.embeddable;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 public class UserPacketId implements Serializable {
@@ -32,5 +33,18 @@ public class UserPacketId implements Serializable {
 
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserPacketId that = (UserPacketId) o;
+        return Objects.equals(packetId, that.packetId) && Objects.equals(accountId, that.accountId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(packetId, accountId);
     }
 }

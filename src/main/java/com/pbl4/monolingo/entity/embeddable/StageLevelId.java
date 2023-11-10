@@ -3,6 +3,7 @@ package com.pbl4.monolingo.entity.embeddable;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 public class StageLevelId implements Serializable {
@@ -40,5 +41,18 @@ public class StageLevelId implements Serializable {
                 "stageId=" + stageId +
                 ", levelId=" + levelId +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StageLevelId that = (StageLevelId) o;
+        return Objects.equals(stageId, that.stageId) && Objects.equals(levelId, that.levelId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(stageId, levelId);
     }
 }

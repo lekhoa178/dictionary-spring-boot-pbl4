@@ -115,6 +115,8 @@ searchForm.addEventListener("submit", async function(e)  {
 
     e.preventDefault();
 
+    if (searchBar.value.length === 0) return;
+
     let word;
     if (searchData.length !== 0) {
         searchBar.value = searchData[searchSelected];

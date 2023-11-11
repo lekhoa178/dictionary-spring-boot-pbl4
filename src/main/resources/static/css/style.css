@@ -90,6 +90,8 @@ span {
     grid-template-rows: 30px auto;
     padding: 15px;
     align-items: center;
+    z-index: 1;
+    position: relative;
 }
 
 .mission--header {
@@ -239,6 +241,8 @@ a.menu--tabs:hover:not(.menu--tab-active) {
 .search--form {
     display: grid;
     grid-template-columns: auto 100px;
+    position: relative;
+    z-index: 3;
 }
 
 .search--bar {

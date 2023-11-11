@@ -9,4 +9,7 @@ public interface NotebookService {
     void deleteNotebook(int accountId, String word);
     void addNotebook(int accountId, String word);
     List<Notebook> findAll();
+
+    List<Notebook> getAllNotebooksByAccountId(Integer accountId);
+
 }

@@ -25,8 +25,6 @@ import java.util.*;
 
 @Controller
 public class ApplicationController {
-
-    private DictionaryService dictionaryService;
     private StageRepository stageRepository;
     private AccountService accountService;
     private NotebookService notebookService;

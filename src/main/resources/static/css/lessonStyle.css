@@ -18,6 +18,10 @@ span {
     font-size: 15px;
 }
 
+.hidden {
+    display: none;
+}
+
 .container {
     width: 100%;
     height: 100%;
@@ -36,12 +40,43 @@ span {
 }
 
 .bottom-container {
+    position: relative;
+}
+
+.default-container {
+    box-sizing: border-box;
     display: grid;
+    width: 100%;
+    height: 100%;
     grid-template-columns: 1fr 1fr;
     justify-items: center;
     align-items: center;
     border: 0 solid #DDDDDD;
     border-top-width: 1px;
+    position: absolute;
+}
+
+.correct-container {
+    background-color: #c2fd98;
+}
+
+.btn--continue {
+    color: white;
+    cursor: pointer;
+}
+
+.btn--correct {
+    background-color: #64D014;
+    box-shadow: 0px 5px 0px 0px #388000;
+}
+
+.btn--incorrect {
+    background-color: #FF4B4B;
+    box-shadow: 0px 5px 0px 0px #9b1919;
+}
+
+.incorrect-container {
+    background-color: #ffd5d5;
 }
 
 .progress-bar {
@@ -54,10 +89,11 @@ span {
     margin-right: auto;
     border-radius: 15px;
     grid-column: 2/3;
+    background-color: #e4e4e4;
 }
 
 .progress {
-    width: 50%;
+    width: 0%;
     height: 100%;
     background-color: #00ADFF;
     position: absolute;
@@ -92,7 +128,7 @@ span {
 .game--container {
     padding: 20px 400px 80px;
     display: grid;
-    grid-template-rows: 1fr 1fr 0.6fr 1fr;
+    grid-template-rows: 1fr 1fr 0.8fr 150px;
     align-items: center;
 }
 
@@ -101,24 +137,37 @@ span {
 }
 
 .game--sentence {
-    padding: 20px 40px;
-    border-radius: 10px;
-    border: 2px solid #e4e4e4;
+
+}
+
+.sentence--container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
     width: fit-content;
     height: fit-content;
+    padding: 20px 40px;
+    border-radius: 10px;
+    border: 2px solid #ebebeb;
     margin-left: 60px;
     margin-bottom: 20px;
 }
 
 .answer--panel {
+    display: flex;
+    gap: 10px;
     width: 100%;
     height: 100%;
     border-top: 2px solid #e4e4e4;
     border-bottom: 2px solid #e4e4e4;
+    align-items: center;
 }
 
 .game--cards {
+    margin: 20px;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     flex-direction: row;
     gap: 10px;
     justify-self: center;
@@ -129,7 +178,7 @@ span {
     background-color: white;
     border: 2px solid #e4e4e4;
     border-radius: 10px;
-    box-shadow: 0 3px 0 0 #e4e4e4;
+    box-shadow: 0 2px 0 0 #e4e4e4;
     cursor: pointer;
 }
 
@@ -139,10 +188,9 @@ span {
     border-radius: 15px;
     border-width: 0;
     font-weight: bold;
-    color: #ccc;
 }
 
-.btn--pass {
+.btn--pass, .btn--review {
     border: 1px solid #d8d8d8;
     background-color: white;
     box-shadow: 0px 5px 0px 0px #d8d8d8;
@@ -150,7 +198,7 @@ span {
     cursor: pointer;
 }
 
-.btn--check {
+.btn--check, .btn--end {
     background-color: #00ADFF;
     box-shadow: 0px 5px 0px 0px #007ACC;
     color: white;
@@ -162,4 +210,96 @@ span {
     box-shadow: 0 0 0 0 #00ADFF;
     color: #bbb;
     cursor: default;
+}
+
+.correct-icon {
+    font-size: 50px;
+    color: #64D014;
+}
+
+.incorrect-icon {
+    font-size: 50px;
+    color: #FF4B4B;
+    grid-row: 1/3;
+    justify-self: center;
+}
+
+.volume--icon {
+    color: #64D014;
+    font-size: 25px;
+    justify-self: center;
+    align-self: center;
+    cursor: pointer;
+}
+
+.info-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 2fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    margin: 80px 570px 50px;
+}
+
+.finish-image {
+    width: 180px;
+    grid-column: 1/3;
+}
+
+.finish-title {
+    grid-column: 1/3;
+    font-weight: bold;
+    color: #ffc400;
+    font-size: 28px;
+}
+
+.finish-frame {
+    display: flex;
+    flex-direction: row;
+    width: 150px;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.exp-frame {
+    border: 2px solid #ffc400;
+    box-shadow: 0px -20px 0px 0px #ffc400;
+}
+
+.precise-frame {
+    border: 2px solid #64D014;
+    box-shadow: 0px -20px 0px 0px #64D014;
+}
+
+.exp-frame:before {
+    position: absolute;
+    content: "TỔNG ĐIỂM KN";
+    top: -20px;
+    color: white;
+    font-size: 15px;
+}
+
+.precise-frame:before {
+    position: absolute;
+    content: "CHÍNH XÁC!";
+    top: -20px;
+    color: white;
+    font-size: 15px;
+}
+
+.exp-amount, .exp-icon {
+    color: #ffc400;
+}
+
+.precise-amount, .precise-icon {
+    color: #64D014;
+}
+
+.precise-amount:after {
+    content: "%";
+    color: #64D014;
 }

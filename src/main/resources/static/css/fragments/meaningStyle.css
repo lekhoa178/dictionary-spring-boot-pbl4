@@ -18,6 +18,10 @@ span {
     font-size: 15px;
 }
 
+.hidden {
+    display: none;
+}
+
 .meaning-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -34,10 +38,14 @@ span {
 }
 
 .icon {
-    width: 30px;
+    font-size: 25px;
     justify-self: center;
     align-self: center;
     cursor: pointer;
+}
+
+.favorite-on--icon {
+    color: #FF4B4B;
 }
 
 .word {

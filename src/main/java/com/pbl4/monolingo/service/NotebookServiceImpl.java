@@ -7,6 +7,8 @@ import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.Lexicon;
 import com.pbl4.monolingo.entity.Notebook;
 import com.pbl4.monolingo.entity.embeddable.AccountLexiconId;
+import com.pbl4.monolingo.dao.NotebookRepository;
+import com.pbl4.monolingo.entity.Notebook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

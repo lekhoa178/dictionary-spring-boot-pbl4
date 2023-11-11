@@ -2,7 +2,6 @@ package com.pbl4.monolingo.rest;
 
 import com.pbl4.monolingo.dao.LexiconRepository;
 import com.pbl4.monolingo.dao.SynsetRepository;
-import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.Lexicon;
 import com.pbl4.monolingo.entity.Synset;
 import com.pbl4.monolingo.service.DictionaryService;
@@ -82,11 +81,6 @@ public class DictionaryRestController {
     @GetMapping("/definition/{word}")
     public HashMap<String, List<DefinitionDetailView>> getDefinitions(@PathVariable String word) {
         return dictionaryService.getDefinitionByWord(word);
-    }
-
-    @GetMapping("/login/{username}-{password}")
-    public Account getAntonymsWords(@PathVariable String username, @PathVariable String password) {
-        return null;
     }
 
 }

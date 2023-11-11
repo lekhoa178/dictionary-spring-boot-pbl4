@@ -18,8 +18,6 @@ public class DictionaryServiceImpl implements DictionaryService {
     private final SimilarRepository similarRepository;
     private final AntonymRepository antonymRepository;
     private final DerivedRepository derivedRepository;
-
-    private final NotebookRepository notebookRepository;
     @Autowired
     public DictionaryServiceImpl(LexiconRepository lexiconRepository,
                                  SynsetRepository synsetRepository,
@@ -32,7 +30,6 @@ public class DictionaryServiceImpl implements DictionaryService {
         this.similarRepository = similarRepository;
         this.antonymRepository = antonymRepository;
         this.derivedRepository = derivedRepository;
-        this.notebookRepository = notebookRepository;
     }
 
     @Override
@@ -108,21 +105,6 @@ public class DictionaryServiceImpl implements DictionaryService {
 
         return getLexiconsBySynsetsId(synsetIds);
     }
-
-    @Override
-    public Boolean checkIsExsitInNotebook(int accountId, String word) {
-        Notebook notebook = notebookRepository.findNotebookByAccount_AccountIdAndLexicon_Word(accountId, word);
-        return notebook != null;
-    }
-
-    @Override
-    public void deleteNotebook(int accountId, String word) {
-        notebookRepository.deleteByAccount_AccountIdAndLexicon_Word(accountId,word);
-    }
-    @Override
-    public void addNotebook(int accountId, String word) {
-    }
-
 
     private Synset getSynsetById(BigDecimal id) {
         Optional<Synset> result = synsetRepository.findById(id);

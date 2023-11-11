@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+
     <div class="form-container">
-        <form th:action="@{/admin/account/save}" th:object="${account}" method="POST" class = "account-form">
+        <form th:action="${'/admin/account/save'}" th:object="${account}" method="POST" class = "account-form" id="form-account" >
             <div class="input-field">
                 <div class="row">
                     <input  type="text" th:field="*{username}" id="user-txt" placeholder="Tài khoản"/>
-                    <input type="text" th:field="*{password}" id="pass-txt" placeholder="Mật khẩu"/>
+                    <input type="text" th:field="*{password}" th:if="*{accountId == 0}" id="pass-txt" placeholder="Mật khẩu"/>
                     <input type="text" th:field="*{email}" id="email-txt" placeholder="Email"/>
                 </div>
                 <div class="row">
@@ -50,5 +44,3 @@
             </div>
         </form>
     </div>
-</body>
-</html>

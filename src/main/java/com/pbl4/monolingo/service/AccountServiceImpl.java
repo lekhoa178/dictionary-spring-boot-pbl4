@@ -46,9 +46,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void saveAccount(Account account) {
-        MD5PasswordEncoder md5PasswordEncoder = new MD5PasswordEncoder();
-        account.setPassword(md5PasswordEncoder.encode(account.getPassword()));
-
+        if (account.getAccountId() == 0)
+        {
+            MD5PasswordEncoder md5PasswordEncoder = new MD5PasswordEncoder();
+            account.setPassword(md5PasswordEncoder.encode(account.getPassword()));
+        }
         ExtraInformation newExtra = account.getExtraInformation();
         newExtra.setAccount(account);
 

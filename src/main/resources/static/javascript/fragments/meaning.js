@@ -33,17 +33,10 @@ fragmentContainer.addEventListener('click', async function(e) {
             fv_icon.classList.add('fa-solid')
         }
         $(document).ready(function(){
-            alert('worked');
-            // ajax call here
             $.ajax({
                 type: 'POST',
                 url: '/notebook/update',
-                contentType: 'application/json',
-                data: JSON.stringify({ word: word, isExist: isExist }),
-                success: function(response) {
-                    // Handle the response from the server (e.g., show a message)
-                    alert("success")
-                },
+                data: { word: word, isExist: isExist },
                 error: function(error) {
                     // Handle errors
                 }

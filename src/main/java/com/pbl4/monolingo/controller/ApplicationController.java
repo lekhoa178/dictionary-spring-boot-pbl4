@@ -3,16 +3,14 @@ package com.pbl4.monolingo.controller;
 import com.pbl4.monolingo.dao.*;
 import com.pbl4.monolingo.entity.*;
 import com.pbl4.monolingo.service.AccountService;
-import com.pbl4.monolingo.service.AccountServiceImpl;
 import com.pbl4.monolingo.service.DictionaryService;
+import com.pbl4.monolingo.service.NotebookService;
 import com.pbl4.monolingo.utility.uimodel.DefinitionDetailView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.swing.text.html.parser.Entity;
-import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.*;
 
@@ -33,14 +29,16 @@ public class ApplicationController {
     private DictionaryService dictionaryService;
     private StageRepository stageRepository;
     private AccountService accountService;
+    private NotebookService notebookService;
 
     @Autowired
     public ApplicationController(DictionaryService dictionaryService,
                                  StageRepository stageRepository,
-                                 AccountService accountService) {
+                                 AccountService accountService, NotebookService notebookService) {
         this.dictionaryService = dictionaryService;
         this.stageRepository = stageRepository;
         this.accountService = accountService;
+        this.notebookService = notebookService;
     }
 
     // add default endpoint
@@ -73,6 +71,12 @@ public class ApplicationController {
     public String showPractice(Model model, Principal principal,
                                @RequestHeader(value = "request-source", required = false) String requestSource) {
         System.out.println(principal.getName());
+        List<Notebook> notebooks = notebookService.findAll();
+        for (Notebook notebook:
+             notebooks) {
+            notebook.getLexicon().setWord(notebook.getLexicon().getWord().replace('_', ' '));
+        }
+        model.addAttribute("notebooks", notebooks);
 
         if (requestSource == null) {
             if (principal != null) {
@@ -81,7 +85,7 @@ public class ApplicationController {
             return "main.html";
         }
         else
-            return "fragments/practice";
+            return "fragments_admin/test";
     }
 
     @GetMapping("/rank")
@@ -188,18 +192,12 @@ public class ApplicationController {
     public String showAddForm(Model model, Principal principal,
                                      @RequestHeader(value = "request-source", required = false) String requestSource) {
         Account account = new Account();
+        account.setAccountId(0);
         model.addAttribute("account", account);
 
-        if (requestSource == null) {
-            if (principal != null) {
-                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-            }
-            return "admin";
-        }
-        else
             return "fragments_admin/account-form";
     }
-    @GetMapping("/admin/account/update/{accountId}")
+    @PostMapping("/admin/account/update/{accountId}")
 
     public String showUpateForm(Model model, Principal principal,
                               @RequestHeader(value = "request-source", required = false) String requestSource,
@@ -207,30 +205,38 @@ public class ApplicationController {
         Account account = accountService.getAccountById(accountId);
         model.addAttribute("account", account);
 
-        if (requestSource == null) {
-            if (principal != null) {
-                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-            }
-            return "admin";
-        }
-        else
             return "fragments_admin/account-form";
     }
-    @GetMapping("/admin/account/delete")
+    @PostMapping("/admin/account/delete")
 
-    public String delete(@RequestParam("accountId") int accountId) {
+    public String delete(@RequestParam("accountId") int accountId, Model model) {
         accountService.deleteAccountById(accountId);
-        return "redirect:/admin/account";
+        Page<Account> pages = accountService.getAccountWithPage(0, 10);
+        List<Account> accounts = pages.getContent();
+
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("totalPage", pages.getTotalPages());
+        model.addAttribute("currentPage", 0);
+
+        return "fragments_admin/account";
     }
     @PostMapping("/admin/account/deleteMany")
 
-    public String deleteMany(@RequestParam("selected-rows") List<Integer> accountIds) {
+    public String deleteMany(Model model,@RequestParam("selected-rows") List<Integer> accountIds) {
+
         if (!accountIds.isEmpty()) {
             for (int accountId : accountIds) {
                 accountService.deleteAccountById(accountId);
             }
         }
-        return "redirect:/admin/account";
+        Page<Account> pages = accountService.getAccountWithPage(0, 10);
+        List<Account> accounts = pages.getContent();
+
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("totalPage", pages.getTotalPages());
+        model.addAttribute("currentPage", 0);
+
+        return "fragments_admin/account";
     }
     @PostMapping("/admin/account/save")
     public String saveAccount(@ModelAttribute("account") Account  account) {
@@ -238,12 +244,12 @@ public class ApplicationController {
         return "redirect:/admin/account";
     }
     @PostMapping("/notebook/update")
-    public void updateNotebook(Principal principal, @RequestParam String word, @RequestParam boolean isExist) {
+    public void updateNotebook(@RequestParam String word, @RequestParam boolean isExist,Principal principal) {
+        Account account = accountService.getAccountByUserName(principal.getName());
         if (isExist)
-        {
-            Account account = accountService.getAccountByUserName(principal.getName());
-            dictionaryService.deleteNotebook(account.getAccountId(), word);
-        }
+            notebookService.deleteNotebook(account.getAccountId(), word);
+        else
+            notebookService.addNotebook(account.getAccountId(), word);
     }
     @GetMapping("/lesson")
 
@@ -259,7 +265,7 @@ public class ApplicationController {
                               @RequestHeader(value = "request-source", required = false) String requestSource) {
 
         Account account = accountService.getAccountByUserName(principal.getName());
-        boolean isExist = dictionaryService.checkIsExsitInNotebook(account.getAccountId(), word);
+        boolean isExist = notebookService.checkIsExsitInNotebook(account.getAccountId(), word);
 
         HashMap<String, List<DefinitionDetailView>> results = dictionaryService.getDefinitionByWord(word);
 

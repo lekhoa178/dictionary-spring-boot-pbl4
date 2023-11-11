@@ -128,7 +128,7 @@ span {
 .game--container {
     padding: 20px 400px 80px;
     display: grid;
-    grid-template-rows: 1fr 1fr 0.8fr auto;
+    grid-template-rows: 1fr 1fr 0.8fr 150px;
     align-items: center;
 }
 

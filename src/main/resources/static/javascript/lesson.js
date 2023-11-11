@@ -124,10 +124,21 @@ const nextQuestion = function() {
 
     gameSentence.innerText = enSentence;
 
-    viSentence += " " + ranViSentence;
-    console.log(viSentence);
-    const words = sortRandomly(
-        viSentence.replaceAll(" , ", " ").split(" "));
+    let words = viSentence.replaceAll(" , ", " ").split(" ");
+
+    //console.log(words);
+    // console.log(ranViSentence);
+    //
+    // for (let i = 0; i < words.length; ++i) {
+    //     if (ranViSentence.indexOf(` ${words[i]} `) !== -1) {
+    //         ranViSentence = ranViSentence.replace(words[i], '');
+    //     }
+    // }
+
+    //const rWords = ranViSentence.replaceAll(' , ', ' ').split(' ').filter(word => word !== '');
+    words = sortRandomly([...words]);
+
+    console.log(enSentence, viSentence);
 
     let cardHTML = "";
     for (let i = 0; i < words.length; ++i) {

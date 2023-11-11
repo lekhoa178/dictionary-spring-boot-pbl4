@@ -101,6 +101,8 @@ public class SentenceBuilder {
         System.out.println(realiser.realiseSentence(coordSentences));
         sentence.append(realiser.realiseSentence(coordSentences));
         translatedSentence.deleteCharAt(translatedSentence.length() - 1);
+        if (isYesNo) translatedSentence.append(" không");
+
 
         sentence.setCharAt(sentence.length() - 1, isYesNo ? '?' : '.');
         sentence.setCharAt(0, Character.toUpperCase(sentence.charAt(0)));
@@ -255,7 +257,14 @@ public class SentenceBuilder {
         wordMap.put("Verb2", new ArrayList<>(List.of("love,yêu", "want,muốn")));
         wordMap.put("O", new ArrayList<>(List.of("cake,bánh", "food,đồ ăn")));
 
-        wordMap.put("AdjVerb", new ArrayList<>(List.of("fast,nhanh", "big,to")));
+        wordMap.put("AdjVerb", new ArrayList<>(List.of(
+                "beautiful,đẹp",
+                "small,nhỏ",
+                "big,to",
+                "huge,khổng lồ",
+                "black,có màu đen",
+                "gorgeous,tuyệt đẹp",
+                "useful,tiện lợi")));
 
         wordMap.put("Conj", new ArrayList<>(List.of("and,và", "or,hoặc")));
 

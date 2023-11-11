@@ -128,7 +128,7 @@ span {
 .game--container {
     padding: 20px 400px 80px;
     display: grid;
-    grid-template-rows: 1fr 1fr 0.8fr 1fr;
+    grid-template-rows: 1fr 1fr 0.8fr auto;
     align-items: center;
 }
 
@@ -164,7 +164,10 @@ span {
 }
 
 .game--cards {
+    margin: 20px;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     flex-direction: row;
     gap: 10px;
     justify-self: center;

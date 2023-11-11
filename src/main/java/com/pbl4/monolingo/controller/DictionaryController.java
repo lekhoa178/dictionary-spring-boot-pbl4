@@ -1,8 +1,9 @@
 package com.pbl4.monolingo.controller;
 
+import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.service.AccountService;
-import com.pbl4.monolingo.service.AccountServiceImpl;
 import com.pbl4.monolingo.service.DictionaryService;
+import com.pbl4.monolingo.service.NotebookService;
 import com.pbl4.monolingo.utility.uimodel.DefinitionDetailView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,11 +21,13 @@ public class DictionaryController {
 
     private final DictionaryService dictionaryService;
     private final AccountService accountService;
+    private final NotebookService notebookService;
 
     @Autowired
-    public DictionaryController(DictionaryService dictionaryService, AccountService accountService) {
+    public DictionaryController(DictionaryService dictionaryService, AccountService accountService, NotebookService notebookService) {
         this.dictionaryService = dictionaryService;
         this.accountService = accountService;
+        this.notebookService = notebookService;
     }
 
     @GetMapping("/meaning/{word}")
@@ -34,10 +37,14 @@ public class DictionaryController {
                               @PathVariable String word,
                               @RequestHeader(value = "request-source", required = false) String requestSource) {
 
+        Account account = accountService.getAccountByUserName(principal.getName());
+        boolean isExist = notebookService.checkIsExsitInNotebook(account.getAccountId(), word);
+
         HashMap<String, List<DefinitionDetailView>> results = dictionaryService.getDefinitionByWord(word);
 
         model.addAttribute("definitions", results);
         model.addAttribute("word", word.replaceAll("_", " "));
+        model.addAttribute("isExist", isExist);
 
         if (requestSource == null) {
             if (principal != null) {

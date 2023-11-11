@@ -28,6 +28,7 @@ public class ApplicationController {
     private StageRepository stageRepository;
     private AccountService accountService;
     private NotebookService notebookService;
+    private DictionaryService dictionaryService;
 
     @Autowired
     public ApplicationController(DictionaryService dictionaryService,
@@ -255,31 +256,31 @@ public class ApplicationController {
         return "lesson.html";
     }
 
-    @GetMapping("/meaning/{word}")
-
-    public String showMeaning(Model model,
-                              Principal principal,
-                              @PathVariable String word,
-                              @RequestHeader(value = "request-source", required = false) String requestSource) {
-
-        Account account = accountService.getAccountByUserName(principal.getName());
-        boolean isExist = notebookService.checkIsExsitInNotebook(account.getAccountId(), word);
-
-        HashMap<String, List<DefinitionDetailView>> results = dictionaryService.getDefinitionByWord(word);
-
-        model.addAttribute("definitions", results);
-        model.addAttribute("word", word.replaceAll("_", " "));
-        model.addAttribute("isExist", isExist);
-
-        if (requestSource == null) {
-            if (principal != null) {
-                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-            }
-            return "main.html";
-        }
-        else
-            return "fragments/meaning.html";
-    }
+//    @GetMapping("/meaning/{word}")
+//
+//    public String showMeaning(Model model,
+//                              Principal principal,
+//                              @PathVariable String word,
+//                              @RequestHeader(value = "request-source", required = false) String requestSource) {
+//
+//        Account account = accountService.getAccountByUserName(principal.getName());
+//        boolean isExist = notebookService.checkIsExsitInNotebook(account.getAccountId(), word);
+//
+//        HashMap<String, List<DefinitionDetailView>> results = dictionaryService.getDefinitionByWord(word);
+//
+//        model.addAttribute("definitions", results);
+//        model.addAttribute("word", word.replaceAll("_", " "));
+//        model.addAttribute("isExist", isExist);
+//
+//        if (requestSource == null) {
+//            if (principal != null) {
+//                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+//            }
+//            return "main.html";
+//        }
+//        else
+//            return "fragments/meaning.html";
+//    }
 
 
     private List<String> StageColors = new ArrayList<>(Arrays.asList(

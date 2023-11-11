@@ -12,5 +12,4 @@ public interface NotebookRepository extends JpaRepository<Notebook, AccountLexic
     Notebook findNotebookByAccount_AccountIdAndLexicon_Word(int accountId, String word);
 
     List<Notebook> findAllByIdAccountId(Integer accountId);
-
 }

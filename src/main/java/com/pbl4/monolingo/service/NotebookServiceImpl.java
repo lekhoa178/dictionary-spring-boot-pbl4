@@ -58,4 +58,9 @@ public class NotebookServiceImpl implements NotebookService{
     public List<Notebook> findAll() {
         return notebookRepository.findAll();
     }
+
+    @Override
+    public List<Notebook> getAllNotebooksByAccountId(Integer accountId) {
+        return null;
+    }
 }

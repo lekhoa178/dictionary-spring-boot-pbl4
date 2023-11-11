@@ -19,9 +19,10 @@ function deleteMany() {
 
 
 fragmentContainer.addEventListener('click',async function(e){
-    if(e.target.classList.contains('action-update')) {
 
-        var word = e.target.value;
+    if(e.target.closest('.action-update')) {
+
+        var word = e.target.closest('.action-update').value;
         // history.pushState(history.state, document.title, `/admin/account/update/${word}`);
         // fragmentContainer.innerHTML = await AJAX(`/admin/account/update/${word}`, false);
 

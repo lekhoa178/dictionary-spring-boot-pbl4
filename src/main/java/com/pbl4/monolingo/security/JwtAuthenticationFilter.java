@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromCookie(request);
-//        System.out.println("Token from cookie "+ token);
+        System.out.println("Token from cookie "+ token);
         final String authHeader = request.getHeader("Authorization");
         final String jwt ;
         final String username;
@@ -52,7 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
                 filterChain.doFilter(request, response);
-        }
+            }
         }
         catch(Exception se){
 //            response.sendRedirect("/public/login");
@@ -72,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         }
         // If you are storing the token in the session, extract it here
-         return (String) request.getSession().getAttribute("jwtToken");
+        return (String) request.getSession().getAttribute("jwtToken");
 
 
     }

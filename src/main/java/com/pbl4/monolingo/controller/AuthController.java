@@ -53,10 +53,7 @@ public class AuthController {
         String token = authenticationResponse.getToken();
         Cookie cookie = new Cookie("jwtToken",token);
         cookie.setPath("/");
-        cookie.setMaxAge(60*60*24);
         response.addCookie(cookie);
-//        session.setAttribute("jwtToken",token);
-//        response.setHeader(HttpHeaders.AUTHORIZATION,"Bearer "+ token);
         System.out.println("Token from controller: "+ token);
         return "redirect:/learn";
     }

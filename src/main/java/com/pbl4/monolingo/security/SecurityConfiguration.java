@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -49,9 +50,31 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin(formLogin -> formLogin.loginPage("/login").permitAll());
+
+        http.logout(logout -> logout
+                .logoutUrl("/logout") // URL to trigger logout (e.g. POST /logout)
+                .logoutSuccessHandler(logoutSuccessHandler()) // Your custom logout success handler if required
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID") // If cookies are used, adjust accordingly for JWT
+                .permitAll()
+
+        );
+
 //                .addFilterBefore((Filter) new JwtTokenInterceptor(),UsernamePasswordAuthenticationFilter.class);
 //                http.csrf().disable();
 
         return http.build();
+    }
+    public LogoutSuccessHandler logoutSuccessHandler() {
+
+        return (request, response, authentication) -> {
+
+            // Custom logic after successful logout, e.g. redirect to login page
+
+            response.sendRedirect("/public/login");
+
+        };
+
     }
 }

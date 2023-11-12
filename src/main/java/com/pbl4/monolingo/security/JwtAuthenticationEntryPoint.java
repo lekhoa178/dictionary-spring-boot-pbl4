@@ -13,12 +13,13 @@ import java.io.IOException;
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        if(isPreAuthentication(request)){
-            response.sendRedirect("/public/login");
-        }
-        else {
-//            response.sendRedirect("/public/error");
-        }
+//        if(isPreAuthentication(request)){
+//            System.out.println("Loiiiiii");
+//            response.sendRedirect("/public/login");
+//        }
+//        else {
+////            response.sendRedirect("/public/error");
+//        }
     }
     private boolean isPreAuthentication(HttpServletRequest request) {
 

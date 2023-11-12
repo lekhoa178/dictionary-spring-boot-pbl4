@@ -244,7 +244,7 @@ public class ApplicationController {
     }
     @PostMapping("/notebook/update")
     public void updateNotebook(@RequestParam String word, @RequestParam boolean isExist,Principal principal) {
-        Account account = accountService.getAccountByUserName(principal.getName());
+        Account account = accountService.getAccountByUsername(principal.getName());
         if (isExist)
             notebookService.deleteNotebook(account.getAccountId(), word);
         else

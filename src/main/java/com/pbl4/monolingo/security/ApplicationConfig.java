@@ -59,9 +59,9 @@ public class ApplicationConfig implements WebMvcConfigurer {
         // Add more if needed
 
     }
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(tokenInterceptor);
-
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(tokenInterceptor);
+//
+//    }
 }

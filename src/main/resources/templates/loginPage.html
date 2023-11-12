@@ -30,8 +30,9 @@
 					<img th:src="@{/img/login.png}" alt="IMG">
 				</div>
 
-				<form class="login100-form validate-form" method="post" action="/public/login" th:object="${account}">
+				<form class="login100-form validate-form" method="post" action="/public/login" th:object="${account}" onsubmit="onSubmit()">
 					<span class="login100-form-title">
+
 						Đăng nhập
 					</span>
 
@@ -53,7 +54,7 @@
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
+						<button class="login100-form-btn" >
 							Đăng nhập
 						</button>
 					</div>
@@ -95,6 +96,9 @@
 		$('.js-tilt').tilt({
 			scale: 1.1
 		})
+		function onSubmit(){
+			alert("hell");
+		}
 	</script>
 	<script src="../static/javascript/login.js"></script>
 

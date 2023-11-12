@@ -48,7 +48,7 @@ public class SecurityConfiguration {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-                http.formLogin(formLogin -> formLogin.loginPage("/login").permitAll());
+        http.formLogin(formLogin -> formLogin.loginPage("/login").permitAll());
 //                .addFilterBefore((Filter) new JwtTokenInterceptor(),UsernamePasswordAuthenticationFilter.class);
 //                http.csrf().disable();
 

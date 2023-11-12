@@ -40,10 +40,11 @@ public class AuthController {
     }
     @GetMapping("/login")
     public String showLogin(Model model){
+        System.out.println("?????");
         model.addAttribute("account",new Account());
         return "loginPage";
     }
-    @PostMapping("login")
+    @PostMapping("/login")
     public String handleLogin(@ModelAttribute("account") Account account, HttpSession session, HttpServletResponse response){
         AuthenticationResponse authenticationResponse = authenticationService.
                 authenticate(AuthenticationRequest.builder()

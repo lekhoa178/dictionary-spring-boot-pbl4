@@ -23,7 +23,7 @@ public class ExtraInformation {
     private Integer hearts;
 
     @OneToOne
-    @MapsId("accountId")
+    @MapsId
     @JoinColumn(name = "account_id")
     private Account account;
 
@@ -88,7 +88,7 @@ public class ExtraInformation {
     @Override
     public String toString() {
         return "ExtraInformation{" +
-                "accountId=" + accountId +
+//                "accountId=" + accountId +
                 ", balance=" + balance +
                 ", numberOfLoginDay=" + numberOfLoginDay +
                 ", numberOfConsecutiveDay=" + numberOfConsecutiveDay +

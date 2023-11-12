@@ -18,4 +18,30 @@ fragmentContainer.addEventListener('click', async function(e) {
         history.pushState(history.state, document.title, `/meaning/${word}`);
         fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
     }
+    else if (e.target.classList.contains('fa-heart')) {
+        var fv_icon = document.getElementById('fv-icon')
+        var word = document.getElementById('word').value
+        var isExist = document.getElementById('isExist').value
+
+        if (fv_icon.classList.contains('fa-solid'))
+        {
+            fv_icon.classList.remove('fa-solid')
+            fv_icon.classList.add('fa-regular')
+        }
+        else {
+            fv_icon.classList.remove('fa-regular')
+            fv_icon.classList.add('fa-solid')
+        }
+        $(document).ready(function(){
+            $.ajax({
+                type: 'POST',
+                url: '/notebook/update',
+                data: { word: word, isExist: isExist },
+                error: function(error) {
+                    // Handle errors
+                }
+            });
+        });
+
+    }
 });

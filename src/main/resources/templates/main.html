@@ -5,18 +5,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/fragments/learn.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/learnStyle.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/meaningStyle.css}">
     <title>Monolingo - Học tiếng anh vui vẻ</title>
     <link rel="shortcut icon" type="x-icon" th:href="@{/img/dart.png}">
-        <script defer th:src="@{/javascript/main.js}"></script>
-        <script defer th:src="@{/javascript/fragments/learn.js}"></script>
-        <script defer th:src="@{/javascript/fragments/meaning.js}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script defer th:src="@{/javascript/main.js}"></script>
+    <script defer th:src="@{/javascript/fragments/learn.js}"></script>
+    <script defer th:src="@{/javascript/fragments/meaning.js}"></script>
+    <script defer th:src="@{/javascript/fragments/practice.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 </head>
 <body class="container">
-<!--    <h1 th:text="${${#cookies.get('jwtToken').value}}"></h1>-->
 
     <div class="menu-container">
 
@@ -26,7 +28,7 @@
 
         <div class="menu">
 
-            <a id="fragment-learn" href="#" class="menu--tabs">
+            <a id="fragment-learn" th:href="@{fragments/learn.html}" class="menu--tabs">
                 <img alt=""
                      th:src="@{/img/house.png}"
                      class="menu--tabs-icon">
@@ -40,7 +42,7 @@
                 <span class="menu--tabs-text">LUYỆN TẬP</span>
             </a>
 
-            <a id="fragment-rank" th:href="@{fragments/rank}" class="menu--tabs">
+            <a id="fragment-rank" th:href="@{fragments/rank.html}" class="menu--tabs">
                 <img alt=""
                      th:src="@{/img/podium.png}"
                      class="menu--tabs-icon">
@@ -65,7 +67,7 @@
     </div>
 
     <main class="main-container">
-        <span id="show-token" th:text="${session.jwtToken}"></span>
+
         <div class="sticky-container">
             <div>
                 <form class="search--form" method="GET">
@@ -100,30 +102,30 @@
                     <img alt=""
                          th:src="@{/img/flame.png}"
                          class="resource--items-icon">
-<!--                    <span class="-->
-<!--                            resource&#45;&#45;items-text-->
-<!--                            resource&#45;&#45;items-text-streak"-->
-<!--                          th:text="${userData.numberOfConsecutiveDay}"></span>-->
+                    <span class="
+                            resource--items-text
+                            resource--items-text-streak"
+                          th:text="${userData.numberOfConsecutiveDay}"></span>
                 </div>
 
                 <div class="resource--items">
                     <img alt=""
                          th:src="@{/img/gems.png}"
                          class="resource--items-icon">
-<!--                    <span class="-->
-<!--                            resource&#45;&#45;items-text-->
-<!--                            resource&#45;&#45;items-text-gem"-->
-<!--                          th:text="${userData.balance}"></span>-->
+                    <span class="
+                            resource--items-text
+                            resource--items-text-gem"
+                          th:text="${userData.balance}"></span>
                 </div>
 
                 <div class="resource--items">
                     <img alt=""
                          th:src="@{/img/heart.png}"
                          class="resource--items-icon">
-<!--                    <span class="-->
-<!--                            resource&#45;&#45;items-text-->
-<!--                            resource&#45;&#45;items-text-heart"-->
-<!--                          th:text="${userData.hearts}"></span>-->
+                    <span class="
+                            resource--items-text
+                            resource--items-text-heart"
+                          th:text="${userData.hearts}"></span>
                 </div>
 
 
@@ -191,12 +193,6 @@
 
     </main>
 
-<script th:inline="javascript">
-    var token = [[${session.jwtToken}]];
-    console.log('Token from main:', token);
-    sessionStorage.setItem("jwtToken",token);
-    // Bạn có thể sử dụng token này để đính kèm vào các request AJAX, header Authorization, v.v.
-    /*]]>*/
-</script>
+
 </body>
 </html>

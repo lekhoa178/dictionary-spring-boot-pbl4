@@ -27,9 +27,8 @@ public class DataPerDay {
 
     public DataPerDay() {}
 
-    public DataPerDay(DataPerDayId id, Account account, Integer experience, Float onlineHours) {
+    public DataPerDay(DataPerDayId id, Integer experience, Float onlineHours) {
         this.id = id;
-        this.account = account;
         this.experience = experience;
         this.onlineHours = onlineHours;
     }

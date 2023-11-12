@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Signika', sans-serif;
+    font-size: 17px;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.account-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 1000px;
+}
+.account-form {
+    margin-bottom: 10px;
+
+}
+.data-field {
+    display: flex;
+    flex-direction: column;
+}
+.sub-field {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.search-field {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #BBBBBB;
+}
+.search-txt {
+    border: none;
+
+    outline: none;
+}
+.search-btn {
+    background-color: #64D014;
+    border: none;
+
+}
+.search-field img{
+    width: 15px;
+    height: 15px;
+}
+.table-container {
+    height: 500px;
+    overflow: auto;
+}
+.account-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+.account-list tbody {
+}
+.account-list tr {
+    border-bottom: 1px solid #BBBBBB;
+    height: 60px;
+}
+.account-list th, td {
+    padding: 10px 0;
+    text-align: center;
+    width: fit-content;
+}
+.page-num {
+    display: flex;
+    justify-content: right;
+}
+.page-num a, .page-num span {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    margin: 15px 10px
+}
+.action-btn {
+    color: #64D014FF;
+
+    background-color: transparent;
+    margin-left: 10px;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    padding: 12px 16px;
+    font-size: 16px;
+}
+.action-btn span {
+    display: none;
+}
+#add-btn, #delete-many-btn {
+    width: 70px;
+    border: none;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 5px;
+}
+#add-btn{
+    background: #64D014;
+    box-shadow: 0px 3px 0px 0px #58A700;
+}
+#delete-many-btn {
+    width: 100px;
+    background: #ff4b4b;
+    box-shadow: 0px 3px 0px 0px #e62323;
+}
+.action-field {
+    display: flex;
+    justify-content: right;
+    gap:20px
+}
+.nav-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}

@@ -1,10 +1,7 @@
 package com.pbl4.monolingo.service;
 
 import com.pbl4.monolingo.dao.*;
-import com.pbl4.monolingo.entity.Derived;
-import com.pbl4.monolingo.entity.Lexicon;
-import com.pbl4.monolingo.entity.Similar;
-import com.pbl4.monolingo.entity.Synset;
+import com.pbl4.monolingo.entity.*;
 import com.pbl4.monolingo.utility.uimodel.DefinitionDetailView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +18,13 @@ public class DictionaryServiceImpl implements DictionaryService {
     private final SimilarRepository similarRepository;
     private final AntonymRepository antonymRepository;
     private final DerivedRepository derivedRepository;
-
-
     @Autowired
     public DictionaryServiceImpl(LexiconRepository lexiconRepository,
                                  SynsetRepository synsetRepository,
                                  SimilarRepository similarRepository,
                                  AntonymRepository antonymRepository,
-                                 DerivedRepository derivedRepository) {
+                                 DerivedRepository derivedRepository,
+                                 NotebookRepository notebookRepository) {
         this.lexiconRepository = lexiconRepository;
         this.synsetRepository = synsetRepository;
         this.similarRepository = similarRepository;
@@ -109,7 +105,6 @@ public class DictionaryServiceImpl implements DictionaryService {
 
         return getLexiconsBySynsetsId(synsetIds);
     }
-
 
     private Synset getSynsetById(BigDecimal id) {
         Optional<Synset> result = synsetRepository.findById(id);

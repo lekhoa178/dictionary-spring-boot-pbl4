@@ -1,0 +1,46 @@
+
+    <div class="form-container">
+        <form th:action="${'/admin/account/save'}" th:object="${account}" method="POST" class = "account-form" id="form-account" >
+            <div class="input-field">
+                <div class="row">
+                    <input  type="text" th:field="*{username}" id="user-txt" placeholder="Tài khoản"/>
+                    <input type="text" th:field="*{password}" th:if="*{accountId == 0}" id="pass-txt" placeholder="Mật khẩu"/>
+                    <input type="text" th:field="*{email}" id="email-txt" placeholder="Email"/>
+                </div>
+                <div class="row">
+                    <input type="hidden" name="" th:field="*{accountId}">
+                    <input type="text" th:field="*{name}" id="name-txt" placeholder="Tên"/>
+                    <input type="date" th:field="*{birthdate}" id="date-picker" placeholder="Ngày sinh"/>
+                    <div class="field">
+                        <span style="font-size: 17px; margin-right: 10px;" >Giới tính</span>
+                        <input type="radio"  th:field="*{gender}" value="true" name="gender-rd" id="male-btn">
+                        <label for="male-btn">Nam</label>
+                        <input type="radio"  th:field="*{gender}" value="false" name="gender-rd" id="fermale-btn">
+                        <label for="fermale-btn">Nữ</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="hidden" th:field="*{extraInformation.accountId}"/>
+                    <input type="text" th:field="*{extraInformation.balance}" placeholder="Balance"/>
+                    <div class="field">
+                        <span style="font-size: 17px; margin-right: 10px;" >Quyền</span>
+                        <input type="radio"  th:field="*{type}" value="4" id="admin-btn">
+                        <label for="admin-btn">Admin</label>
+                        <input type="radio"  th:field="*{type}" value="5" id="user-btn">
+                        <label for="user-btn">User</label>
+                    </div>
+                    <div class="field">
+                        <span style="font-size: 17px; margin-right: 10px;" >Trạng thái</span>
+                        <input type="radio"  th:field="*{enabled}" value="true" id="enable-btn">
+                        <label for="enable-btn">Kích khoạt</label>
+                        <input type="radio"  th:field="*{enabled}" value="false" id="disable-btn">
+                        <label for="disable-btn">Vô hiệu</label>
+                    </div>
+                </div>
+            </div>
+            <div class="button-field">
+                <button type="submit" class="form-btn"><b>Submit</b></button>
+                <button type="reset" class="form-btn"><b>Reset</b></button>
+            </div>
+        </form>
+    </div>

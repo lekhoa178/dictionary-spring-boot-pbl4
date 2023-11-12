@@ -1,5 +1,6 @@
 package com.pbl4.monolingo.dao;
 
+import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.ExtraInformation;
 import org.springframework.data.jpa.repository.JpaRepository;
 

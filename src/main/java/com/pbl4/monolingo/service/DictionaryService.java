@@ -23,6 +23,4 @@ public interface DictionaryService {
     List<Lexicon> getAntonymsBySynsetId(BigDecimal synsetId);
 
     List<Lexicon> getDerivedBySynsetId(BigDecimal synsetId);
-
-
 }

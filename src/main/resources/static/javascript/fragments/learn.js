@@ -1,4 +1,3 @@
-
 fragmentContainer.addEventListener('click', function(e) {
     const el = e.target.closest('.level');
     if (el == null) return;

@@ -57,7 +57,7 @@ public class ApplicationController {
             if (principal != null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
             }
-            return "main.html";
+            return "main";
         }
         else
             return "fragments/learn";
@@ -73,7 +73,7 @@ public class ApplicationController {
             if (principal != null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
             }
-            return "main.html";
+            return "main";
         }
         else
             return "fragments/practice";
@@ -87,7 +87,7 @@ public class ApplicationController {
             if (principal != null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
             }
-            return "main.html";
+            return "main";
         }
         else
             return "fragments/rank";
@@ -101,7 +101,7 @@ public class ApplicationController {
             if (principal != null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
             }
-            return "main.html";
+            return "main";
         }
         else
             return "fragments/mission";
@@ -115,7 +115,7 @@ public class ApplicationController {
             if (principal != null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
             }
-            return "main.html";
+            return "main";
         }
         else
             return "fragments/store";
@@ -124,7 +124,7 @@ public class ApplicationController {
     @GetMapping("/lesson")
 
     public String showLesson(Model model) {
-        return "lesson.html";
+        return "lesson";
     }
 
     @GetMapping("/meaning/{word}")
@@ -143,10 +143,10 @@ public class ApplicationController {
             if (principal != null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
             }
-            return "main.html";
+            return "main";
         }
         else
-            return "fragments/meaning.html";
+            return "fragments/meaning";
     }
 
 

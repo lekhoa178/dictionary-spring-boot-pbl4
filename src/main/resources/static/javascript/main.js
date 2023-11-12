@@ -3,6 +3,11 @@
 const menu = document.querySelector(".menu");
 const tabs = menu.querySelectorAll('.menu--tabs');
 const fragmentContainer = document.querySelector('.content-container');
+// const token = document.querySelector("#show-token").textContent;
+// document.cookie = "jwtToken=" + token + "; path=/";
+//
+// console.log("Get token from main: ",token);
+
 
 async function init() {
 
@@ -15,7 +20,7 @@ async function init() {
     fragmentEl.classList.add('menu--tab-active');
 
     const data = await AJAX (`/${fragment}`)
-    fragmentContainer.innerHTML = data;
+    fragmentContainer.innerHTML = (data != null ? data : "<span>hello</span>");
 }
 
 init();
@@ -147,6 +152,16 @@ searchResults.addEventListener('click', async function(e) {
 // ----------------- UTILITY --------------------
 
 async function AJAX(fragment, json = false) {
+    var token = sessionStorage.getItem("jwtToken");
+    if (token) {
+        $.ajaxSetup({
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
+
+    }
+    console.log("Token: ", token);
 
     try {
         const response = await fetch(fragment, {

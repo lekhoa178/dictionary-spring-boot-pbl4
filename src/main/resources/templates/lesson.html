@@ -11,7 +11,7 @@
     <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}">
     <script defer th:src="@{/javascript/lesson.js}"></script>
 </head>
-<body class="base-container">
+<body class="base-container" th:data-level="${level}" th:data-stage="${stage}">
     <div class="container">
         <div class="top-container">
             <i class="fa-solid fa-x return--btn"></i>

@@ -9,15 +9,22 @@ public class Vocabulary {
 
     @EmbeddedId
     @AttributeOverrides({
-            @AttributeOverride(name = "stageId", column = @Column(name = "stage_id")),
+            @AttributeOverride(name = "levelId.stageId", column = @Column(name = "stage_id")),
+            @AttributeOverride(name = "levelId.levelId", column = @Column(name = "level_id")),
             @AttributeOverride(name = "vocabularyNum", column = @Column(name = "vocabulary_num")),
     })
     private VocabularyId id;
 
     @ManyToOne
-    @MapsId("stageId")
-    @JoinColumn(name = "stage_id", referencedColumnName = "stage_id")
-    private Stage stage;
+    @MapsId("levelId")
+    @JoinColumns({
+            @JoinColumn(name = "stage_id", referencedColumnName = "stage_id"),
+            @JoinColumn(name = "level_id", referencedColumnName = "level_id")
+    })
+    private Level level;
+
+    @Column(name = "word")
+    private String word;
 
     @Column(name = "type")
     private String type;
@@ -27,9 +34,10 @@ public class Vocabulary {
 
     public Vocabulary() {}
 
-    public Vocabulary(VocabularyId id, Stage stage, String type, String meaning) {
+    public Vocabulary(VocabularyId id, Level level, String word, String type, String meaning) {
         this.id = id;
-        this.stage = stage;
+        this.level = level;
+        this.word = word;
         this.type = type;
         this.meaning = meaning;
     }
@@ -42,12 +50,20 @@ public class Vocabulary {
         this.id = id;
     }
 
-    public Stage getStage() {
-        return stage;
+    public Level getLevel() {
+        return level;
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public String getType() {
@@ -70,7 +86,8 @@ public class Vocabulary {
     public String toString() {
         return "Vocabulary{" +
                 "id=" + id +
-                ", stage=" + stage +
+                ", level=" + level +
+                ", word='" + word + '\'' +
                 ", type='" + type + '\'' +
                 ", meaning='" + meaning + '\'' +
                 '}';

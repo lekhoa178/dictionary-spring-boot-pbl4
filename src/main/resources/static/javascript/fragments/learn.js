@@ -43,11 +43,15 @@ fragmentContainer.addEventListener('click', function(e) {
 
 fragmentContainer.addEventListener('click', function(e) {
     const el = e.target.closest('.floating-start--btn');
+
     if (el == null) return;
+
+    const stageId = el.dataset.test.split(" ")[0];
+    const levelId = el.dataset.test.split(" ")[1];
 
     if (el.closest('.floating-start-panel--inactive')) return;
 
-    window.location = '/lesson'
+    window.location = `/lesson/${stageId}/${levelId}`;
 });
 
 document.addEventListener('click', function(e) {

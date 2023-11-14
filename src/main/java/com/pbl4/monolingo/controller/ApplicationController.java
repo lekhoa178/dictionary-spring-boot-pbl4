@@ -3,39 +3,37 @@ package com.pbl4.monolingo.controller;
 import com.pbl4.monolingo.dao.*;
 import com.pbl4.monolingo.entity.*;
 import com.pbl4.monolingo.service.AccountService;
-import com.pbl4.monolingo.service.DictionaryService;
+import com.pbl4.monolingo.service.DataPerDayService;
 import com.pbl4.monolingo.service.NotebookService;
-import com.pbl4.monolingo.utility.uimodel.DefinitionDetailView;
+import com.pbl4.monolingo.utility.dto.AccountExp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.IntStream;
 
 @Controller
 public class ApplicationController {
-    private StageRepository stageRepository;
-    private AccountService accountService;
-    private NotebookService notebookService;
+    private final StageRepository stageRepository;
+    private final AccountService accountService;
+    private final NotebookService notebookService;
+    private final DataPerDayService dataPerDayService;
 
 
     @Autowired
     public ApplicationController(StageRepository stageRepository,
-                                 AccountService accountService, NotebookService notebookService) {
+                                 AccountService accountService,
+                                 NotebookService notebookService,
+                                 DataPerDayService dataPerDayService) {
         this.stageRepository = stageRepository;
         this.accountService = accountService;
         this.notebookService = notebookService;
+        this.dataPerDayService = dataPerDayService;
     }
 
     // add default endpoint
@@ -67,7 +65,6 @@ public class ApplicationController {
 
     public String showPractice(Model model, Principal principal,
                                @RequestHeader(value = "request-source", required = false) String requestSource) {
-        System.out.println(principal.getName());
         List<Notebook> notebooks = notebookService.findAll();
         for (Notebook notebook:
              notebooks) {
@@ -89,6 +86,23 @@ public class ApplicationController {
 
     public String showRank(Model model, Principal principal,
                            @RequestHeader(value = "request-source", required = false) String requestSource) {
+
+        if (principal != null) {
+            int curAccountId = accountService.getAccountByUserName(principal.getName()).getAccountId();
+
+            List<AccountExp> accountExps = dataPerDayService.getAllAccountOrderBySumExp();
+            AccountExp currentAcc = dataPerDayService.getAccountSumExpById(curAccountId);
+
+            OptionalInt index = IntStream.range(0, accountExps.size())
+                    .filter(i -> curAccountId == accountExps.get(i).getAccount().getAccountId())
+                    .findFirst();
+
+            model.addAttribute("records", accountExps);
+            model.addAttribute("current", currentAcc);
+
+            model.addAttribute("foundIndex", index.isPresent() ? index.getAsInt() : -1);
+        }
+
         if (requestSource == null) {
             if (principal != null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));

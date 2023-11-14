@@ -8,14 +8,13 @@ async function init() {
 
     const fragment = window.location.pathname.substring(1);
 
-    const fragmentEl = document.getElementById(`fragment-learn`);
+    const fragmentEl = document.getElementById(`fragment-${fragment}`);
     for (let i = 0; i < tabs.length; ++i) {
         tabs[i].classList.remove('menu--tab-active');
     }
     fragmentEl.classList.add('menu--tab-active');
 
-    const data = await AJAX (`/${fragment}`)
-    fragmentContainer.innerHTML = data;
+    fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
 }
 
 init();

@@ -1,8 +1,10 @@
 package com.pbl4.monolingo.service;
 
 import com.pbl4.monolingo.dao.DataPerDayRepository;
+import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.entity.embeddable.DataPerDayId;
+import com.pbl4.monolingo.utility.dto.AccountExp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +23,20 @@ public class DataPerDayServiceImpl implements DataPerDayService {
         this.dataPerDayRepository = dataPerDayRepository;
     }
 
+    @Override
     public List<DataPerDay> getAccountDPDs(Integer accountId) {
         return dataPerDayRepository.findAllByIdAccountId(accountId);
     }
 
+    @Override
     public DataPerDay getAccountDPD(Integer accountId) {
         Optional<DataPerDay> result = dataPerDayRepository.findById(new DataPerDayId(getDayId(), accountId));
 
         return result.orElse(null);
     }
 
+
+    @Override
     public DataPerDay updateAccountDPD(Integer accountId, int exp, int onlHours) {
         DataPerDay dpd = getAccountDPD(accountId);
         dpd.setExperience(dpd.getExperience() + exp);
@@ -39,6 +45,25 @@ public class DataPerDayServiceImpl implements DataPerDayService {
         return dataPerDayRepository.save(dpd);
     }
 
+    @Override
+    public List<AccountExp> getAllAccountOrderBySumExp() {
+        List<Object[]> results = dataPerDayRepository.findAllAccountOrderBySumExp().stream().limit(20).toList();
+        return results.stream().map(e -> new AccountExp((Account)e[0], (Long)e[1])).toList();
+    }
+
+    @Override
+    public AccountExp getAccountSumExpById(Integer accountId) {
+        List<DataPerDay> dpds = getAccountDPDs(accountId);
+
+        Long exp = 0L;
+        for (DataPerDay d : dpds) {
+            exp += d.getExperience();
+        }
+
+        return new AccountExp(dpds.get(0).getAccount(), exp);
+    }
+
+    @Override
     public Integer getDayId() {
         LocalDate currentDate = LocalDate.now();
 

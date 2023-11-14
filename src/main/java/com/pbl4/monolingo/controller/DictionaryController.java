@@ -4,7 +4,7 @@ import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.DictionaryService;
 import com.pbl4.monolingo.service.NotebookService;
-import com.pbl4.monolingo.utility.uimodel.DefinitionDetailView;
+import com.pbl4.monolingo.utility.dto.DefinitionDetailView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

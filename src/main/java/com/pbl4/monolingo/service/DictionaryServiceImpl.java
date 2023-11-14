@@ -2,13 +2,12 @@ package com.pbl4.monolingo.service;
 
 import com.pbl4.monolingo.dao.*;
 import com.pbl4.monolingo.entity.*;
-import com.pbl4.monolingo.utility.uimodel.DefinitionDetailView;
+import com.pbl4.monolingo.utility.dto.DefinitionDetailView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.function.Function;
 
 @Service
 public class DictionaryServiceImpl implements DictionaryService {

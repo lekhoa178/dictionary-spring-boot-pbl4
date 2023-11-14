@@ -5,7 +5,7 @@ import com.pbl4.monolingo.dao.SynsetRepository;
 import com.pbl4.monolingo.entity.Lexicon;
 import com.pbl4.monolingo.entity.Synset;
 import com.pbl4.monolingo.service.DictionaryService;
-import com.pbl4.monolingo.utility.uimodel.DefinitionDetailView;
+import com.pbl4.monolingo.utility.dto.DefinitionDetailView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

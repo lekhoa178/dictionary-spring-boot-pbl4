@@ -9,6 +9,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/learnStyle.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/meaningStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/rankStyle.css}">
     <title>Monolingo - Học tiếng anh vui vẻ</title>
     <link rel="shortcut icon" type="x-icon" th:href="@{/img/dart.png}">
     <script defer th:src="@{/javascript/main.js}"></script>
@@ -61,6 +62,13 @@
                      th:src="@{/img/shop.png}"
                      class="menu--tabs-icon">
                 <span class="menu--tabs-text">CỬA HÀNG</span>
+            </a>
+
+            <a id="fragment-profile" th:href="@{fragments/profile.html}" class="menu--tabs">
+                <img alt=""
+                     th:src="@{/img/boy.png}"
+                     class="menu--tabs-icon">
+                <span class="menu--tabs-text">HỒ SƠ</span>
             </a>
 
         </div>

@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>Rank</h1>
-</body>
-</html>
+<div class="rank--container">
+    <div class="title--container">
+        <img th:src="@{/img/gold-medal.png}" alt="" class="rank--image">
+        <h1 class="rank-title">Bảng xếp hạng</h1>
+        <h3 class="rank-sub-title">Xếp hạng trong 1 tuần gần đây</h3>
+    </div>
+
+    <div th:if="${records != null}">
+        <div class="league-tables">
+            <div th:each="record, itemStat : ${records}"
+                th:class="${itemStat.index == foundIndex
+                        ? 'current-record-container record--container'
+                        : 'record--container'}">
+                <p class="record--index" th:text="${itemStat.index + 1}"></p>
+                <p class="record--name" th:text="${record.getAccount().getName()}"></p>
+                <p class="record--exp" th:text="${record.getExperience()}"></p>
+            </div>
+        </div>
+
+        <div class="self-record--container">
+            <p class="record--index" th:text="${foundIndex != -1 ? foundIndex + 1 : '20+'}"></p>
+            <p class="record--name" th:text="${current.getAccount().getName()}"></p>
+            <p class="record--exp" th:text="${current.getExperience()}"></p>
+        </div>
+    </div>
+
+    <div class="league-tables" th:if="${records == null}">
+        <p>Tạo hồ sơ để tham gia bảng xếp hạng</p>
+        <button class="btn--create-profile">
+            Tạo hồ sơ
+        </button>
+    </div>
+</div>

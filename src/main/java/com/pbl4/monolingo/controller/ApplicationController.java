@@ -88,7 +88,7 @@ public class ApplicationController {
                            @RequestHeader(value = "request-source", required = false) String requestSource) {
 
         if (principal != null) {
-            int curAccountId = accountService.getAccountByUserName(principal.getName()).getAccountId();
+            int curAccountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
 
             List<AccountExp> accountExps = dataPerDayService.getAllAccountOrderBySumExp();
             AccountExp currentAcc = dataPerDayService.getAccountSumExpById(curAccountId);

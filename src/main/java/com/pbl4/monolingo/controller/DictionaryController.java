@@ -37,7 +37,7 @@ public class DictionaryController {
                               @PathVariable String word,
                               @RequestHeader(value = "request-source", required = false) String requestSource) {
 
-        Account account = accountService.getAccountByUserName(principal.getName());
+        Account account = accountService.getAccountByUsername(principal.getName());
         boolean isExist = notebookService.checkIsExsitInNotebook(account.getAccountId(), word);
 
         HashMap<String, List<DefinitionDetailView>> results = dictionaryService.getDefinitionByWord(word);

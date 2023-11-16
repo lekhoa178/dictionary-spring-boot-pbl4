@@ -9,7 +9,7 @@ const fragmentContainer = document.querySelector('.content-container');
 async function init() {
   const fragment = window.location.pathname.substring(1);
 
-  const fragmentEl = document.getElementById(`fragment-${fragment}`);
+  const fragmentEl = document.getElementById(`fragment-${fragment}`).closest('.menu--tabs');
   for (let i = 0; i < tabs.length; ++i) {
     tabs[i].classList.remove('menu--tab-active');
   }
@@ -24,6 +24,16 @@ menu.addEventListener('click', async function (e) {
   e.preventDefault();
 
   const target = e.target.closest('.menu--tabs');
+
+  let fragment = target.id.replace('fragment-', '');
+  if (fragment === 'more') {
+    const subTarget = e.target.closest('.menu--option--item');
+    if (subTarget == null)
+      return;
+
+    fragment = subTarget.id.replace('fragment-', '');
+    console.log(fragment);
+  }
   if (target.classList.contains('.menu--tab-active')) return;
 
   for (let i = 0; i < tabs.length; ++i) {
@@ -31,7 +41,6 @@ menu.addEventListener('click', async function (e) {
   }
   target.classList.add('menu--tab-active');
 
-  const fragment = target.id.replace('fragment-', '');
 
   history.pushState(history.state, document.title, `/${fragment}`);
   fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
@@ -51,7 +60,7 @@ document.addEventListener('click', (e) => {
 
 searchBar.addEventListener('keydown', (event) => {
   const oldOption = searchResults.querySelector(
-    `.search--result--${searchSelected}`
+      `.search--result--${searchSelected}`
   );
   oldOption?.classList.remove('search--result--selected');
 
@@ -63,7 +72,7 @@ searchBar.addEventListener('keydown', (event) => {
   }
 
   const newOption = searchResults.querySelector(
-    `.search--result--${searchSelected}`
+      `.search--result--${searchSelected}`
   );
   newOption?.classList.add('search--result--selected');
 });
@@ -100,7 +109,7 @@ searchBar.addEventListener('input', async function (e) {
     }
 
     const oldOption = searchResults.querySelector(
-      `.search--result--${searchSelected}`
+        `.search--result--${searchSelected}`
     );
     oldOption?.classList.remove('search--result--selected');
     searchSelected = 0;
@@ -154,7 +163,7 @@ async function AJAX(fragment, json = false) {
       },
     });
   }
-  console.log('Token: ', token);
+  // console.log('Token: ', token);
 
   try {
     const response = await fetch(fragment, {

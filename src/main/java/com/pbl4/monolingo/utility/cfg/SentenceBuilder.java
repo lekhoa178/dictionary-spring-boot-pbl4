@@ -129,7 +129,7 @@ public class SentenceBuilder {
             case "Nom":
             case "O":
                 NPPhraseSpec np2 = generateNounPhrase(rStrs[0]);
-                if (p.equals("Nor"))
+                if (p.equals("Nom"))
                     curSentence.setSubject(np2);
                 else
                     curSentence.setObject(np2);

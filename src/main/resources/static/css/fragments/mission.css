@@ -1,0 +1,11 @@
+.container--mission--page{
+    position: relative;
+    top: 5px;
+}
+.mission--item-lock{
+    display: flex;
+    align-items: center;
+    padding: 25px 20px;
+    background-color: rgba(239, 239, 239, 0.52);
+
+}

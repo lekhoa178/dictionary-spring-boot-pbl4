@@ -40,7 +40,6 @@ menu.addEventListener('click', async function(e) {
 
     history.pushState(history.state, document.title, `/${fragment}`);
     fragmentContainer.innerHTML = await AJAX (`/${fragment}`)
-
 })
 
 

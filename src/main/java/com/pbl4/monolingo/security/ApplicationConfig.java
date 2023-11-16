@@ -48,7 +48,6 @@ public class ApplicationConfig implements WebMvcConfigurer {
         return new MD5PasswordEncoder();
     }
     @Override
-
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
@@ -62,6 +61,5 @@ public class ApplicationConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(tokenInterceptor);
-
     }
 }

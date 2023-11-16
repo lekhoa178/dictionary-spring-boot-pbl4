@@ -111,6 +111,9 @@ span {
     gap: 20px;
     padding: 10px;
 }
+.gap-15 {
+    gap:15px !important;
+}
 
 .mission--items {
 
@@ -119,6 +122,16 @@ span {
     grid-template-columns: 80px auto;
     column-gap: 30px;
     align-items: center;
+
+}
+.mission--items-page {
+
+    display: grid;
+    grid-template-rows: 40px 40px;
+    grid-template-columns: 60px auto;
+    column-gap: 15px;
+    align-items: center;
+    padding: 12px;
 }
 
 .mission--items-icon {
@@ -131,7 +144,9 @@ span {
 .mission--progress-icon {
     width: 30px;
 }
-
+.mission--progress-icon--page {
+    width: 35px;
+}
 
 .mission--progress-bound {
     display: flex;
@@ -182,6 +197,7 @@ span {
     padding: 4px 15px 4px 15px;
 }
 
+
 @media (max-width: 800px) {
     .menu--tabs-text {
         display: none;
@@ -214,6 +230,9 @@ a {
 }
 
 a.menu--tabs:hover:not(.menu--tab-active) {
+    background-color: rgb(245, 245, 245);
+}
+.menu--tabs:hover:not(.menu--tab-active) {
     background-color: rgb(245, 245, 245);
 }
 
@@ -334,4 +353,62 @@ a.menu--tabs:hover:not(.menu--tab-active) {
 
 .resource--items-text-heart {
     color: #FF4B4B;
+}
+.bottom-solid {
+    border-bottom: 1px solid #8598af;
+}
+
+.hov-change-gray-light:hover {
+    background-color: #d3d3d3;
+    transition: 0.3s;
+
+}
+.no-gap{
+    gap: 0!important;
+}
+.border-radius {
+    border-radius: 14px;
+    border: 2px solid #DDD;
+}
+.box-shadow {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.menu--option {
+    position: relative;
+}
+
+.menu-content {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 90%; /* Position the menu-content to the right of the menu-button */
+    top: 0;
+    min-width: 200px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 20px 10px;
+    z-index: 1;
+    visibility: hidden; /* Ẩn nội dung */
+    opacity: 0; /* Đặt opacity bằng 0 để làm trong suốt */
+}
+.menu--option:hover .menu-content{
+    /*display: flex;*/
+    visibility: visible; /* Ẩn nội dung */
+    opacity: 1;
+    transition: 0.7s;
+}
+.menu--option--item {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 25px;
+    justify-content: space-between;
+    border-bottom: 1px solid gainsboro;
+}
+.menu--option--item:hover {
+    background-color: #eae9e9;
+    cursor: pointer;
+}
+
+.icon--option {
+    width: 25px;
 }

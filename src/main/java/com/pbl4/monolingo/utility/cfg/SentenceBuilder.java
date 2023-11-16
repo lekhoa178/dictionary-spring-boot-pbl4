@@ -42,13 +42,18 @@ public class SentenceBuilder {
         setWords("Verb", verbs);
     }
 
-    public void setPronouns(List<String> pronouns) {
-        setWords("Pronoun", pronouns);
+    public void setNominals(List<String> nominals) {
+        setWords("Nom", nominals);
     }
 
-    public void setPeople(List<String> people) {
-        setWords("People", people);
+    public void setObjects(List<String> objects) {
+        setWords("O", objects);
     }
+
+    public void setAdjectives(List<String> adjectives) {
+        setWords("AdjVerb", adjectives);
+    }
+
 
     public SentenceResult build() {
         StringBuilder sentence = new StringBuilder();
@@ -85,7 +90,7 @@ public class SentenceBuilder {
                 } else {
                     rStrs = randomSelect(words).split(",", -1);
 
-                    if (AnalyzeWord(p, rStrs, curSentence, coordSentences))
+                    if (analyzeWord(p, rStrs, curSentence, coordSentences))
                         curSentence = nlgFactory.createClause();
                 }
 
@@ -110,7 +115,7 @@ public class SentenceBuilder {
         return new SentenceResult(sentence.toString(), translatedSentence.toString());
     }
 
-    private boolean AnalyzeWord(String p,
+    private boolean analyzeWord(String p,
                                 String[] rStrs,
                                 SPhraseSpec curSentence,
                                 CoordinatedPhraseElement coordSentences) {
@@ -121,7 +126,7 @@ public class SentenceBuilder {
                 curSentence.setSubject(np1);
 
                 break;
-            case "Nor":
+            case "Nom":
             case "O":
                 NPPhraseSpec np2 = generateNounPhrase(rStrs[0]);
                 if (p.equals("Nor"))
@@ -135,8 +140,7 @@ public class SentenceBuilder {
                                 + np2.getFeatureAsString("afterMeaning");
                 break;
 
-            case "Verb1":
-            case "Verb2":
+            case "Verb":
                 VPPhraseSpec vp = generateVerbPhrase(rStrs[0]);
                 vp.setFeature(Feature.NEGATED, isNegated);
                 curSentence.setVerb(vp);
@@ -222,17 +226,8 @@ public class SentenceBuilder {
         return nlgFactory.createVerbPhrase(verb);
     }
 
-    private boolean isDemonstratives(String word) {
-        return word.equals("this") || word.equals("that") || word.equals("these") || word.equals("those");
-    }
-
     private void setWords(String key, List<String> words) {
-        List<String> ws = wordMap.get(key);
-        if (words != null) {
-            ws.addAll(words);
-        }
-
-        wordMap.put(key, ws);
+        wordMap.put(key, words);
     }
 
     private void initData() {
@@ -247,14 +242,22 @@ public class SentenceBuilder {
                 "she,cô ấy",
                 "it,nó")));
 
-        wordMap.put("People", new ArrayList<>(List.of("Tom,Tom", "Alex,Alex", "Lạc,Lạc")));
+        wordMap.put("People", new ArrayList<>(List.of("Tom,Tom",
+                "Alex,Alex",
+                "Lạc,Lạc",
+                "Khoa,Khoa",
+                "Nghĩa,Nghĩa",
+                "Nhận, Nhận")));
 
-        wordMap.put("Nor", new ArrayList<>(List.of(
+        wordMap.put("Nom", new ArrayList<>(List.of(
                 "house,ngôi nhà", "spoon,cái muỗng", "knife,cái dao",
                 "apple,quả táo", "umbrella,cái ô")));
 
-        wordMap.put("Verb1", new ArrayList<>(List.of("do,làm")));
-        wordMap.put("Verb2", new ArrayList<>(List.of("love,yêu", "want,muốn")));
+        wordMap.put("Verb", new ArrayList<>(List.of(
+                "love,yêu",
+                "want,muốn",
+                "would like to buy,muốn mua",
+                "want to buy,muốn mua")));
         wordMap.put("O", new ArrayList<>(List.of("cake,bánh", "food,đồ ăn")));
 
         wordMap.put("AdjVerb", new ArrayList<>(List.of(

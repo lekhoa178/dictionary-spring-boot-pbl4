@@ -1,5 +1,6 @@
 package com.pbl4.monolingo.rest;
 
+import com.pbl4.monolingo.entity.embeddable.LevelId;
 import com.pbl4.monolingo.service.NLTKService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,14 +47,17 @@ public class NTLKRestController {
 //        System.out.println(output2);
 //
 //        return "";
-        return nltkService.CFG();
+        return nltkService.buildSentence(new LevelId(3, 1));
     }
 
-    @GetMapping("/cfg/sentences/{amount}")
-    public List<String> getSeteneces(@PathVariable int amount) {
+    @GetMapping("/cfg/sentences/{stageId}/{levelId}/{amount}")
+    public List<String> getSentences(
+            @PathVariable int stageId,
+            @PathVariable int levelId,
+            @PathVariable int amount) {
         List<String> results = new ArrayList<>();
         for (int i = 0; i < amount; ++i) {
-            results.add(nltkService.CFG());
+            results.add(nltkService.buildSentence(new LevelId(stageId, levelId)));
         }
 
         return results;

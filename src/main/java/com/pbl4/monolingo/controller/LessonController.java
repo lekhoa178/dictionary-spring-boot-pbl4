@@ -1,19 +1,26 @@
 package com.pbl4.monolingo.controller;
 
+import com.pbl4.monolingo.entity.embeddable.LevelId;
+import com.pbl4.monolingo.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/lesson")
 public class LessonController {
 
-    @GetMapping("/")
 
-    public String showLesson(Model model) {
+
+    @GetMapping("/{stageId}/{levelId}")
+
+    public String showLesson(Model model,
+                             @PathVariable int stageId,
+                             @PathVariable int levelId) {
+        model.addAttribute("stage", stageId);
+        model.addAttribute("level", levelId);
+
         return "lesson.html";
     }
 
@@ -24,8 +31,11 @@ public class LessonController {
         if (requestSource == null)
             return "redirect:/learn";
 
-        model.addAttribute("exp", data.split(" ")[0]);
-        model.addAttribute("precise", data.split(" ")[1]);
+        int exp = Integer.parseInt(data.split(" ")[0]);
+        int precise = Integer.parseInt(data.split(" ")[1]);
+
+        model.addAttribute("exp", exp);
+        model.addAttribute("precise", precise);
         return "lessonFinish.html";
     }
 

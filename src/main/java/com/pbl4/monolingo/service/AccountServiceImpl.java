@@ -18,8 +18,10 @@ import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
+    @Autowired
 
     private AccountRepository accountRepository;
+    @Autowired
     private ExtraInformationRepository extraInformationRepository;
 
     @Autowired
@@ -35,6 +37,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account getAccountByUsername(String username) {
+        return accountRepository.findAccountByUsername(username);
+    }
+
+    @Override
+    public void save(Account account) {
+
+    }
     public List<Account> getAllAccount() {
         return accountRepository.findAll();
     }
@@ -77,10 +87,5 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<Account> searchAccount(String keyword) {
         return accountRepository.searchAccount(keyword);
-    }
-
-    @Override
-    public Account getAccountByUserName(String username) {
-        return accountRepository.findAccountByUsername(username);
     }
 }

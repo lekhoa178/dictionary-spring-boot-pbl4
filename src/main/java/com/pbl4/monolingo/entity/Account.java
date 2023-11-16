@@ -1,18 +1,23 @@
 package com.pbl4.monolingo.entity;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.context.annotation.Primary;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table(name = "account")
-public class Account {
+public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
@@ -70,6 +75,12 @@ public class Account {
         this.type = type;
     }
 
+    public Account(String username, String password, AccountType type) {
+        this.username = username;
+        this.password = password;
+        this.type = type;
+    }
+
     public Integer getAccountId() {
         return accountId;
     }
@@ -82,8 +93,33 @@ public class Account {
         return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(type.getType()));
     }
 
     public String getPassword() {

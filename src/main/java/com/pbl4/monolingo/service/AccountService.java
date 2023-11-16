@@ -9,11 +9,13 @@ import java.util.List;
 public interface AccountService {
 
     ExtraInformation getAccountInfoByUsername(String username);
+    Account getAccountByUsername(String username);
+    void save(Account account);
+
     List<Account> getAllAccount();
     Page<Account> getAccountWithPage(int offset, int size);
     void saveAccount(Account account);
     Account getAccountById(int id);
     void deleteAccountById(int id);
     List<Account> searchAccount(String keyword);
-    Account getAccountByUserName(String username);
  }

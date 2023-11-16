@@ -6,15 +6,15 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class StageLevelId implements Serializable {
+public class LevelId implements Serializable {
 
     private Integer stageId;
 
     private Integer levelId;
 
-    public StageLevelId() {}
+    public LevelId() {}
 
-    public StageLevelId(Integer stageId, Integer levelId) {
+    public LevelId(Integer stageId, Integer levelId) {
         this.stageId = stageId;
         this.levelId = levelId;
     }
@@ -47,7 +47,7 @@ public class StageLevelId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StageLevelId that = (StageLevelId) o;
+        LevelId that = (LevelId) o;
         return Objects.equals(stageId, that.stageId) && Objects.equals(levelId, that.levelId);
     }
 

@@ -8,22 +8,22 @@ import java.util.Objects;
 @Embeddable
 public class VocabularyId implements Serializable {
 
-    private Integer stageId;
+    private LevelId levelId;
     private Integer vocabularyNum;
 
     public VocabularyId() {}
 
-    public VocabularyId(Integer stageId, Integer vocabularyNum) {
-        this.stageId = stageId;
+    public VocabularyId(LevelId levelId, Integer vocabularyNum) {
+        this.levelId = levelId;
         this.vocabularyNum = vocabularyNum;
     }
 
-    public Integer getStageId() {
-        return stageId;
+    public LevelId getLevelId() {
+        return levelId;
     }
 
-    public void setStageId(Integer stageId) {
-        this.stageId = stageId;
+    public void setLevelId(LevelId levelId) {
+        this.levelId = levelId;
     }
 
     public Integer getVocabularyNum() {
@@ -39,11 +39,11 @@ public class VocabularyId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VocabularyId that = (VocabularyId) o;
-        return Objects.equals(stageId, that.stageId) && Objects.equals(vocabularyNum, that.vocabularyNum);
+        return Objects.equals(levelId, that.levelId) && Objects.equals(vocabularyNum, that.vocabularyNum);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(stageId, vocabularyNum);
+        return Objects.hash(levelId, vocabularyNum);
     }
 }

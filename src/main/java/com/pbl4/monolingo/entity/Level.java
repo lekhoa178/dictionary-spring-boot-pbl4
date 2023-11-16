@@ -1,7 +1,6 @@
 package com.pbl4.monolingo.entity;
 
-import com.pbl4.monolingo.entity.embeddable.LexiconId;
-import com.pbl4.monolingo.entity.embeddable.StageLevelId;
+import com.pbl4.monolingo.entity.embeddable.LevelId;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,23 +12,23 @@ public class Level {
             @AttributeOverride(name = "stageId", column = @Column(name = "stage_id")),
             @AttributeOverride(name = "levelId", column = @Column(name = "level_id"))
     })
-    private StageLevelId id;
+    private LevelId id;
 
     @Column(name = "complete")
     private boolean complete;
 
     public Level() {}
 
-    public Level(StageLevelId id, boolean complete) {
+    public Level(LevelId id, boolean complete) {
         this.id = id;
         this.complete = complete;
     }
 
-    public StageLevelId getId() {
+    public LevelId getId() {
         return id;
     }
 
-    public void setId(StageLevelId id) {
+    public void setId(LevelId id) {
         this.id = id;
     }
 

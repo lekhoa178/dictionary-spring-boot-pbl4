@@ -17,6 +17,10 @@ let progress = 0;
 let totalQuestion = 13;
 let heart = 5;
 
+const bodyEl = document.querySelector('.base-container');
+const stageId = bodyEl.dataset.stage;
+const levelId = bodyEl.dataset.level;
+
 setupRound();
 
 returnBtn.addEventListener('click', e => {
@@ -152,7 +156,8 @@ const nextQuestion = function() {
 }
 
 async function setupRound() {
-    questions = await AJAX(`/cfg/sentences/${totalQuestion}`, true);
+    questions = await AJAX(`/cfg/sentences/${stageId}/${levelId}/${totalQuestion}`, true);
+    console.log(questions);
 
     nextQuestion();
 }

@@ -1,4 +1,4 @@
-package com.pbl4.monolingo.utility.uimodel;
+package com.pbl4.monolingo.utility.dto;
 
 import java.util.List;
 

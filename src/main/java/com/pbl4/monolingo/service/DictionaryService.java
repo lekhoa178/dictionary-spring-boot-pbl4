@@ -2,8 +2,7 @@ package com.pbl4.monolingo.service;
 
 import com.pbl4.monolingo.entity.Lexicon;
 import com.pbl4.monolingo.entity.Synset;
-import com.pbl4.monolingo.utility.uimodel.DefinitionDetailView;
-import org.springframework.data.jpa.repository.Query;
+import com.pbl4.monolingo.utility.dto.DefinitionDetailView;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

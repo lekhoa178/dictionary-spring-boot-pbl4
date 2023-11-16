@@ -52,6 +52,9 @@ public class AccountServiceImpl implements AccountService {
             account.setPassword(md5PasswordEncoder.encode(account.getPassword()));
         }
         ExtraInformation newExtra = account.getExtraInformation();
+        newExtra.setHearts(5);
+        newExtra.setNumberOfConsecutiveDay(0);
+        newExtra.setNumberOfLoginDay(0);
         newExtra.setAccount(account);
 
         accountRepository.save(account);

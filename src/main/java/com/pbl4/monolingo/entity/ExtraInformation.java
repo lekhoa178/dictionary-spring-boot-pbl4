@@ -2,6 +2,8 @@ package com.pbl4.monolingo.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "extra_information")
 public class ExtraInformation {
@@ -22,6 +24,9 @@ public class ExtraInformation {
     @Column(name = "heart")
     private Integer hearts;
 
+    @Column(name = "lost_heart_time")
+    private LocalDateTime lostHeartTimes;
+
     @OneToOne
     @MapsId
     @JoinColumn(name = "account_id")
@@ -29,12 +34,21 @@ public class ExtraInformation {
 
     public ExtraInformation() {}
 
-    public ExtraInformation(Integer accountId, Integer balance, Integer numberOfLoginDay, Integer numberOfConsecutiveDay, Integer hearts) {
+    public LocalDateTime getLostHeartTimes() {
+        return lostHeartTimes;
+    }
+
+    public void setLostHeartTimes(LocalDateTime lostHeartTimes) {
+        this.lostHeartTimes = lostHeartTimes;
+    }
+
+    public ExtraInformation(Integer accountId, Integer balance, Integer numberOfLoginDay, Integer numberOfConsecutiveDay, Integer hearts, LocalDateTime lostHeartTimes) {
         this.accountId = accountId;
         this.balance = balance;
         this.numberOfLoginDay = numberOfLoginDay;
         this.numberOfConsecutiveDay = numberOfConsecutiveDay;
         this.hearts = hearts;
+        this.lostHeartTimes = lostHeartTimes;
     }
 
     public Integer getAccountId() {

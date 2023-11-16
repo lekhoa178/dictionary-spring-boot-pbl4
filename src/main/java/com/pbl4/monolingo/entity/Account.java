@@ -57,7 +57,7 @@ public class Account {
     private Set<DataPerDay> dataPerDay;
     public Account() {}
 
-    public Account(Integer accountId, String username, String password, String name, Date birthdate, String email, Boolean gender, byte[] profilePicture, Boolean enabled, AccountType type, Set<DataPerDay>  dataPerDay) {
+    public Account(Integer accountId, String username, String password, String name, Date birthdate, String email, Boolean gender, byte[] profilePicture, Boolean enabled, AccountType type) {
         this.accountId = accountId;
         this.username = username;
         this.password = password;
@@ -68,7 +68,6 @@ public class Account {
         this.profilePicture = profilePicture;
         this.enabled = enabled;
         this.type = type;
-        this.dataPerDay = dataPerDay;
     }
 
     public Integer getAccountId() {

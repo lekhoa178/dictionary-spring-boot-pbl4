@@ -65,7 +65,9 @@ public class ApplicationController {
 
     public String showPractice(Model model, Principal principal,
                                @RequestHeader(value = "request-source", required = false) String requestSource) {
-        List<Notebook> notebooks = notebookService.findAll();
+        Account account = accountService.getAccountByUserName(principal.getName());
+        List<Notebook> notebooks = notebookService.getAllNotebooksByAccountId(account.getAccountId());
+
         for (Notebook notebook:
              notebooks) {
             notebook.getLexicon().setWord(notebook.getLexicon().getWord().replace('_', ' '));

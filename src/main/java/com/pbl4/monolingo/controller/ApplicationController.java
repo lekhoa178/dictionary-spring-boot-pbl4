@@ -141,6 +141,20 @@ public class ApplicationController {
             return "fragments/store";
     }
 
+    @GetMapping("/profile")
+
+    public String showProfile(Model model, Principal principal,
+                              @RequestHeader(value = "request-source", required = false) String requestSource) {
+        if (requestSource == null) {
+            if (principal != null) {
+                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+            }
+            return "main";
+        }
+        else
+            return "fragments/profile";
+    }
+
     @GetMapping("/lesson")
 
     public String showLesson(Model model) {

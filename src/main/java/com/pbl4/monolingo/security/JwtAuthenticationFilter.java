@@ -75,7 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         }
         // If you are storing the token in the session, extract it here
-        return (String) request.getSession().getAttribute("jwtToken");
+        return "";
 
 
     }

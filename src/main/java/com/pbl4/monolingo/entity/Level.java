@@ -14,14 +14,10 @@ public class Level {
     })
     private LevelId id;
 
-    @Column(name = "complete")
-    private boolean complete;
-
     public Level() {}
 
     public Level(LevelId id, boolean complete) {
         this.id = id;
-        this.complete = complete;
     }
 
     public LevelId getId() {
@@ -32,19 +28,10 @@ public class Level {
         this.id = id;
     }
 
-    public boolean isComplete() {
-        return complete;
-    }
-
-    public void setComplete(boolean complete) {
-        this.complete = complete;
-    }
-
     @Override
     public String toString() {
         return "Level{" +
                 "id=" + id +
-                ", complete=" + complete +
                 '}';
     }
 }

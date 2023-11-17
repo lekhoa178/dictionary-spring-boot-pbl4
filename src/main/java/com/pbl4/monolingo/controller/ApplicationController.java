@@ -4,6 +4,7 @@ import com.pbl4.monolingo.dao.*;
 import com.pbl4.monolingo.entity.*;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.DataPerDayService;
+import com.pbl4.monolingo.service.LearnService;
 import com.pbl4.monolingo.service.NotebookService;
 import com.pbl4.monolingo.utility.dto.AccountExp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,19 @@ import java.util.stream.IntStream;
 
 @Controller
 public class ApplicationController {
-    private final StageRepository stageRepository;
+
+    private LearnService learnService;
     private final AccountService accountService;
     private final NotebookService notebookService;
     private final DataPerDayService dataPerDayService;
 
 
     @Autowired
-    public ApplicationController(StageRepository stageRepository,
+    public ApplicationController(LearnService learnService,
                                  AccountService accountService,
                                  NotebookService notebookService,
                                  DataPerDayService dataPerDayService) {
-        this.stageRepository = stageRepository;
+        this.learnService = learnService;
         this.accountService = accountService;
         this.notebookService = notebookService;
         this.dataPerDayService = dataPerDayService;
@@ -49,12 +51,15 @@ public class ApplicationController {
     public String showLearn(Model model, Principal principal,
                             @RequestHeader(value = "request-source", required = false) String requestSource) {
 
-        model.addAttribute("stageColors", StageColors);
-        model.addAttribute("stages", stageRepository.findAll());
-        if (requestSource == null) {
-            if (principal != null) {
-                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-            }
+        if (principal != null) {
+            int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+
+            model.addAttribute("stageColors", StageColors);
+            model.addAttribute("stages", learnService.getAccountStages(accountId));
+        }
+
+        if (requestSource == null && principal != null) {
+            model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
             return "main";
         }
         else

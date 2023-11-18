@@ -1,8 +1,14 @@
 package com.pbl4.monolingo.controller;
 
 import com.pbl4.monolingo.entity.Account;
+import com.pbl4.monolingo.entity.Level;
+import com.pbl4.monolingo.entity.Stage;
+import com.pbl4.monolingo.entity.Vocabulary;
+import com.pbl4.monolingo.entity.embeddable.LevelId;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.DictionaryService;
+import com.pbl4.monolingo.service.LevelService;
+import com.pbl4.monolingo.service.StageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,22 +27,73 @@ public class AdminController {
 
     private DictionaryService dictionaryService;
     private AccountService accountService;
+    private StageService stageService;
+    private LevelService levelService;
+
 
 
     @Autowired
     public AdminController(DictionaryService dictionaryController,
-                           AccountService accountService) {
+                           AccountService accountService, StageService stageService, LevelService levelService) {
         this.dictionaryService = dictionaryController;
         this.accountService = accountService;
+        this.stageService = stageService;
+        this.levelService = levelService;
     }
 
 
     @GetMapping("/account")
 
-    public String showAdmin(Model model, Principal principal,
+    public String showAdminAccount(Model model, Principal principal,
                             @RequestHeader(value = "request-source", required = false) String requestSource) {
         return showAccountPerPage(model, principal,requestSource, 0);
     }
+
+    @GetMapping("/stage")
+
+    public String showAdminStage(Model model, Principal principal,
+                                     @RequestHeader(value = "request-source", required = false) String requestSource) {
+
+        List<Stage> stages = stageService.getAllStage();
+
+        model.addAttribute("stages", stages);
+
+        if (requestSource == null) {
+            if (principal != null) {
+                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+            }
+            return "admin";
+        }
+        else
+            return "fragments_admin/stage";
+    }
+
+    @GetMapping("/level/{stageId}")
+
+    public String showAdminLevel(Model model, Principal principal,
+                                 @RequestHeader(value = "request-source", required = false) String requestSource,
+                                 @PathVariable(value = "stageId") int stageId) {
+
+        List<Level> levels = levelService.getLevelByStageId(stageId);
+
+        model.addAttribute("levels", levels);
+        model.addAttribute("stage", stageId);
+        return "fragments_admin/level";
+    }
+
+    @GetMapping("/vocabulary")
+
+    public String showAdminVocabulary(Model model, Principal principal,
+                                 @RequestHeader(value = "request-source", required = false) String requestSource,
+                                      @RequestParam int levelId, @RequestParam int stageId) {
+
+        List<Vocabulary> vocabularies = levelService.getVocabularyByLevelId(new LevelId(stageId, levelId));
+
+        model.addAttribute("vocabularies", vocabularies);
+
+        return "fragments_admin/vocabulary";
+    }
+
     @GetMapping("/account/page/{pageNo}")
 
     public String showAccountPerPage(Model model, Principal principal,
@@ -146,4 +203,41 @@ public class AdminController {
         return "redirect:/admin/account";
     }
 
+    @GetMapping("/stage/add")
+
+    public String showStageAddForm(Model model, Principal principal,
+                              @RequestHeader(value = "request-source", required = false) String requestSource) {
+
+        Stage stage = new Stage();
+        stage.setStageId(0);
+
+        model.addAttribute("stage", stage);
+
+        return "fragments_admin/stage-form";
+    }
+
+    @GetMapping("/stage/update/{stageId}")
+
+    public String showStageUpdateForm(Model model, Principal principal,
+                                @RequestHeader(value = "request-source", required = false) String requestSource,
+                                @PathVariable(value = "stageId") int stageId) {
+
+        Stage stage = stageService.getStageById(stageId);
+        System.out.println(stage.getStageId());
+        model.addAttribute("stage", stage);
+
+        return "fragments_admin/stage-form";
+    }
+
+    @PostMapping("/stage/save")
+    public String saveStage(@ModelAttribute("stage") Stage stage) {
+
+        stageService.save(stage);
+        return "redirect:/admin/stage";
+    }
+
+    @PostMapping("/level/add")
+    public void addLevel(@RequestParam int stageId, @RequestParam int levelId) {
+        LevelId lvId = new LevelId(stageId, levelId);
+    }
 }

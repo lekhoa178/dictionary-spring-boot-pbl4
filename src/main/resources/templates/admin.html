@@ -15,6 +15,7 @@
     <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}">
     <script defer th:src="@{/javascript/admin.js}"></script>
     <script defer th:src="@{/javascript/fragments_admin/account.js}"></script>
+    <script defer th:src="@{/javascript/fragments_admin/stage.js}"></script>
     <script defer th:src="@{/javascript/fragments_admin/account-form.js}"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -36,7 +37,7 @@
             <span class="menu--tabs-text">TÀI KHOẢN</span>
         </a>
 
-        <a id="fragment-practice" th:href="@{/fragments/practice.html}" class="menu--tabs">
+        <a id="fragment-stage" th:href="@{/fragments_admin/stage.html}" class="menu--tabs">
             <img alt=""
                  th:src="@{/img/dumbbell.png}"
                  class="menu--tabs-icon">

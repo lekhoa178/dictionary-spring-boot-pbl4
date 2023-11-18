@@ -10,5 +10,4 @@ import java.util.List;
 public interface VocabularyRepository extends JpaRepository<Vocabulary, VocabularyId> {
 
     List<Vocabulary> findAllByIdLevelId(LevelId id);
-
 }

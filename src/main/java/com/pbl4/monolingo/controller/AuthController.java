@@ -5,8 +5,12 @@ import com.pbl4.monolingo.auth.AuthenticationResponse;
 import com.pbl4.monolingo.auth.AuthenticationService;
 import com.pbl4.monolingo.auth.RegisterRequest;
 import com.pbl4.monolingo.entity.Account;
+import com.pbl4.monolingo.entity.ExtraInformation;
 import com.pbl4.monolingo.service.AccountService;
+import com.pbl4.monolingo.service.DataPerDayService;
+import com.pbl4.monolingo.service.ExtraInfoService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -20,6 +24,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("public")
@@ -27,6 +35,10 @@ import java.net.http.HttpResponse;
 public class AuthController {
     private final AccountService accountService;
     private final AuthenticationService authenticationService;
+    private final ExtraInfoService extraInfoService;
+    private final DataPerDayService dataPerDayService;
+    private final Map<Integer, LocalDateTime> loginTimes = new HashMap<>();
+
     @GetMapping("/signup")
     public String showRegisterForm(Model model){
         model.addAttribute("account",new Account());
@@ -50,11 +62,17 @@ public class AuthController {
                 authenticate(AuthenticationRequest.builder()
                 .username(account.getUsername())
                 .password(account.getPassword()).build());
+
         String token = authenticationResponse.getToken();
         Cookie cookie = new Cookie("jwtToken",token);
         cookie.setPath("/");
         response.addCookie(cookie);
         System.out.println("Token from controller: "+ token);
+
+        Account temp = accountService.getAccountByUsername(account.getUsername());
+        extraInfoService.updateExtraInfo(temp);
+        loginTimes.put(temp.getAccountId(), LocalDateTime.now());
+
         return "redirect:/learn";
     }
     @GetMapping("/error")
@@ -63,6 +81,9 @@ public class AuthController {
     }
     @GetMapping("/logout")
     public String signout(HttpSession session){
+
+
+        session.invalidate();
         session.removeAttribute("jwtToken");
         return "redirect:/public/login";
     }

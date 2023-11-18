@@ -1,0 +1,33 @@
+
+<div class="level-container">
+    <div class = "level-field">
+        <form id="data-form" method="post">
+            <table class="level-list">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th th:text="Stage + ${stage}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="level : ${levels}" >
+                    <td class="level-row" th:attr="data-values=${level.id.levelId} + '_' + ${stage}" th:text="level + *{level.id.levelId}"></td>
+                    <td>
+<!--                        <button type="button" th:attr="value=${stage.stageId}" class="action-btn update-stage">-->
+<!--                            <i class="fa-solid fa-pen"></i>-->
+<!--                        </button>-->
+<!--                        <button type="button" class = "action-btn add-level" th:attr="value=${stage.stageId}" id="delete-btn">-->
+<!--                            <i class="fa-solid fa-trash"></i>-->
+<!--                        </button>-->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <div class="vocabulary-field">
+
+    </div>
+</div>
+<script defer th:src="@{/javascript/fragments_admin/level.js}"></script>

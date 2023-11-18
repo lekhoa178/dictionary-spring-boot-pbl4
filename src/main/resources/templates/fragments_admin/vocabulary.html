@@ -1,0 +1,26 @@
+<form  method="post">
+    <table class="vocab-list">
+        <thead>
+        <tr>
+            <th>Word</th>
+            <th>Meaning</th>
+            <th>Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vocabulary : ${vocabularies}" >
+            <td th:text="*{vocabulary.word}"></td>
+            <td th:text="*{vocabulary.meaning}"></td>
+            <td th:text="*{vocabulary.type}"></td>
+            <td>
+                <!--                        <button type="button" th:attr="value=${stage.stageId}" class="action-btn update-stage">-->
+                <!--                            <i class="fa-solid fa-pen"></i>-->
+                <!--                        </button>-->
+                <!--                        <button type="button" class = "action-btn add-level" th:attr="value=${stage.stageId}" id="delete-btn">-->
+                <!--                            <i class="fa-solid fa-trash"></i>-->
+                <!--                        </button>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>

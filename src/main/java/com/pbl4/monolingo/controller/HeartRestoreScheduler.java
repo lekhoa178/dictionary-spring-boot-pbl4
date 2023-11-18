@@ -20,7 +20,7 @@ public class HeartRestoreScheduler {
         this.accountService = accountService;
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 600000)
     public void restoreHearts() {
         List<Account> accounts = accountService.getAllAccount();
         for (Account account: accounts) {

@@ -1,0 +1,15 @@
+<div class="form-container">
+    <form th:action="${'/admin/stage/save'}" th:object="${stage}" method="POST" class = "account-form" id="form-account" >
+        <div class="input-field">
+            <div class="row">
+                <input type="hidden" name="" th:field="*{stageId}">
+                <input  type="text" th:field="*{title}" placeholder="Tiêu đề"/>
+                <input type="text" th:field="*{depiction}" placeholder="Mô tả"/>
+            </div>
+        </div>
+        <div class="button-field">
+            <button type="submit" class="form-btn"><b>Submit</b></button>
+            <button type="reset" class="form-btn"><b>Reset</b></button>
+        </div>
+    </form>
+</div>

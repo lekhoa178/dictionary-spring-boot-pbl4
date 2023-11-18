@@ -65,7 +65,7 @@ public class ApplicationController {
 
     public String showPractice(Model model, Principal principal,
                                @RequestHeader(value = "request-source", required = false) String requestSource) {
-        Account account = accountService.getAccountByUserName(principal.getName());
+        Account account = accountService.getAccountByUsername(principal.getName());
         List<Notebook> notebooks = notebookService.getAllNotebooksByAccountId(account.getAccountId());
 
         for (Notebook notebook:

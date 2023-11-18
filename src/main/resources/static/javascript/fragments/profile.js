@@ -1,7 +1,7 @@
 // /*<![CDATA[*/
-//
 // // Assuming 'userExperienceData' is a list of objects with 'date', 'experience', and 'onlineHours' properties
 // var userStats = /*[[${statPerDay}]]*/ [];
+// console.log(userStats);
 //
 // var ctx = document.getElementById('statChart').getContext('2d');
 //

@@ -159,7 +159,7 @@ public class ApplicationController {
         if (principal != null) {
             Account account = accountService.getAccountByUsername(principal.getName());
             model.addAttribute("stats", dataPerDayService.getAccountStats(account.getAccountId()));
-            //model.addAttribute("statPerDay", dataPerDayService.getAccountDPDs(account.getAccountId()));
+            model.addAttribute("statPerDay", dataPerDayService.getAccountDPDs(account.getAccountId()));
 
             if (requestSource == null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));

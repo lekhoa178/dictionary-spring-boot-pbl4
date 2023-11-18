@@ -16,6 +16,11 @@ async function init() {
   fragmentEl.classList.add('menu--tab-active');
 
   fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
+
+  const script = document.createElement('script');
+  const text = document.createTextNode(await AJAX(`/javascript/fragments/${fragment}.js`));
+  script.appendChild(text);
+  fragmentContainer.append(script);
 }
 
 init();
@@ -33,7 +38,6 @@ menu.addEventListener('click', async function (e) {
       return;
 
     fragment = subTarget.id.replace('fragment-', '');
-    console.log(fragment);
   }
   if (target.classList.contains('.menu--tab-active')) return;
 
@@ -45,6 +49,10 @@ menu.addEventListener('click', async function (e) {
 
   history.pushState(history.state, document.title, `/${fragment}`);
   fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
+  const script = document.createElement('script');
+  const text = document.createTextNode(await AJAX(`/javascript/fragments/${fragment}.js`));
+  script.appendChild(text);
+  fragmentContainer.append(script);
 });
 
 // ------------------- SEARCH ----------------

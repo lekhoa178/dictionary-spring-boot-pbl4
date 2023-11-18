@@ -6,6 +6,7 @@ const gameSentence = document.querySelector('.game--sentence');
 const passBtn = document.querySelector('.btn--pass');
 const checkBtn = document.querySelector('.btn--check');
 const volumeBtn = document.querySelector('.volume--icon');
+const requestTitleEl = document.querySelector('.request--title');
 
 const progressEl = document.querySelector('.progress');
 
@@ -16,6 +17,7 @@ let correctAns = 0;
 let progress = 0;
 let totalQuestion = 13;
 let heart = 5;
+let type = 0;
 
 const bodyEl = document.querySelector('.base-container');
 const stageId = bodyEl.dataset.stage;
@@ -114,35 +116,58 @@ document.addEventListener('click', async function(e) {
 });
 
 const nextQuestion = function() {
+
     progressEl.style.width = `${100 * progress/totalQuestion}%`;
     answerContainer.innerText = "";
+
+    type = Math.round(Math.random() * 2);
 
     let randomQues = 0;
     while (randomQues === progress) {
         randomQues = Math.floor(Math.random() * totalQuestion);
     }
-    let [enSentence, viSentence] = questions[progress].split("/");
     let [ranEnSentence, ranViSentence] = questions[randomQues].split("/");
+    let [enSentence, viSentence] = questions[progress].split("/");
 
-    orViSentence = viSentence;
+    let words;
 
     gameSentence.innerText = enSentence;
+    if (type >= 1) {
 
-    let words = viSentence.replaceAll(" , ", " ").split(" ");
+        gameSentence.style.display = "block";
+        requestTitleEl.innerText = "Viết lại câu bằng tiếng Việt"
+        orViSentence = viSentence;
 
-    //console.log(words);
-    // console.log(ranViSentence);
-    //
-    // for (let i = 0; i < words.length; ++i) {
-    //     if (ranViSentence.indexOf(` ${words[i]} `) !== -1) {
-    //         ranViSentence = ranViSentence.replace(words[i], '');
-    //     }
-    // }
+        words = viSentence.replaceAll(" , ", " ").split(" ");
 
-    //const rWords = ranViSentence.replaceAll(' , ', ' ').split(' ').filter(word => word !== '');
-    words = sortRandomly([...words]);
+        for (let i = 0; i < words.length; ++i) {
+            if (ranViSentence.indexOf(` ${words[i]} `) !== -1) {
+                ranViSentence = ranViSentence.replace(words[i], '');
+            }
+        }
 
-    console.log(enSentence, viSentence);
+        const rWords = ranViSentence.replaceAll(' , ', ' ').split(' ').filter(word => word !== '')
+            .slice(0, Math.min(3, ranViSentence.length));
+        words = sortRandomly([...words, ...rWords]);
+    }
+    else {
+        gameSentence.style.display = "none";
+        requestTitleEl.innerText = "Nghe và viết lại câu tiếng Anh"
+
+        orViSentence = enSentence;
+
+        words = [...enSentence.replaceAll(' , ', ' ').split(' ')];
+
+        for (let i = 0; i < words.length; ++i) {
+            if (ranEnSentence.indexOf(` ${words[i]} `) !== -1) {
+                ranEnSentence = ranEnSentence.replace(words[i], '');
+            }
+        }
+
+        const rWords = ranEnSentence.replaceAll(' , ', ' ').split(' ').filter(word => word !== '')
+            .slice(0, Math.min(3, ranEnSentence.length));
+        words = sortRandomly([...words, ...rWords]);
+    }
 
     let cardHTML = "";
     for (let i = 0; i < words.length; ++i) {

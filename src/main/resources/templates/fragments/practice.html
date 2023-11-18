@@ -1,9 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
-    <h1>Practice</h1>
-</body>
-</html>
+<div class="practice-container">
+    <div class="notebook-container">
+        <p style="font-weight: bold; font-size: 20px">Sổ tay từ vựng</p>
+
+        <div class="notebook--word-container">
+            <div class="word-card" th:each="notebook: ${notebooks}">
+                <p class="notebook--word" th:text="*{notebook.lexicon.word}"></p>
+                <p class="notebook-definition" th:text="${notebook.getLexicon().getSynset().getDefinition()}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="practicing-container">
+        <p style="font-weight: bold; font-size: 20px">Góc học tập</p>
+
+        <div class="practice-btn practice-btn--learn">
+            <p class="practice--title">Ôn tập các từ vựng cũ</p>
+            <p class="practice--body">Hãy bắt đầu bài học tập trung vào các từ trong sổ tay của bạn</p>
+            <img th:src="@{/img/stack-of-books.png}" alt="" class="practice--img"/>
+        </div>
+
+        <div class="practice-btn practice-btn--listen">
+            <p class="practice--title">Luyện nghe</p>
+            <p class="practice--body">Trau dồi kĩ năng nghe với phiên bản chỉ có âm thanh của câu chuyện</p>
+            <img th:src="@{/img/headphones.png}" alt="" class="practice--img"/>
+        </div>
+    </div>
+</div>

@@ -70,21 +70,27 @@ public class ApplicationController {
 
     public String showPractice(Model model, Principal principal,
                                @RequestHeader(value = "request-source", required = false) String requestSource) {
-        List<Notebook> notebooks = notebookService.findAll();
-        for (Notebook notebook:
-             notebooks) {
-            notebook.getLexicon().setWord(notebook.getLexicon().getWord().replace('_', ' '));
-        }
-        model.addAttribute("notebooks", notebooks);
+        if (principal != null) {
+            int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+            List<Notebook> notebooks = notebookService.getAllNotebooksByAccountId(accountId);
 
-        if (requestSource == null) {
-            if (principal != null) {
-                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+            for (Notebook notebook:
+                    notebooks) {
+                notebook.getLexicon().setWord(notebook.getLexicon().getWord().replace('_', ' '));
+
+                Synset synset = notebook.getLexicon().getSynset();
+                if (synset.getDefinition().length() > 25)
+                    notebook.getLexicon().getSynset().setDefinition(synset.getDefinition().substring(0, 25).concat("..."));
             }
+            model.addAttribute("notebooks", notebooks);
+        }
+
+        if (requestSource == null & principal != null) {
+            model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
             return "main";
         }
         else
-            return "fragments_admin/test";
+            return "fragments/practice";
     }
 
     @GetMapping("/rank")

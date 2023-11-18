@@ -61,6 +61,6 @@ public class NotebookServiceImpl implements NotebookService{
 
     @Override
     public List<Notebook> getAllNotebooksByAccountId(Integer accountId) {
-        return null;
+        return notebookRepository.findAllByIdAccountId(accountId);
     }
 }

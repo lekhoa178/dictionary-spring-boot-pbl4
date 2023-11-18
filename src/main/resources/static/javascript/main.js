@@ -24,6 +24,7 @@ menu.addEventListener('click', async function (e) {
   e.preventDefault();
 
   const target = e.target.closest('.menu--tabs');
+  if (target == null) return;
 
   let fragment = target.id.replace('fragment-', '');
   if (fragment === 'more') {

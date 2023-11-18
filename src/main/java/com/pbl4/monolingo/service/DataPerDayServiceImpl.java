@@ -5,6 +5,7 @@ import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.entity.embeddable.DataPerDayId;
 import com.pbl4.monolingo.utility.dto.AccountExp;
+import com.pbl4.monolingo.utility.dto.AccountStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,16 @@ public class DataPerDayServiceImpl implements DataPerDayService {
         dpd.setOnlineHours(dpd.getOnlineHours() + onlHours);
 
         return dataPerDayRepository.save(dpd);
+    }
+
+    @Override
+    public AccountStats getAccountStats(int accountId) {
+        List<Object[]> results = dataPerDayRepository.findAccountBySumStats(accountId);
+        return new AccountStats(
+                (Account)results.get(0)[0],
+                (Long)results.get(0)[1],
+                (Double)results.get(0)[2],
+                (int)results.get(0)[3]);
     }
 
     @Override

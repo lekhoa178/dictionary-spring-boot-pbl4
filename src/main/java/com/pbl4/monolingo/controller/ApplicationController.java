@@ -83,14 +83,14 @@ public class ApplicationController {
                     notebook.getLexicon().getSynset().setDefinition(synset.getDefinition().substring(0, 25).concat("..."));
             }
             model.addAttribute("notebooks", notebooks);
+
+            if (requestSource == null) {
+                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+                return "main";
+            }
         }
 
-        if (requestSource == null & principal != null) {
-            model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-            return "main";
-        }
-        else
-            return "fragments/practice";
+        return "fragments/practice";
     }
 
     @GetMapping("/rank")
@@ -156,14 +156,18 @@ public class ApplicationController {
 
     public String showProfile(Model model, Principal principal,
                               @RequestHeader(value = "request-source", required = false) String requestSource) {
-        if (requestSource == null) {
-            if (principal != null) {
+        if (principal != null) {
+            Account account = accountService.getAccountByUsername(principal.getName());
+            model.addAttribute("stats", dataPerDayService.getAccountStats(account.getAccountId()));
+            //model.addAttribute("statPerDay", dataPerDayService.getAccountDPDs(account.getAccountId()));
+
+            if (requestSource == null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+                return "main";
             }
-            return "main";
         }
-        else
-            return "fragments/profile";
+
+        return "fragments/profile";
     }
 
     @GetMapping("/lesson")

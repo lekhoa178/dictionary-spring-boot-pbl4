@@ -10,6 +10,7 @@
     gap: 10px;
     padding-bottom: 20px;
     border-bottom: 2px solid #e4e4e4;
+    height: 150px;
 }
 
 .stats-container {
@@ -71,6 +72,31 @@
 }
 
 .profile-text {
-    font-weight: 600;
+    font-weight: 400;
     color: #888888;
+}
+
+.profile-text:first-letter {
+    text-transform: uppercase;
+}
+
+.profile-text--title {
+    text-transform: uppercase;
+}
+
+.profile-text--email:first-letter {
+    text-transform: none;
+}
+
+.profile-text:hover {
+    text-decoration: underline;
+    font-size: 20px;
+}
+
+.profile-text:hover::after {
+    content: "✒️";
+    font-size: 15px;
+    margin-left: 20px;
+    text-decoration: none;
+    cursor: pointer;
 }

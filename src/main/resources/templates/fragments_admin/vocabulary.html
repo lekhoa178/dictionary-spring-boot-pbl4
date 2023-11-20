@@ -1,5 +1,7 @@
-<form  method="post">
-    <table class="vocab-list">
+<form  >
+    <table id="vocab-table" class="vocab-list">
+        <input type="hidden" class="stageId" th:value="${stageId}">
+        <input type="hidden" class="levelId" th:value="${levelId}">
         <thead>
         <tr>
             <th>Word</th>
@@ -8,13 +10,20 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="vocabulary : ${vocabularies}" >
-            <td th:text="*{vocabulary.word}"></td>
-            <td th:text="*{vocabulary.meaning}"></td>
-            <td th:text="*{vocabulary.type}"></td>
+        <tr class="rowData" th:each="vocabulary, vocabularyStat : ${vocabularies}" th:id="'row-' + ${vocabularyStat.index}">
+            <td class="word">
+                <input type="hidden" class="vocab-id" th:value="*{vocabulary.id.vocabularyNum}">
+                <input class="word-input" type="text" th:value="*{vocabulary.word}">
+            </td>
+            <td class="meaning" >
+                <input class="meaning-input" type="text" th:value="*{vocabulary.meaning}">
+            </td>
+            <td class="type" >
+                <input class="type-input" type="text" th:value="*{vocabulary.type}">
+            </td>
             <td>
-                <!--                        <button type="button" th:attr="value=${stage.stageId}" class="action-btn update-stage">-->
-                <!--                            <i class="fa-solid fa-pen"></i>-->
+<!--                                        <button type="button" th:attr="value=${stage.stageId}" class="action-btn update-stage">-->
+<!--                                            <i class="fa-solid fa-pen"></i>-->
                 <!--                        </button>-->
                 <!--                        <button type="button" class = "action-btn add-level" th:attr="value=${stage.stageId}" id="delete-btn">-->
                 <!--                            <i class="fa-solid fa-trash"></i>-->
@@ -23,4 +32,6 @@
         </tr>
         </tbody>
     </table>
+    <button type="button" id="vocab-form-btn">addrow</button>
+    <button type="button" onclick="sendDataToController()">send data</button>
 </form>

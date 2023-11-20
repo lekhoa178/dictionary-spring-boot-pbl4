@@ -13,6 +13,7 @@ public class VocabularyId implements Serializable {
 
     public VocabularyId() {}
 
+
     public VocabularyId(LevelId levelId, Integer vocabularyNum) {
         this.levelId = levelId;
         this.vocabularyNum = vocabularyNum;

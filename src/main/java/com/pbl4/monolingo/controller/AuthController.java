@@ -5,6 +5,7 @@ import com.pbl4.monolingo.auth.AuthenticationResponse;
 import com.pbl4.monolingo.auth.AuthenticationService;
 import com.pbl4.monolingo.auth.RegisterRequest;
 import com.pbl4.monolingo.entity.Account;
+import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.entity.ExtraInformation;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.DataPerDayService;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.net.http.HttpResponse;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -37,7 +39,7 @@ public class AuthController {
     private final AuthenticationService authenticationService;
     private final ExtraInfoService extraInfoService;
     private final DataPerDayService dataPerDayService;
-    private final Map<Integer, LocalDateTime> loginTimes = new HashMap<>();
+
 
     @GetMapping("/signup")
     public String showRegisterForm(Model model){
@@ -71,7 +73,7 @@ public class AuthController {
 
         Account temp = accountService.getAccountByUsername(account.getUsername());
         extraInfoService.updateExtraInfo(temp);
-        loginTimes.put(temp.getAccountId(), LocalDateTime.now());
+        authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
 
         return "redirect:/learn";
     }
@@ -80,11 +82,21 @@ public class AuthController {
         return "error";
     }
     @GetMapping("/logout")
-    public String signout(HttpSession session){
+    public String signOut(Principal principal){
+        if (principal != null) {
+            Account account = accountService.getAccountByUsername(principal.getName());
+            LocalDateTime loginTime = authenticationService.getLoginTimes().get(account.getAccountId());
+            LocalDateTime logoutTime = LocalDateTime.now();
 
+            System.out.println(authenticationService.getLoginTimes().size());
+            System.out.println(loginTime + " " + logoutTime);
+            float onlineTime = (float) (ChronoUnit.SECONDS.between(loginTime, logoutTime) / 3600.0);
 
-        session.invalidate();
-        session.removeAttribute("jwtToken");
+            System.out.println(onlineTime);
+            DataPerDay dt = dataPerDayService.getAccountDPD(account.getAccountId());
+            dt.setOnlineHours(dt.getOnlineHours() + onlineTime);
+            dataPerDayService.save(dt);
+        }
         return "redirect:/public/login";
     }
 }

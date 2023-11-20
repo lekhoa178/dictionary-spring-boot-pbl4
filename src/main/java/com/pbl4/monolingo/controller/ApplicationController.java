@@ -66,33 +66,6 @@ public class ApplicationController {
             return "fragments/learn";
     }
 
-    @GetMapping("/practice")
-
-    public String showPractice(Model model, Principal principal,
-                               @RequestHeader(value = "request-source", required = false) String requestSource) {
-        if (principal != null) {
-            int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
-            List<Notebook> notebooks = notebookService.getAllNotebooksByAccountId(accountId);
-
-            for (Notebook notebook:
-                    notebooks) {
-                notebook.getLexicon().setWord(notebook.getLexicon().getWord().replace('_', ' '));
-
-                Synset synset = notebook.getLexicon().getSynset();
-                if (synset.getDefinition().length() > 25)
-                    notebook.getLexicon().getSynset().setDefinition(synset.getDefinition().substring(0, 25).concat("..."));
-            }
-            model.addAttribute("notebooks", notebooks);
-        }
-
-        if (requestSource == null & principal != null) {
-            model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-            return "main";
-        }
-        else
-            return "fragments/practice";
-    }
-
     @GetMapping("/rank")
 
     public String showRank(Model model, Principal principal,
@@ -122,6 +95,33 @@ public class ApplicationController {
         }
         else
             return "fragments/rank";
+    }
+
+    @GetMapping("/practice")
+
+    public String showPractice(Model model, Principal principal,
+                               @RequestHeader(value = "request-source", required = false) String requestSource) {
+        if (principal != null) {
+            int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+            List<Notebook> notebooks = notebookService.getAllNotebooksByAccountId(accountId);
+
+            for (Notebook notebook:
+                    notebooks) {
+                notebook.getLexicon().setWord(notebook.getLexicon().getWord().replace('_', ' '));
+
+                Synset synset = notebook.getLexicon().getSynset();
+                if (synset.getDefinition().length() > 25)
+                    notebook.getLexicon().getSynset().setDefinition(synset.getDefinition().substring(0, 25).concat("..."));
+            }
+            model.addAttribute("notebooks", notebooks);
+        }
+
+        if (requestSource == null & principal != null) {
+            model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+            return "main";
+        }
+        else
+            return "fragments/practice";
     }
 
     @GetMapping("/mission")

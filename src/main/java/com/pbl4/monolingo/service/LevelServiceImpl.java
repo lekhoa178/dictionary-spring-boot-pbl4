@@ -28,4 +28,9 @@ public class LevelServiceImpl implements LevelService{
     public List<Vocabulary> getVocabularyByLevelId(LevelId levelId) {
         return vocabularyRepository.findAllByIdLevelId(levelId);
     }
+
+    @Override
+    public void save(Level level) {
+        levelRepository.save(level);
+    }
 }

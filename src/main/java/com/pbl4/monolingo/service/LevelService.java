@@ -9,4 +9,6 @@ import java.util.List;
 public interface LevelService {
     List<Level> getLevelByStageId(int stageId);
     List<Vocabulary> getVocabularyByLevelId(LevelId levelId);
+
+    void save(Level level);
 }

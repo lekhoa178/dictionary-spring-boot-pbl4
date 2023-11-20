@@ -1,0 +1,22 @@
+.stage-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 1000px;
+}
+
+.stage-list tbody {
+}
+.stage-list tr {
+    border-bottom: 1px solid #BBBBBB;
+    height: 60px;
+}
+.stage-list th, td {
+    padding: 10px 0;
+    text-align: center;
+    width: fit-content;
+}
+.stage-list {
+    width: 100%;
+    border-collapse: collapse;
+}

@@ -33,9 +33,9 @@ fragmentContainer.addEventListener('click',async function(e){
 })
 
 fragmentContainer.addEventListener('click',async function(e){
-    if(e.target.closest('.add-level')) {
+    if(e.target.closest('.open-stage')) {
 
-        var id = e.target.closest('.add-level').value;
+        var id = e.target.closest('.open-stage').value;
 
         $.ajax({
             type: 'GET',

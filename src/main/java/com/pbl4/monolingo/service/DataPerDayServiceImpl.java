@@ -69,6 +69,11 @@ public class DataPerDayServiceImpl implements DataPerDayService {
     }
 
     @Override
+    public void save(DataPerDay dataPerDay) {
+        dataPerDayRepository.save(dataPerDay);
+    }
+
+    @Override
     public Integer getDayId() {
         LocalDate currentDate = LocalDate.now();
 

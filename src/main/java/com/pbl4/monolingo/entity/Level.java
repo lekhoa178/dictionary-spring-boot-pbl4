@@ -16,7 +16,7 @@ public class Level {
 
     public Level() {}
 
-    public Level(LevelId id, boolean complete) {
+    public Level(LevelId id) {
         this.id = id;
     }
 

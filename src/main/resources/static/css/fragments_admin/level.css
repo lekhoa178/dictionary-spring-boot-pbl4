@@ -1,0 +1,14 @@
+.level-container {
+    width: 900px;
+    display: flex;
+    flex-direction: row;
+}
+.level-field {
+    width: 30%;
+}
+
+.vocabulary-field {
+    width: 70%;
+    height: 500px;
+    overflow: auto;
+}

@@ -1,0 +1,33 @@
+<form id="vocabulary-form" action="" method="post">
+    <table>
+        <input type="hidden" class="stageId" th:value="${stageId}">
+        <input type="hidden" class="levelId" th:value="${levelId}">
+        <thead>
+        <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+        </tr>
+        </thead>
+        <tbody id="formBody">
+        <tr class="rowData">
+            <td><input type="text" class="word-input" required></td>
+            <td><input type="text" class="meaning-input" required></td>
+            <td>
+                <select name="" class="type-input">
+                    <option value="Nom">Nom</option>
+                    <option value="Verb">Verb</option>
+                    <option value="AdjVerb">AdjVerb</option>
+                    <option value="O">O</option>
+                </select>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+</form>
+<div class="btn-container">
+    <button type="button" id="add-vocab-btn">Add</button>
+</div>
+<script defer th:src="@{/javascript/fragments_admin/vocabulary.js}"></script>
+

@@ -1,0 +1,8 @@
+#vocabulary-form table {
+    border-collapse: collapse;
+    width: 50%;
+}
+
+#vocabulary-form table, th, td {
+    border: 1px solid black;
+}

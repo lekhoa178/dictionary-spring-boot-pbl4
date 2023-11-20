@@ -20,4 +20,11 @@ public interface DataPerDayRepository extends JpaRepository<DataPerDay, DataPerD
             "ORDER BY SUM(d.experience) DESC ")
     List<Object[]> findAllAccountOrderBySumExp();
 
+    @Query ("SELECT a, SUM(d.experience), SUM(d.onlineHours), e.numberOfConsecutiveDay " +
+            "FROM Account a " +
+            "JOIN DataPerDay d ON a.accountId = d.id.accountId " +
+            "JOIN ExtraInformation e ON a.accountId = e.accountId " +
+            "GROUP BY a.accountId")
+    List<Object[]> findAccountBySumStats(int accountId);
+
 }

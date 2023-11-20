@@ -154,7 +154,13 @@ const nextQuestion = function() {
         gameSentence.style.display = "none";
         requestTitleEl.innerText = "Nghe và viết lại câu tiếng Anh"
 
+        enSentence = enSentence.slice(0, -1);
+        ranEnSentence = ranEnSentence.slice(0, -1);
+
         orViSentence = enSentence;
+
+        console.log(enSentence);
+        console.log(ranEnSentence);
 
         words = [...enSentence.replaceAll(' , ', ' ').split(' ')];
 
@@ -182,7 +188,6 @@ const nextQuestion = function() {
 
 async function setupRound() {
     questions = await AJAX(`/cfg/sentences/${stageId}/${levelId}/${totalQuestion}`, true);
-    console.log(questions);
 
     nextQuestion();
 }

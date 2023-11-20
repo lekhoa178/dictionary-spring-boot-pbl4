@@ -3,7 +3,7 @@
         <p style="font-weight: bold; font-size: 20px">Sổ tay từ vựng</p>
 
         <div class="notebook--word-container">
-            <div class="word-card" th:each="notebook: ${notebooks}">
+            <div class="word-card" th:each="notebook: ${notebooks}" th:data-word="${notebook.getLexicon().getWord()}">
                 <p class="notebook--word" th:text="*{notebook.lexicon.word}"></p>
                 <p class="notebook-definition" th:text="${notebook.getLexicon().getSynset().getDefinition()}"></p>
             </div>

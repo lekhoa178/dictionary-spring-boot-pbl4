@@ -1,12 +1,12 @@
 <div class="profile-container">
     <div class="personal-container">
-        <p class="profile-text"
-           style="font-size: 20px; color: black; margin-bottom: 10px; font-weight: bold">
-            LÊ ANH KHOA
+        <p  class="profile-text profile-text--title"
+            style="font-size: 20px; color: black; margin-bottom: 10px; font-weight: bold"
+            th:text="${stats.account.getName()}">
         </p>
-        <p class="profile-text">Nam</p>
-        <p class="profile-text">17/08/2003</p>
-        <p class="profile-text">leanhkhoapl178@gmail.com</p>
+        <p class="profile-text" th:text="${stats.account.getGender() ? 'nữ' : 'nam'}"></p>
+        <p class="profile-text" th:text="${#dates.format(stats.account.getBirthdate(), 'dd-MM-yyyy')}"></p>
+        <p class="profile-text profile-text--email" th:text="${stats.account.getEmail()}"></p>
     </div>
 
     <p style="font-weight: bold; font-size: 20px">Thống kê</p>
@@ -14,21 +14,24 @@
         <div class="stats-item">
             <img th:src="@{/img/flame.png}" alt="" class="stats--img"/>
             <p class="stats--title stats--title--streak">Streak</p>
-            <p class="stats--amount stats--streak">5</p>
+            <p class="stats--amount stats--streak" th:text="${stats.streak}"></p>
         </div>
 
         <div class="stats-item">
             <img th:src="@{/img/ray.png}" alt="" class="stats--img"/>
             <p class="stats--title stats--title--exp">Tổng KN</p>
-            <p class="stats--amount stats--exp">5</p>
+            <p class="stats--amount stats--exp" th:text="${stats.experience}"></p>
         </div>
 
         <div class="stats-item">
             <img th:src="@{/img/clock.png}" alt="" class="stats--img"/>
             <p class="stats--title stats--title--hour">Số giờ học</p>
-            <p class="stats--amount stats--hour">5</p>
+            <p class="stats--amount stats--hour" th:text="${#numbers.formatDecimal(stats.onlineHours, 0, 0)}"></p>
         </div>
     </div>
 
     <p style="font-weight: bold; font-size: 20px">Biểu đồ</p>
+    <div>
+        <canvas th:id="experienceChart" width="400" height="200"></canvas>
+    </div>
 </div>

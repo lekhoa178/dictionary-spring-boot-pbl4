@@ -6,6 +6,8 @@ const fragmentContainer = document.querySelector('.content-container');
 //
 // console.log("Get token from main: ",token);
 
+let loadedScript  = new Set();
+
 async function init() {
   const fragment = window.location.pathname.substring(1);
   const fragmentEl = document.getElementById(`fragment-${fragment}`).closest('.menu--tabs');
@@ -16,7 +18,16 @@ async function init() {
 
   fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
 
+  const path = `/javascript/fragments/${fragment}.js`;
+  if (loadedScript.has(path))
+    return;
 
+  const script = document.createElement('script');
+  const text = document.createTextNode(await AJAX(path));
+  script.appendChild(text);
+  fragmentContainer.append(script);
+
+  loadedScript.add(path);
 }
 
 init();
@@ -42,13 +53,20 @@ menu.addEventListener('click', async function (e) {
   }
   target.classList.add('menu--tab-active');
 
-
   history.pushState(history.state, document.title, `/${fragment}`);
   fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
+
+  const path = `/javascript/fragments/${fragment}.js`;
+  if (loadedScript.has(path))
+    return;
+
   const script = document.createElement('script');
-  const text = document.createTextNode(await AJAX(`/javascript/fragments/${fragment}.js`));
+  const text = document.createTextNode(await AJAX(path));
   script.appendChild(text);
   fragmentContainer.append(script);
+
+  loadedScript.add(path);
+
 });
 
 // ------------------- SEARCH ----------------

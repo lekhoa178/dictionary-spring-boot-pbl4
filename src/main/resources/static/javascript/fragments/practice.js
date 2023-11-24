@@ -7,4 +7,6 @@ fragmentContainer.addEventListener('click', async function(e){
 
     history.pushState(history.state, document.title, `/meaning/${word}`);
     fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
+
+    console.log("Hello");
 })

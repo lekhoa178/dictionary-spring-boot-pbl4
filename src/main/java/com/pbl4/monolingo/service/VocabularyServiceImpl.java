@@ -17,7 +17,13 @@ public class VocabularyServiceImpl implements VocabularyService{
     @Override
     public Vocabulary save(Vocabulary vocabulary) {
         System.out.println("Saving " + vocabulary.getId().getLevelId().getStageId() + " " + vocabulary.getId().getLevelId().getLevelId() + " " +
-                vocabulary.getId().getVocabularyNum());
+                vocabulary.getId().getVocabularyNum() + " " + vocabulary.getWord() + " " + vocabulary.getMeaning());
         return vocabularyRepository.save(vocabulary);
+    }
+
+    @Override
+    public int findMaxId()
+    {
+        return vocabularyRepository.findMaxId();
     }
 }

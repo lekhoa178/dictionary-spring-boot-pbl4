@@ -1,55 +1,37 @@
 const menu = document.querySelector(".menu");
 const tabs = menu.querySelectorAll('.menu--tabs');
 const fragmentContainer = document.querySelector('.content-container');
+const loadedScript = new Set();
 
-function init() {
-    const path = window.location.pathname
+function loadScript(url) {
+    if (loadedScript.has(url))
+        return true
+    return false
+}
+async function init() {
+    const fragment = window.location.pathname.substring(1).split('/')[1];
+    console.log(fragment)
 
-    const parts = path.split('/')
-    const fragment = parts[2]
-    let pagePath = ''
-
-    // if (parts.length == 5)
-    // {
-    //     const value = parts[parts.length - 1]
-    //     const sub = parts[parts.length - 2]
-    //     pagePath = pagePath + `/${sub}/${value}`
-    // }
-    // else if (parts.length == 4) {
-    //     const sub = parts[parts.length - 1]
-    //     pagePath = pagePath + `/${sub}`
-    // }
-    if (parts[3] != null)
-        pagePath = pagePath + `/${parts[3]}`
-    if (parts[4] != null)
-        pagePath = pagePath + `/${parts[4]}`
-    // const fragment = "account";
-    const fragmentEl = document.getElementById(`fragment-${fragment}`);
+    const fragmentEl = document.getElementById(`fragment-${fragment}`).closest('.menu--tabs');
     for (let i = 0; i < tabs.length; ++i) {
         tabs[i].classList.remove('menu--tab-active');
     }
     fragmentEl.classList.add('menu--tab-active');
-    fetch(`/admin/${fragment}` + pagePath, {
-        method: 'GET',
-        headers: {
-            'request-source': 'JS',
-        },
-    })
-        .then(function(response) {
-            return response.text();
-        })
-        .then(function(data) {
-            // Update the fragment content with the fetched data
-            fragmentContainer.innerHTML = data;
-        })
-        .catch(function(error) {
-            console.error('Error:', error);
-        });
+
+    fragmentContainer.innerHTML = await AJAX(`/admin/${fragment}`);
+
+    const script = document.createElement('script');
+    const text = document.createTextNode(await AJAX(`/javascript/fragments_admin/${fragment}.js`));
+    script.appendChild(text);
+
+    loadedScript.add(`/javascript/fragments_admin/${fragment}.js`)
+
+    fragmentContainer.append(script);
 }
 
 init();
 
-menu.addEventListener('click', e => {
+menu.addEventListener('click', async e => {
     e.preventDefault();
 
     const target = e.target.closest('.menu--tabs');
@@ -62,22 +44,46 @@ menu.addEventListener('click', e => {
 
     const fragment = target.id.replace("fragment-", "");
     history.pushState(history.state, document.title, `/admin/${fragment}`);
-    fetch(`/admin/${fragment}`, {
-        method: 'GET',
-        headers: {
-            'request-source': 'JS',
-        },
-    })
-        .then(function(response) {
-            return response.text();
-        })
-        .then(function(data) {
-            // Update the fragment content with the fetched data
-            fragmentContainer.innerHTML = data;
-        })
-        .catch(function(error) {
-            console.error('Error:', error);
-        });
+    fragmentContainer.innerHTML = await AJAX(`/admin/${fragment}`);
 
+    if (loadScript(`/javascript/fragments_admin/${fragment}.js`))
+        return
+
+    console.log("execute")
+
+    const script = document.createElement('script');
+    const text = document.createTextNode(await AJAX(`/javascript/fragments_admin/${fragment}.js`));
+    script.appendChild(text);
+    loadedScript.add(`/javascript/fragments_admin/${fragment}.js`)
+    fragmentContainer.append(script);
 })
 
+// ----------------- UTILITY --------------------
+
+async function AJAX(fragment, json = false) {
+    var token = sessionStorage.getItem('jwtToken');
+    if (token) {
+        $.ajaxSetup({
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        });
+    }
+    // console.log('Token: ', token);
+
+    try {
+        const response = await fetch(fragment, {
+            method: 'GET',
+            headers: {
+                'request-source': 'JS',
+            },
+        });
+
+        const data = json ? await response.json() : await response.text();
+
+        if (!response.ok) throw new Error('Error response');
+        return data;
+    } catch (e) {
+        console.error(e.message);
+    }
+}

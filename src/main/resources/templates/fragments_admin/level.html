@@ -1,36 +1,29 @@
 <div class="level-container">
     <div class="level-field">
-        <div class="btn-field">
-            <button type="button" class="add-level">add</button>
+
+        <div class="level-table-container">
+            <table id="level-table" class="level-list">
+                <thead>
+                <tr>
+                    <th class="stage-num" th:text="Stage + ' ' + ${stage}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="level : ${levels}">
+                    <td class="level-row" th:attr="data-values=${level.id.levelId} + '_' + ${stage}"
+                        th:text="Level + ' ' + ${level.id.levelId}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-
-        <table id="level-table" class="level-list">
-            <thead>
-            <tr>
-                <th></th>
-                <th class="stage-num" th:text="Stage + ' ' + ${stage}"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="level : ${levels}">
-                <td class="level-row" th:attr="data-values=${level.id.levelId} + '_' + ${stage}"
-                    th:text="Level + ' ' + ${level.id.levelId}"></td>
-                <td>
-                    <!--                        <button type="button" th:attr="value=${stage.stageId}" class="action-btn update-stage">-->
-                    <!--                            <i class="fa-solid fa-pen"></i>-->
-                    <!--                        </button>-->
-                    <!--                        <button type="button" class = "action-btn add-level" th:attr="value=${stage.stageId}" id="delete-btn">-->
-                    <!--                            <i class="fa-solid fa-trash"></i>-->
-                    <!--                        </button>-->
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
+        <div class="btn-container">
+            <button type="button" class="level-action-btn add-level">add</button>
+        </div>
     </div>
 
     <div class="vocabulary-field">
 
     </div>
 </div>
-<script defer th:src="@{/javascript/fragments_admin/level.js}"></script>
+

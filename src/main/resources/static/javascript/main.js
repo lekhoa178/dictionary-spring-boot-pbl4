@@ -8,7 +8,6 @@ const fragmentContainer = document.querySelector('.content-container');
 
 async function init() {
   const fragment = window.location.pathname.substring(1);
-
   const fragmentEl = document.getElementById(`fragment-${fragment}`).closest('.menu--tabs');
   for (let i = 0; i < tabs.length; ++i) {
     tabs[i].classList.remove('menu--tab-active');
@@ -17,10 +16,7 @@ async function init() {
 
   fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
 
-  const script = document.createElement('script');
-  const text = document.createTextNode(await AJAX(`/javascript/fragments/${fragment}.js`));
-  script.appendChild(text);
-  fragmentContainer.append(script);
+
 }
 
 init();

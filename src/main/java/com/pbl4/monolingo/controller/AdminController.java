@@ -5,6 +5,7 @@ import com.pbl4.monolingo.entity.Level;
 import com.pbl4.monolingo.entity.Stage;
 import com.pbl4.monolingo.entity.Vocabulary;
 import com.pbl4.monolingo.entity.embeddable.LevelId;
+import com.pbl4.monolingo.entity.embeddable.VocabularyId;
 import com.pbl4.monolingo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -200,6 +202,9 @@ public class AdminController {
 
     @PostMapping("/account/save")
     public String saveAccount(@ModelAttribute("account") Account account) {
+        if(account.getAccountId() != 0)
+            account.setPassword(accountService.getAccountById(account.getAccountId()).getPassword());
+
         accountService.saveAccount(account);
         return "redirect:/admin/account";
     }
@@ -222,7 +227,6 @@ public class AdminController {
     public String showStageUpdateForm(Model model, Principal principal,
                                       @RequestHeader(value = "request-source", required = false) String requestSource,
                                       @PathVariable(value = "stageId") int stageId) {
-
         Stage stage = stageService.getStageById(stageId);
         System.out.println(stage.getStageId());
         model.addAttribute("stage", stage);
@@ -232,7 +236,9 @@ public class AdminController {
 
     @PostMapping("/stage/save")
     public String saveStage(@ModelAttribute("stage") Stage stage) {
-
+        List<Level> levels = levelService.getLevelByStageId(stage.getStageId());
+        stage.setLevels(levels);
+        System.out.println(stage.toString());
         stageService.save(stage);
         return "redirect:/admin/stage";
     }
@@ -262,10 +268,13 @@ public class AdminController {
 
         System.out.println(vocabularies.size());
         for (Vocabulary vocabulary : vocabularies) {
-            System.out.println(vocabulary.toString());
 
-                Vocabulary rs = vocabularyService.save(vocabulary);
-                System.out.println("success");
+            System.out.println(vocabulary.toString());
+            if(vocabulary.getId().getVocabularyNum() == 0)
+                vocabulary.setId(new VocabularyId(new LevelId(stageId, levelId), vocabularyService.findMaxId() + 1));
+
+            Vocabulary rs = vocabularyService.save(vocabulary);
+            System.out.println("success");
         }
         List<Vocabulary> temp_vocabularies = levelService.getVocabularyByLevelId(new LevelId(stageId, levelId));
 

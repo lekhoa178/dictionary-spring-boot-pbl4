@@ -1,16 +1,59 @@
 let vocabulary_container = document.querySelector('.vocabulary-field')
 let level_container = document.querySelector('.level-container')
+let loadedVocabJs = false;
+let vocabulary_form = null;
 
+function init() {
+    level_container = document.querySelector('.level-container')
+    const levels = level_container.querySelectorAll('.level-row');
+
+    for (let i = 0; i < levels.length; ++i) {
+        levels[i].classList.remove('level-row-active');
+    }
+    levels[0].classList.add('level-row-active');
+
+    var data = levels[0].getAttribute('data-values').split('_');
+    var stage = data[1];
+    var level = data[0];
+
+    $.ajax({
+        type: 'GET',
+        url: '/admin/vocabulary?levelId=' + level + '&stageId=' + stage,
+        success: async function (response) {
+            vocabulary_container = document.querySelector('.vocabulary-field')
+            $(vocabulary_container).html(response)
+        },
+        error: function(error) {
+            alert(this.url)
+        }
+    });
+}
+
+init()
 fragmentContainer.addEventListener('click',async function(e){
     if(e.target.classList.contains("level-row")) {
 
         var data = e.target.getAttribute('data-values').split('_');
         var stage = data[1];
         var level = data[0];
+
+        level_container = document.querySelector('.level-container')
+
+        let levels = level_container.querySelectorAll('.level-row');
+        console.log(levels.length)
+        if (e.target.classList.contains('.level-row-active')) return;
+
+        for (let i = 0; i < levels.length; ++i) {
+            levels[i].classList.remove('level-row-active');
+            console.log("remove")
+        }
+        e.target.classList.add('level-row-active');
+
         $.ajax({
             type: 'GET',
             url: '/admin/vocabulary?levelId=' + level + '&stageId=' + stage,
-            success: function(response) {
+            success: async function (response) {
+                vocabulary_container = document.querySelector('.vocabulary-field')
                 $(vocabulary_container).html(response)
             },
             error: function(error) {
@@ -38,6 +81,7 @@ fragmentContainer.addEventListener('click',async function(e){
             type: 'POST',
             url: '/admin/level/add?stageId=' + stage + '&levelId=' + level,
             success: function(response) {
+                level_container = document.querySelector('.level-container')
                 $(level_container).html(response)
             },
             error: function(error) {
@@ -46,38 +90,6 @@ fragmentContainer.addEventListener('click',async function(e){
         });
     }
 })
-
-// function addRow() {
-//     // Get the table body
-//     var tableBody = document.getElementById('vocab-table').getElementsByTagName('tbody')[0];
-//
-//     // Clone the template row (assuming the first row is your template)
-//     var newRow = tableBody.rows[0].cloneNode(true);
-//
-//     // Clear input values in the new row
-//     clearInputValues(newRow);
-//
-//     // Append the new row to the table
-//     tableBody.appendChild(newRow);
-// }
-
-function removeRow(rowId) {
-    // Get the table body
-    var tableBody = document.getElementById('vocab-table').getElementsByTagName('tbody')[0];
-
-    // Remove the row with the specified id
-    var rowToRemove = document.getElementById('row-' + rowId);
-    tableBody.removeChild(rowToRemove);
-}
-
-function clearInputValues(row) {
-    // Clear input values in the specified row
-    var inputs = row.getElementsByTagName('td');
-    console.log(inputs.length)
-    for (var i = 0; i < inputs.length; i++) {
-        inputs[i].textContent = '';
-    }
-}
 
 function sendDataToController() {
     var dataToSend = [];
@@ -117,7 +129,7 @@ function sendDataToController() {
         contentType: 'application/json',
         data: JSON.stringify(dataToSend),
         success: function(response) {
-            // Handle the response from the server
+            vocabulary_container = document.querySelector('.vocabulary-field')
             $(vocabulary_container).html(response)
         },
         error: function(error) {
@@ -127,7 +139,7 @@ function sendDataToController() {
     });
 }
 
-vocabulary_container.addEventListener('click',async function(e){
+fragmentContainer.addEventListener('click',async function(e){
     if(e.target.id === 'vocab-form-btn') {
 
         let stageId = document.querySelector('.stageId').value
@@ -136,8 +148,41 @@ vocabulary_container.addEventListener('click',async function(e){
         $.ajax({
             type: 'GET',
             url: '/admin/vocabulary/add?stageId=' + stageId + '&levelId='+ levelId,
-            success: function(response) {
+            success: async function (response) {
+                vocabulary_container = document.querySelector('.vocabulary-field')
                 $(vocabulary_container).html(response)
+
+                vocabulary_form = document.getElementById("vocabulary-form")
+                vocabulary_form.addEventListener("input", function (e) {
+                    const target = e.target;
+
+                    console.log("in")
+                    // Check if the target is an input in the last cell of a row
+                    if (target.tagName === "INPUT" && target.parentNode.cellIndex === 1) {
+                        const currentRow = target.parentNode.parentNode;
+                        const lastRow = currentRow.parentNode.lastElementChild;
+
+                        // Clone the last row if the current row is the last row
+                        if (currentRow === lastRow) {
+                            const newRow = currentRow.cloneNode(true);
+
+                            // Clear input values in the new row
+                            Array.from(newRow.querySelectorAll('input')).forEach(input => input.value = '');
+
+                            currentRow.parentNode.appendChild(newRow);
+                        }
+                    }
+                });
+
+                if (loadedVocabJs === true)
+                    return
+
+                const script = document.createElement('script');
+                const text = document.createTextNode(await AJAX(`/javascript/fragments_admin/vocabulary.js`));
+
+                script.appendChild(text);
+                loadedVocabJs = true;
+                fragmentContainer.append(script)
             },
             error: function(error) {
                 alert(this.url)

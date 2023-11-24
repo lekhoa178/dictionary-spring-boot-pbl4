@@ -1,15 +1,8 @@
 <div class="stage-container">
     <div class="data-field">
         <div class="sub-field">
-            <div class="search-field">
-                <form id="form1" class="search-form">
-                    <input type="text" id="txt-search" th:name="text" class="search-txt" placeholder="Tìm kiếm">
-                    <button class="action-btn search-btn" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </form>
-            </div>
             <div class="action-field">
                 <button id="add-btn" class="action-btn add-stage">Add</button>
-<!--                <button type="button" id="delete-many-btn" class="action-btn action-delete-many">Delete All</button>-->
             </div>
         </div>
         <div class="table-container">
@@ -24,7 +17,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="stage : ${stages}" >
+                    <tr th:each="stage : ${stages}">
                         <td th:text="*{stage.stageId}"></td>
                         <td th:text="*{stage.title}"></td>
                         <td th:text="*{stage.depiction}"></td>
@@ -32,8 +25,9 @@
                             <button type="button" th:attr="value=${stage.stageId}" class="action-btn update-stage">
                                 <i class="fa-solid fa-pen"></i>
                             </button>
-                            <button type="button" class = "action-btn open-stage" th:attr="value=${stage.stageId}" id="delete-btn">
-                                <i class="fa-solid fa-trash"></i>
+                            <button type="button" class="action-btn open-stage" th:attr="value=${stage.stageId}"
+                                    id="delete-btn">
+                                <i class="fa-solid fa-plus"></i>
                             </button>
                         </td>
                     </tr>
@@ -41,18 +35,5 @@
                 </table>
             </form>
         </div>
-<!--        <div class="page-num">-->
-<!--            <button type="button" class="nav-btn back-btn">Back</button>-->
-
-<!--            <span id="page-num" th:text="${currentPage + 1}"> / </span>-->
-<!--            <span id="total-page" th:text="${totalPage}"></span>-->
-<!--            <button type="button" class="nav-btn next-btn">Next</button>-->
-
-<!--            &lt;!&ndash;                <a th:if="${currentPage > 0}"  th:href="@{'/admin/account/page/' + ${currentPage  - 1}}">Back</a>&ndash;&gt;-->
-<!--            &lt;!&ndash;                <span th:unless="${currentPage > 0}">Back</span>&ndash;&gt;-->
-<!--            &lt;!&ndash;                &ndash;&gt;-->
-<!--            &lt;!&ndash;                <a th:if="${currentPage < totalPage - 1}"  th:href="@{'/admin/account/page/' + ${currentPage  + 1}}">Next</a>&ndash;&gt;-->
-<!--            &lt;!&ndash;                <span th:unless="${currentPage < totalPage - 1}">Next</span>&ndash;&gt;-->
-<!--        </div>-->
     </div>
 </div>

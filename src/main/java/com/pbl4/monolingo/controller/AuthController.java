@@ -6,20 +6,15 @@ import com.pbl4.monolingo.auth.AuthenticationService;
 import com.pbl4.monolingo.auth.RegisterRequest;
 import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.service.AccountService;
+import com.pbl4.monolingo.service.mailSender.MailService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.net.http.HttpResponse;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("public")
@@ -27,6 +22,8 @@ import java.net.http.HttpResponse;
 public class AuthController {
     private final AccountService accountService;
     private final AuthenticationService authenticationService;
+    private final MailService mailSender;
+    private Account currentAcount = null;
     @GetMapping("/signup")
     public String showRegisterForm(Model model){
         model.addAttribute("account",new Account());
@@ -62,8 +59,44 @@ public class AuthController {
         return "error";
     }
     @GetMapping("/logout")
-    public String signout(HttpSession session){
-        session.removeAttribute("jwtToken");
+    public String signout(){
+//        session.removeAttribute("jwtToken");
+        return "redirect:/public/login";
+    }
+    @GetMapping("/forgot")
+    public String forgot(Model model){
+        model.addAttribute("account",new Account());
+        return "ForgotPassword";
+    }
+    @PostMapping("/forgot")
+    public String sendOTP(@ModelAttribute("account") Account account,Model model){
+        System.out.println("mail: " + account.getEmail());
+        Account getAcount = accountService.getAccountByEmail(account.getEmail());
+        boolean rs = mailSender.sendOTP(account.getEmail());
+        if (rs){
+            currentAcount = getAcount;
+            return "redirect:/public/verifyOTP";
+        }
+        else {
+            model.addAttribute("msg","Không tìm thấy tài khoản");
+            return "ForgotPassword";
+        }
+
+    }
+    @GetMapping("/verifyOTP")
+    public String verifyOTP(){
+        return "VerifyOTP";
+    }
+    @PostMapping("/verifyOTP")
+    public String checkOTP(@RequestParam("pr1") int num1, @RequestParam("pr2") int num2,
+                           @RequestParam("pr3") int num3, @RequestParam("pr4") int num4,
+                           @RequestParam("pr5") int num5, @RequestParam("pr6") int num6){
+        String otp = num1+""+num2+num3+num4+num5+num6;
+        System.out.println(otp);
+        return "ChangePassword";
+    }
+    @PostMapping("/changePassword")
+    public String changePassword(){
         return "redirect:/public/login";
     }
 }

@@ -1,12 +1,19 @@
-package com.pbl4.monolingo.security;
+package com.pbl4.monolingo.config;
 
 
 
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.pbl4.monolingo.dao.AccountRepository;
+import com.pbl4.monolingo.security.JwtTokenInterceptor;
+import com.pbl4.monolingo.security.MD5PasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -19,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.concurrent.TimeUnit;
 
 
 @Configuration
@@ -62,4 +70,9 @@ public class ApplicationConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(tokenInterceptor);
     }
+//    @Bean
+//    public JavaMailSender mailSender(JavaMailSenderImpl mailSender) {
+//        return mailSender;
+//    }
+
 }

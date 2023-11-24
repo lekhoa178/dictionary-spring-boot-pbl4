@@ -16,4 +16,5 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     @Query("select p from Account p where p.username like %?1%")
     List<Account> searchAccount(String keyword);
+    Account findByEmail(String email);
 }

@@ -41,10 +41,10 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findAccountByUsername(username);
     }
 
-    @Override
-    public void save(Account account) {
-
-    }
+//    @Override
+//    public void save(Account account) {
+//
+//    }
     public List<Account> getAllAccount() {
         return accountRepository.findAll();
     }
@@ -84,5 +84,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<Account> searchAccount(String keyword) {
         return accountRepository.searchAccount(keyword);
+    }
+
+    @Override
+    public Account getAccountByEmail(String mail) {
+        return accountRepository.findByEmail(mail);
     }
 }

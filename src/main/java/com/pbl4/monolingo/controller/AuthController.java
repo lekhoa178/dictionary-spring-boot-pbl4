@@ -92,11 +92,13 @@ public class AuthController {
                            @RequestParam("pr3") int num3, @RequestParam("pr4") int num4,
                            @RequestParam("pr5") int num5, @RequestParam("pr6") int num6){
         String otp = num1+""+num2+num3+num4+num5+num6;
+        mailSender.verifyOtp(currentAcount.getEmail(),otp);
         System.out.println(otp);
         return "ChangePassword";
     }
     @PostMapping("/changePassword")
-    public String changePassword(){
+    public String changePassword(@RequestParam("password")String newPassword){
+        accountService.changePassword(currentAcount,newPassword);
         return "redirect:/public/login";
     }
 }

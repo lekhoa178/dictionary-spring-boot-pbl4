@@ -1,10 +1,10 @@
 package com.pbl4.monolingo.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,19 +14,26 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
     @Bean
-    public ConcurrentMapCacheManager cacheManager(){
 
-        return new ConcurrentMapCacheManager("otpCache");
+    public CacheManager caffeineCacheManager() {
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("otpCache");
+        cacheManager.setCaffeine(caffeineConfig());
+        return cacheManager;
+
     }
-    @Bean
 
-    public CaffeineCacheManager caffeineCacheManager() {
+    public Caffeine<Object, Object> caffeineConfig() {
 
-        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+        return Caffeine.newBuilder()
 
-        caffeineCacheManager.setCaffeine(Caffeine.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES));
+                .expireAfterWrite(10, TimeUnit.MINUTES)
 
-        return caffeineCacheManager;
+                .maximumSize(100); // bạn có thể đặt kích thước tối đa cho cache nếu muốn
 
     }
 }
+//    @Bean
+//    public ConcurrentMapCacheManager cacheManager(){
+//
+//        return new ConcurrentMapCacheManager("otpCache");
+//    }

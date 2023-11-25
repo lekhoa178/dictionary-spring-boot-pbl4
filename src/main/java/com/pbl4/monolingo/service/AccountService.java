@@ -19,4 +19,5 @@ public interface AccountService {
     void deleteAccountById(int id);
     List<Account> searchAccount(String keyword);
     Account getAccountByEmail(String mail);
+    void changePassword(Account account, String newPassword);
  }

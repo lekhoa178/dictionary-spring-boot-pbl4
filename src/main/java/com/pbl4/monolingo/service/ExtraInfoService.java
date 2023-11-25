@@ -8,4 +8,6 @@ public interface ExtraInfoService {
     public void restoreHeart(int accountId);
 
     public void updateExtraInfo(Account account);
+
+    public void buyHearts(int accountId);
 }

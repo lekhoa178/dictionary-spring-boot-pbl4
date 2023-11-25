@@ -103,8 +103,10 @@ bottomContainer.addEventListener('click', async function(e) {
         nextQuestion();
     }
     else {
-        document.querySelector('.base-container').innerHTML
-            = await AJAX(`/lesson/finish/${correctAns} ${correctAns/totalQuestion * 100}`);
+        if (heart > 0) {
+            document.querySelector('.base-container').innerHTML
+                = await AJAX(`/lesson/finish/${stageId}/${levelId}/${correctAns} ${correctAns / totalQuestion * 100}`);
+        }
     }
 })
 

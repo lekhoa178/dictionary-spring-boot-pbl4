@@ -8,6 +8,7 @@ import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.mailSender.MailService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -59,8 +60,14 @@ public class AuthController {
         return "error";
     }
     @GetMapping("/logout")
-    public String signout(){
-//        session.removeAttribute("jwtToken");
+    public String signout(HttpServletResponse response){
+        Cookie cookie = new Cookie("jwtToken", null);
+        cookie.setPath("/"); // Đảm bảo đường dẫn này phù hợp với đường dẫn khi cookie được tạo
+        cookie.setHttpOnly(true); // Tùy chọn, nếu cookie ban đầu được đánh dấu là HttpOnly
+        cookie.setMaxAge(0); // Đặt thời gian sống là 0 để xóa cookie
+        // Thêm cookie vào response để trình duyệt xóa nó
+        response.addCookie(cookie);
+        System.out.println("Into logout");
         return "redirect:/public/login";
     }
     @GetMapping("/forgot")
@@ -69,12 +76,13 @@ public class AuthController {
         return "ForgotPassword";
     }
     @PostMapping("/forgot")
-    public String sendOTP(@ModelAttribute("account") Account account,Model model){
+    public String sendOTP(@ModelAttribute("account") Account account,Model model,HttpServletResponse response){
         System.out.println("mail: " + account.getEmail());
         Account getAcount = accountService.getAccountByEmail(account.getEmail());
-        boolean rs = mailSender.sendOTP(account.getEmail());
+        boolean rs = mailSender.sendOTP(account.getEmail(),response);
         if (rs){
             currentAcount = getAcount;
+
             return "redirect:/public/verifyOTP";
         }
         else {
@@ -90,15 +98,21 @@ public class AuthController {
     @PostMapping("/verifyOTP")
     public String checkOTP(@RequestParam("pr1") int num1, @RequestParam("pr2") int num2,
                            @RequestParam("pr3") int num3, @RequestParam("pr4") int num4,
-                           @RequestParam("pr5") int num5, @RequestParam("pr6") int num6){
+                           @RequestParam("pr5") int num5, @RequestParam("pr6") int num6,
+                           Model model, HttpServletRequest request){
         String otp = num1+""+num2+num3+num4+num5+num6;
-        mailSender.verifyOtp(currentAcount.getEmail(),otp);
+        boolean check = mailSender.verifyOtp(currentAcount.getEmail(),otp,request);
+        if(!check){
+            model.addAttribute("msg","Nhập sai otp");
+            return "VerifyOTP";
+        }
         System.out.println(otp);
         return "ChangePassword";
     }
     @PostMapping("/changePassword")
     public String changePassword(@RequestParam("password")String newPassword){
         accountService.changePassword(currentAcount,newPassword);
+        mailSender.sendPassword(currentAcount.getEmail(),newPassword);
         return "redirect:/public/login";
     }
 }

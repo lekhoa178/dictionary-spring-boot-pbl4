@@ -49,7 +49,7 @@ public class SecurityConfiguration {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.formLogin(formLogin -> formLogin.loginPage("/public/login").permitAll());
+        http.formLogin(formLogin -> formLogin.loginPage("/login").permitAll());
 
         http.logout(logout -> logout
                 .logoutUrl("public/logout") // URL to trigger logout (e.g. POST /logout)
@@ -69,9 +69,7 @@ public class SecurityConfiguration {
     public LogoutSuccessHandler logoutSuccessHandler() {
 
         return (request, response, authentication) -> {
-
             // Custom logic after successful logout, e.g. redirect to login page
-
             response.sendRedirect("/public/login");
 
         };

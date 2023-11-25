@@ -14,22 +14,16 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
     @Bean
-
-    public CacheManager caffeineCacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("otpCache");
-        cacheManager.setCaffeine(caffeineConfig());
-        return cacheManager;
-
-    }
-
     public Caffeine<Object, Object> caffeineConfig() {
-
         return Caffeine.newBuilder()
-
-                .expireAfterWrite(10, TimeUnit.MINUTES)
-
-                .maximumSize(100); // bạn có thể đặt kích thước tối đa cho cache nếu muốn
-
+                .expireAfterWrite(300, TimeUnit.SECONDS)
+                .initialCapacity(10);
+    }
+    @Bean
+    public CacheManager cacheManager(Caffeine caffeine) {
+        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+        caffeineCacheManager.setCaffeine(caffeine);
+        return caffeineCacheManager;
     }
 }
 //    @Bean

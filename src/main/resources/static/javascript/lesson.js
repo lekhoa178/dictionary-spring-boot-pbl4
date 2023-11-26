@@ -22,6 +22,7 @@ let type = 0;
 const bodyEl = document.querySelector('.base-container');
 const stageId = bodyEl.dataset.stage;
 const levelId = bodyEl.dataset.level;
+const fulfilled = bodyEl.dataset.fulfilled === true ? 1 : 0;
 
 setupRound();
 
@@ -118,9 +119,10 @@ bottomContainer.addEventListener('click', async function(e) {
         nextQuestion();
     }
     else {
-        if (heart > 0) {
+        if (parseInt(heart.textContent) > 0) {
+            console.log(heart.textContent);
             document.querySelector('.base-container').innerHTML
-                = await AJAX(`/lesson/finish/${stageId}/${levelId}/${correctAns} ${correctAns / totalQuestion * 100}`);
+                = await AJAX(`/lesson/finish/${stageId}/${levelId}/${fulfilled}/${correctAns} ${correctAns / totalQuestion * 100}`);
         }
     }
 })

@@ -8,30 +8,31 @@ import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.AccountType;
 import com.pbl4.monolingo.entity.ExtraInformation;
 import com.pbl4.monolingo.security.JwtService;
-import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class    AuthenticationService {
     private final AccountRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final AccountTypeRepository accountTypeRepository;
     private final ExtraInformationRepository extraInformationRepository;
+    private final Map<Integer, LocalDateTime> loginTimes = new HashMap<>();
 
     public AuthenticationResponse register(RegisterRequest request) {
-//        var user = Account.builder().username(request.getUsername())
-//                .password(passwordEncoder.encode(request.getPassword()))
-//                .role(Role.USER)
-//                .build();
         AccountType accountType = accountTypeRepository.findAccountTypeByType("ROLE_LEARNER").orElseThrow();
-        var user = new Account(request.getUsername(),passwordEncoder.encode(request.getPassword()),true,accountType);
+        var user = new Account(request.getUsername(),passwordEncoder.encode(request.getPassword()),request.getEmail(),true,accountType);
         ExtraInformation newExtra = new ExtraInformation();
         newExtra.setBalance(0);
         newExtra.setHearts(5);
@@ -51,8 +52,14 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
+
         var user = repository.findByUsername(request.getUsername()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
+
         return AuthenticationResponse.builder().token(jwtToken).build();
+    }
+
+    public Map<Integer, LocalDateTime> getLoginTimes() {
+        return loginTimes;
     }
 }

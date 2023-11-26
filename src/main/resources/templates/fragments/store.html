@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>Store</h1>
-</body>
-</html>
+<div class="store-container">
+    <div class="store--heart-container">
+        <p class="store--title">Trái tim</p>
+        <div class="store-item" th:object="${userData}">
+            <img th:src="@{/img/heart-store3x.png}" alt="" class="store--img">
+            <p class="store-item--title">Hồi phục trái tim</p>
+            <p class="store-item--text">Lấp đầy trái tim để không phải lo lắng mắc lỗi sai trong bài học</p>
+<!--            <div th:class="${userData.getHearts() < 5} ? 'store-item&#45;&#45;btn ' : 'store-item&#45;&#45;btn active&#45;&#45;btn'">-->
+<!--                <p class="store&#45;&#45;btn&#45;&#45;text">Mua với giá:</p>-->
+<!--                <p class="store&#45;&#45;btn&#45;&#45;value">200</p>-->
+<!--            </div>-->
+
+            <button class="store-item--btn" onclick="buyHearts()"
+                    th:disabled="*{hearts == 5 || balance < 200}"
+                    th:text="${'Mua với giá: ' + '200'}">
+            </button>
+        </div>
+    </div>
+
+</div>

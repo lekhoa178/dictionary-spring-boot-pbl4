@@ -1,0 +1,34 @@
+<form id="vocabulary-form" action="" method="post">
+
+<div class="vocab-table-container">
+    <table class="vocab-list">
+        <input type="hidden" class="stageId" th:value="${stageId}">
+        <input type="hidden" class="levelId" th:value="${levelId}">
+        <thead>
+        <tr>
+            <th>Word</th>
+            <th>Meaning</th>
+            <th>Type</th>
+        </tr>
+        </thead>
+        <tbody id="formBody">
+        <tr class="rowData">
+            <td><input type="text" class="word-input" required></td>
+            <td><input type="text" class="meaning-input" required></td>
+            <td>
+                <select name="" class="type-input">
+                    <option value="Nom">Nom</option>
+                    <option value="Verb">Verb</option>
+                    <option value="AdjVerb">AdjVerb</option>
+                    <option value="O">O</option>
+                </select>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</form>
+<div class="btn-container">
+    <button type="button" class="level-action-btn" id="add-vocab-btn">Add</button>
+</div>
+

@@ -1,0 +1,140 @@
+.level-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+
+    border-radius: 10px;
+    border: 2px solid lightgrey;
+}
+
+.level-field {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    border-right: 1px solid lightgrey;
+}
+
+.level-field .level-list {
+    width: 150px;
+}
+
+.level-field .level-table-container {
+    height: 600px;
+    width: 100%;
+    overflow: auto;
+}
+
+.level-field .level-table-container::-webkit-scrollbar {
+    display: none;
+}
+
+.level-field .level-list {
+    width: 100%;
+    border-spacing: 10px;
+}
+
+.level-field .level-list tbody tr {
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.level-row {
+    border-radius: 10px;
+}
+
+.level-row-active {
+    background-color: #D7FFB8;
+    border: 2px solid #64D014;
+}
+
+.level-row:hover:not(.level-row-active) {
+    background-color: rgb(245, 245, 245);
+}
+
+.vocabulary-field {
+    margin-top: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.vocab-table-container {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    height: 100%;
+    width: 560px;
+    overflow: auto;
+}
+
+.vocab-list {
+    border-spacing: 20px 2px;
+}
+
+.vocab-list thead th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
+
+.vocab-list thead th:nth-child(1), .vocab-list thead td:nth-child(1), .vocab-list thead th:nth-child(2){
+    width: 200px;
+}
+
+.vocab-list thead th:nth-child(3){
+    width: 100px;
+}
+
+ .vocab-list input, select {
+    border: 2px solid lightgrey;
+    border-radius: 10px;
+    outline: none;
+    padding: 0 10px;
+}
+
+.vocab-list select {
+    height: 50px;
+}
+
+.vocab-list input {
+    height: 50px;
+}
+
+.vocab-table-container::-webkit-scrollbar {
+    display: none;
+}
+
+.level-field .btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.level-action-btn {
+    width: 150px;
+    height: 50px;
+    border: none;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 10px;
+    margin: 10px 0;
+
+    background: #64D014;
+    box-shadow: 0px 3px 0px 0px #58A700;
+}
+
+.btn-container {
+    flex: 1;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.level-field .level-action-btn {
+    height: 40px;
+    width: 100px;
+}

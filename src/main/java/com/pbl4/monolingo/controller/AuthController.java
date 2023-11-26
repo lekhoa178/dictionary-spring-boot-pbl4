@@ -5,8 +5,11 @@ import com.pbl4.monolingo.auth.AuthenticationResponse;
 import com.pbl4.monolingo.auth.AuthenticationService;
 import com.pbl4.monolingo.auth.RegisterRequest;
 import com.pbl4.monolingo.entity.Account;
+import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.mailSender.MailService;
+import com.pbl4.monolingo.service.DataPerDayService;
+import com.pbl4.monolingo.service.ExtraInfoService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +19,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Controller
 @RequestMapping("public")
@@ -25,6 +36,11 @@ public class AuthController {
     private final AuthenticationService authenticationService;
     private final MailService mailSender;
     private Account currentAcount = null;
+    private final ExtraInfoService extraInfoService;
+    private final DataPerDayService dataPerDayService;
+    private String mailCurrent = null;
+
+
     @GetMapping("/signup")
     public String showRegisterForm(Model model){
         model.addAttribute("account",new Account());
@@ -32,8 +48,12 @@ public class AuthController {
     }
     @PostMapping("/signup")
     public String handleSignUp(@Valid @ModelAttribute("account") Account account){
+        String email = account.getEmail() != null ? account.getEmail() : mailCurrent;
         authenticationService.register(RegisterRequest.builder()
-                .username(account.getUsername()).password(account.getPassword()).build());
+                .username(account.getUsername())
+                .password(account.getPassword())
+                .email(email)
+                .build());
         return "redirect:/public/login";
     }
     @GetMapping("/login")
@@ -48,11 +68,17 @@ public class AuthController {
                 authenticate(AuthenticationRequest.builder()
                 .username(account.getUsername())
                 .password(account.getPassword()).build());
+
         String token = authenticationResponse.getToken();
         Cookie cookie = new Cookie("jwtToken",token);
         cookie.setPath("/");
         response.addCookie(cookie);
         System.out.println("Token from controller: "+ token);
+
+        Account temp = accountService.getAccountByUsername(account.getUsername());
+        extraInfoService.updateExtraInfo(temp);
+        authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
+
         return "redirect:/learn";
     }
     @GetMapping("/error")
@@ -115,4 +141,42 @@ public class AuthController {
         mailSender.sendPassword(currentAcount.getEmail(),newPassword);
         return "redirect:/public/login";
     }
+
+    public String signOut(Principal principal){
+        if (principal != null) {
+            Account account = accountService.getAccountByUsername(principal.getName());
+            LocalDateTime loginTime = authenticationService.getLoginTimes().get(account.getAccountId());
+            LocalDateTime logoutTime = LocalDateTime.now();
+
+            System.out.println(authenticationService.getLoginTimes().size());
+            System.out.println(loginTime + " " + logoutTime);
+            float onlineTime = (float) (ChronoUnit.SECONDS.between(loginTime, logoutTime) / 3600.0);
+
+            System.out.println(onlineTime);
+            DataPerDay dt = dataPerDayService.getAccountDPD(account.getAccountId());
+            dt.setOnlineHours(dt.getOnlineHours() + onlineTime);
+            dataPerDayService.save(dt);
+        }
+        return "redirect:/public/login";
+    }
+    @GetMapping("/sendOTPRegister")
+    public String showSendOtpMail(){
+        return "non_function/SendOTPRegister";
+    }
+    @PostMapping("/sendOTP")
+    public String sendOTP(@RequestParam("email") String mail,
+                          HttpServletRequest request,
+                          HttpServletResponse response){
+        boolean rs = mailSender.sendOTPRegister(mail,response);
+        if(rs){
+            mailCurrent = mail;
+//            model.addAttribute("email",mail);
+            return "redirect:/public/signup";
+        }
+        else {
+            return "non_function/SendOTPRegister";
+        }
+
+    }
+
 }

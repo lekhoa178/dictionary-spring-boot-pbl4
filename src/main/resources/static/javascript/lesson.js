@@ -16,7 +16,7 @@ let orViSentence = "";
 let correctAns = 0;
 let progress = 0;
 let totalQuestion = 13;
-let heart = 5;
+let heart = document.querySelector('.resource--items-text-heart');
 let type = 0;
 
 const bodyEl = document.querySelector('.base-container');
@@ -77,7 +77,22 @@ checkBtn.addEventListener('click',  async function(e) {
             </div>`;
     }
     else {
-        heart--;
+        $.ajax({
+            type: 'POST',
+            url: '/lesson/lostHeart',
+            success: function (response) {
+                console.log(response)
+                if (Number(response) === 0)
+                    window.location = '/learn'
+
+                heart.textContent = response
+            },
+            error: function (error) {
+                alert(this.url)
+            }
+        });
+
+
 
         noticeHTML = `
             <div class="incorrect-container default-container overlay-container">
@@ -103,8 +118,10 @@ bottomContainer.addEventListener('click', async function(e) {
         nextQuestion();
     }
     else {
-        document.querySelector('.base-container').innerHTML
-            = await AJAX(`/lesson/finish/${correctAns} ${correctAns/totalQuestion * 100}`);
+        if (heart > 0) {
+            document.querySelector('.base-container').innerHTML
+                = await AJAX(`/lesson/finish/${stageId}/${levelId}/${correctAns} ${correctAns / totalQuestion * 100}`);
+        }
     }
 })
 
@@ -189,6 +206,17 @@ const nextQuestion = function() {
 async function setupRound() {
     questions = await AJAX(`/cfg/sentences/${stageId}/${levelId}/${totalQuestion}`, true);
 
+    $.ajax({
+        type: 'GET',
+        url: '/lesson/heart',
+        dataType: "json",
+        success: function (response) {
+            heart.textContent = response
+        },
+        error: function (error) {
+            alert(this.url)
+        }
+    });
     nextQuestion();
 }
 

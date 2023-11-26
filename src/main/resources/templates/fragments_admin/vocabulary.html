@@ -1,0 +1,38 @@
+<form>
+    <div class="vocab-table-container">
+        <table id="vocab-table" class="vocab-list">
+            <input type="hidden" class="stageId" th:value="${stageId}">
+            <input type="hidden" class="levelId" th:value="${levelId}">
+            <thead>
+            <tr>
+                <th>Word</th>
+                <th>Meaning</th>
+                <th>Type</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="rowData" th:each="vocabulary, vocabularyStat : ${vocabularies}" th:id="'row-' + ${vocabularyStat.index}">
+                <td class="word">
+                    <input type="hidden" class="vocab-id" th:value="*{vocabulary.id.vocabularyNum}">
+                    <input class="word-input" type="text" th:value="*{vocabulary.word}">
+                </td>
+                <td class="meaning" >
+                    <input class="meaning-input" type="text" th:value="*{vocabulary.meaning}">
+                </td>
+                <td class="type" >
+                    <select name="" class="type-input" th:value="*{vocabulary.type}">
+                        <option value="Nom" th:selected="${vocabulary.type == 'Nom'}">Nom</option>
+                        <option value="Verb" th:selected="${vocabulary.type == 'Verb'}">Verb</option>
+                        <option value="AdjVerb" th:selected="${vocabulary.type == 'AdjVerb'}">AdjVerb</option>
+                        <option value="O" th:selected="${vocabulary.type == 'O'}">O</option>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
+<div class="btn-container">
+    <button type="button" class="level-action-btn" id="vocab-form-btn"> Thêm từ vựng</button>
+    <button type="button" class="level-action-btn" onclick="sendDataToController()"> Lưu </button>
+</div>

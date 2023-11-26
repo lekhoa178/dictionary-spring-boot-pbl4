@@ -5,6 +5,7 @@ import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.utility.dto.AccountExp;
 import com.pbl4.monolingo.utility.dto.AccountStats;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 public interface DataPerDayService {
@@ -23,4 +24,5 @@ public interface DataPerDayService {
 
     AccountExp getAccountSumExpById(Integer accountId);
 
+    void save(DataPerDay dataPerDay);
 }

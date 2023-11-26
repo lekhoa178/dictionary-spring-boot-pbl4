@@ -65,7 +65,6 @@ public class MailService {
         String cachedOtp = getOtpFromCookie(request); // Lấy otp từ cache
         System.out.println("Otp from cookie: " + cachedOtp);
         return userOtp.equals(cachedOtp); // So sánh otp của người dùng với otp từ cache
-
     }
 
     public void sendPassword(String email, String newPassword) {
@@ -86,5 +85,41 @@ public class MailService {
         }
         return "";
     }
+    private String getOtpMailFromCookie(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if (cookie.getName().equals("otpRegisterMail")){
+                    return cookie.getValue();
+                }
+            }
+        }
+        return "";
+    }
+    public boolean sendOTPRegister(String email, HttpServletResponse response){
+        String otp = OtpGenerator.generateOtp();
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("OTP đăng kí tài khoản");
+        message.setText("Mã OTP của bạn là " + otp);
+        Cookie cookie = new Cookie("otpRegisterMail",otp);
+        cookie.setPath("/");
+        cookie.setMaxAge(60*10);
+        response.addCookie(cookie);
+        try{
+            javaMailSender.send(message);
+            System.out.println("Gui mail thanh cong");
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+    public boolean verifyOtpMail(String userOtp,HttpServletRequest request) {
+        String cachedOtp = getOtpMailFromCookie(request); // Lấy otp từ cache
+        System.out.println("Otp from cookie: " + cachedOtp);
+        return userOtp.equals(cachedOtp); // So sánh otp của người dùng với otp từ cache
+    }
+
 
 }

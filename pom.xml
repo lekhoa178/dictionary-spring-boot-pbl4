@@ -115,6 +115,12 @@
 			<artifactId>caffeine</artifactId>
 			<version>3.1.6</version>
 		</dependency>
+        <dependency>
+            <groupId>com.pbl4</groupId>
+            <artifactId>monolingo</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
 
 	</dependencies>

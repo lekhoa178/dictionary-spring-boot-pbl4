@@ -49,7 +49,7 @@ public class SecurityConfiguration {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.formLogin(formLogin -> formLogin.loginPage("/login").permitAll());
+//        http.formLogin(formLogin -> formLogin.loginPage("/login").permitAll());
 
         http.logout(logout -> logout
                 .logoutUrl("public/logout") // URL to trigger logout (e.g. POST /logout)
@@ -58,7 +58,6 @@ public class SecurityConfiguration {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID") // If cookies are used, adjust accordingly for JWT
                 .permitAll()
-
         );
 
 //                .addFilterBefore((Filter) new JwtTokenInterceptor(),UsernamePasswordAuthenticationFilter.class);

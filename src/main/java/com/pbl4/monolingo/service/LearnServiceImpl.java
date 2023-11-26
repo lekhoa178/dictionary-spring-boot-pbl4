@@ -3,8 +3,10 @@ package com.pbl4.monolingo.service;
 import com.pbl4.monolingo.dao.LevelFulfillRepository;
 import com.pbl4.monolingo.dao.StageRepository;
 import com.pbl4.monolingo.entity.Level;
+import com.pbl4.monolingo.entity.LevelFulfill;
 import com.pbl4.monolingo.entity.Stage;
 import com.pbl4.monolingo.entity.embeddable.LevelFulfillId;
+import com.pbl4.monolingo.entity.embeddable.LevelId;
 import com.pbl4.monolingo.utility.dto.LevelState;
 import com.pbl4.monolingo.utility.dto.StageLevelState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ public class LearnServiceImpl implements LearnService {
 
     private final StageRepository stageRepository;
     private final LevelFulfillRepository levelFulfillRepository;
+
 
     @Autowired
     public LearnServiceImpl(StageRepository stageRepository, LevelFulfillRepository levelFulfillRepository) {
@@ -53,5 +56,16 @@ public class LearnServiceImpl implements LearnService {
         return results;
     }
 
+    @Override
+    public void finishLevel(int accountId, int stageId, int levelId) {
+        LevelFulfill fulfill = new LevelFulfill(new LevelFulfillId(new LevelId(stageId, levelId), accountId));
+        try {
+            levelFulfillRepository.save(fulfill);
+            System.out.println("???");
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 }

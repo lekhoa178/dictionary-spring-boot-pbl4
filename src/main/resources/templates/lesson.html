@@ -4,72 +4,88 @@
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" th:href="@{/css/lessonStyle.css}">
     <title>Monolingo - Học tiếng anh vui vẻ</title>
     <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}">
     <script defer th:src="@{/javascript/lesson.js}"></script>
 </head>
 <body class="base-container" th:data-level="${level}" th:data-stage="${stage}">
-    <div class="container">
-        <div class="top-container">
-            <i class="fa-solid fa-x return--btn"></i>
+<div class="container">
+    <div class="top-container">
+        <i class="fa-solid fa-x return--btn"></i>
 
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
-            </div>
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
 
-            <div class="resource--items">
-                <img alt=""
-                     th:src="@{/img/heart.png}"
-                     class="resource--items-icon">
-                <span class="
+        <div class="resource--items">
+            <img alt=""
+                 th:src="@{/img/heart.png}"
+                 class="resource--items-icon">
+            <span class="
                                 resource--items-text
                                 resource--items-text-heart"
-                      th:text=5></span>
-            </div>
-        </div>
-
-        <div class="game--container">
-            <h3 class="request--title">Viết lại bằng Tiếng Việt</h3>
-            <div class="sentence--container">
-                <i class="fa-solid fa-volume-low volume--icon icon"></i>
-                <p class="game--sentence">Wait a second...</p>
-            </div>
-
-            <div class="answer--panel">
-            </div>
-
-            <div class="game--cards">
-
-            </div>
-
-        </div>
-
-        <div class="bottom-container">
-            <div class="default-container">
-                <button class="btn btn--pass">BỎ QUA</button>
-                <button class="btn btn--check btn--check--inactive">KIỂM TRA</button>
-            </div>
-
-<!--            <div class="correct-container default-container">-->
-<!--                <div style="display: flex; flex-direction: row; gap: 20px; align-items: center">-->
-<!--                    <i class="fa-solid fa-circle-check correct-icon"></i>-->
-<!--                    <p style="font-weight: bold; color: #57b846; font-size: 22px">TUYỆT VỜI</p>-->
-<!--                </div>-->
-<!--                <button class="btn btn&#45;&#45;continue btn&#45;&#45;correct">TIẾP TỤC</button>-->
-<!--            </div>-->
-
-<!--            <div class="incorrect-container default-container">-->
-<!--                <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 5px">-->
-<!--                    <i class="fa-solid fa-circle-xmark incorrect-icon"></i>-->
-<!--                    <p style="color: #FF4B4B; font-weight: bold; font-size: 22px" class="correct-answer">ĐÁP ÁN ĐÚNG:</p>-->
-<!--                    <p style="color: #FF4B4B" class="correct-answer">TUYỆT VỜI</p>-->
-<!--                </div>-->
-<!--                <button class="btn btn&#45;&#45;continue btn&#45;&#45;incorrect">TIẾP TỤC</button>-->
-<!--            </div>-->
+                  th:text=5></span>
         </div>
     </div>
+
+    <div class="game--container">
+        <h3 class="request--title">Viết lại bằng Tiếng Việt</h3>
+        <div class="sentence--container">
+            <i class="fa-solid fa-volume-low volume--icon icon"></i>
+            <p class="game--sentence">Wait a second...</p>
+        </div>
+
+        <div class="answer--panel">
+        </div>
+
+        <div class="game--cards">
+
+        </div>
+
+    </div>
+
+    <div class="bottom-container">
+        <div class="default-container">
+            <button class="btn btn--pass">BỎ QUA</button>
+            <button class="btn btn--check btn--check--inactive">KIỂM TRA</button>
+        </div>
+
+        <!--            <div class="correct-container default-container">-->
+        <!--                <div style="display: flex; flex-direction: row; gap: 20px; align-items: center">-->
+        <!--                    <i class="fa-solid fa-circle-check correct-icon"></i>-->
+        <!--                    <p style="font-weight: bold; color: #57b846; font-size: 22px">TUYỆT VỜI</p>-->
+        <!--                </div>-->
+        <!--                <button class="btn btn&#45;&#45;continue btn&#45;&#45;correct">TIẾP TỤC</button>-->
+        <!--            </div>-->
+
+        <!--            <div class="incorrect-container default-container">-->
+        <!--                <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 5px">-->
+        <!--                    <i class="fa-solid fa-circle-xmark incorrect-icon"></i>-->
+        <!--                    <p style="color: #FF4B4B; font-weight: bold; font-size: 22px" class="correct-answer">ĐÁP ÁN ĐÚNG:</p>-->
+        <!--                    <p style="color: #FF4B4B" class="correct-answer">TUYỆT VỜI</p>-->
+        <!--                </div>-->
+        <!--                <button class="btn btn&#45;&#45;continue btn&#45;&#45;incorrect">TIẾP TỤC</button>-->
+        <!--            </div>-->
+    </div>
+
+    <div class="pop-up-container">
+        <div class="img-container">
+
+        </div>
+
+        <div class="title">Bạn đã hết trái tim!</div>
+        <div class="content">Bạn có mua thêm trái tim không ?</div>
+        <div class="btn-field">
+            <div class="buy-btn"> Mua với giá: 200</div>
+            <div class="exit-btn"> Không, cảm ơn</div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -53,7 +53,7 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
         LocalDateTime currentTime = LocalDateTime.now();
 
         long minutesSinceLost = ChronoUnit.MINUTES.between(lostHeartTime, currentTime);
-        int restoreHeart = (int) (minutesSinceLost);
+        int restoreHeart = (int) (minutesSinceLost / 30);
 
         if (restoreHeart < 1)
             return;

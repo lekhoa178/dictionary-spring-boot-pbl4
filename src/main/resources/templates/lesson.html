@@ -13,6 +13,7 @@
     <title>Monolingo - Học tiếng anh vui vẻ</title>
     <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}">
     <script defer th:src="@{/javascript/lesson.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body class="base-container" th:data-level="${level}" th:data-stage="${stage}">
 <div class="container">
@@ -30,7 +31,48 @@
             <span class="
                                 resource--items-text
                                 resource--items-text-heart"
-                  th:text=5></span>
+                      ></span>
+            </div>
+        </div>
+
+        <div class="game--container">
+            <h3 class="request--title">Viết lại bằng Tiếng Việt</h3>
+            <div class="sentence--container">
+                <i class="fa-solid fa-volume-low volume--icon icon"></i>
+                <p class="game--sentence">Wait a second...</p>
+            </div>
+
+            <div class="answer--panel">
+            </div>
+
+            <div class="game--cards">
+
+            </div>
+
+        </div>
+
+        <div class="bottom-container">
+            <div class="default-container">
+                <button class="btn btn--pass">BỎ QUA</button>
+                <button class="btn btn--check btn--check--inactive">KIỂM TRA</button>
+            </div>
+
+<!--            <div class="correct-container default-container">-->
+<!--                <div style="display: flex; flex-direction: row; gap: 20px; align-items: center">-->
+<!--                    <i class="fa-solid fa-circle-check correct-icon"></i>-->
+<!--                    <p style="font-weight: bold; color: #57b846; font-size: 22px">TUYỆT VỜI</p>-->
+<!--                </div>-->
+<!--                <button class="btn btn&#45;&#45;continue btn&#45;&#45;correct">TIẾP TỤC</button>-->
+<!--            </div>-->
+
+<!--            <div class="incorrect-container default-container">-->
+<!--                <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 5px">-->
+<!--                    <i class="fa-solid fa-circle-xmark incorrect-icon"></i>-->
+<!--                    <p style="color: #FF4B4B; font-weight: bold; font-size: 22px" class="correct-answer">ĐÁP ÁN ĐÚNG:</p>-->
+<!--                    <p style="color: #FF4B4B" class="correct-answer">TUYỆT VỜI</p>-->
+<!--                </div>-->
+<!--                <button class="btn btn&#45;&#45;continue btn&#45;&#45;incorrect">TIẾP TỤC</button>-->
+<!--            </div>-->
         </div>
     </div>
 

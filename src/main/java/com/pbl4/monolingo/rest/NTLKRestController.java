@@ -37,12 +37,14 @@ public class NTLKRestController {
 //        //System.out.println(np);
 //
 //        SPhraseSpec p = nlgFactory.createClause();
-//        p.setSubject(np);
-//        p.setVerb("be");
+//        p.setSubject("Kh");
+//        p.setVerb("buy");
 //        p.setObject("the boy");
 //
-//        p.setFeature(Feature.NEGATED, true);
-//
+//        p.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO);
+////
+////        p.setFeature(Feature.NEGATED, true);
+////
 //        String output2 = realiser.realiseSentence(p); // Realiser created earlier.
 //        System.out.println(output2);
 //

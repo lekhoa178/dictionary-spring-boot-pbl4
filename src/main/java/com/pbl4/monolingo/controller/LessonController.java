@@ -25,7 +25,10 @@ public class LessonController {
     private final DataPerDayService dataPerDayService;
     
     @Autowired
-    public LessonController(LearnService learnService, ExtraInfoService extraInfoService, AccountService accountService, DataPerDayService dataPerDayService) {
+    public LessonController(LearnService learnService,
+                            ExtraInfoService extraInfoService,
+                            AccountService accountService,
+                            DataPerDayService dataPerDayService) {
         this.learnService = learnService;
         this.accountService = accountService;
         this.extraInfoService = extraInfoService;
@@ -43,12 +46,13 @@ public class LessonController {
         return "lesson.html";
     }
 
-    @GetMapping("/finish/{stageId}/{levelId}/{data}")
+    @GetMapping("/finish/{stageId}/{levelId}/{fulfilled}/{data}")
 
     public String showLessonFinish(Model model, Principal principal,
                                    @PathVariable String data,
                                    @PathVariable int stageId,
                                    @PathVariable int levelId,
+                                   @PathVariable boolean fulfilled,
                                    @RequestHeader(value = "request-source", required = false) String requestSource) {
         if (requestSource == null)
             return "redirect:/learn";
@@ -64,13 +68,13 @@ public class LessonController {
         model.addAttribute("exp", exp);
         model.addAttribute("precise", precise);
 
-
         dataPerDayService.updateAccountDPD(accountId, exp, 0);
 
-        if (!learnService.isDoneLevel(accountId, stageId, levelId)) {
+        if (!fulfilled) {
             learnService.finishLevel(accountId, stageId, levelId);
-            System.out.println("In use");
-        }
+        } else {
+            dataPerDayService.updateAccountDPD(accountId, exp, 0);
+
         return "lessonFinish";
     }
 

@@ -86,6 +86,7 @@ public class SentenceBuilder {
                         curSentence.setFeature(Feature.INTERROGATIVE_TYPE, InterrogativeType.YES_NO);
                         rStrs[1] = "có phải";
                         isYesNo = true;
+                        isNegated = false;
                     } else rStrs = p.split(",", -1);
                 } else {
                     rStrs = randomSelect(words).split(",", -1);

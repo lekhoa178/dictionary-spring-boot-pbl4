@@ -72,8 +72,8 @@ public class DataPerDayServiceImpl implements DataPerDayService {
 
 
     @Override
-    public DataPerDay updateAccountDPD(Integer accountId, int exp, int onlHours) {
-        DataPerDay dpd = getAccountDPD(accountId);
+    public DataPerDay updateAccountDPD(Integer accountId, int exp, float onlHours) {
+        DataPerDay dpd = new DataPerDay(new DataPerDayId(getDayId(), accountId), 0, 0f);
         dpd.setExperience(dpd.getExperience() + exp);
         dpd.setOnlineHours(dpd.getOnlineHours() + onlHours);
 

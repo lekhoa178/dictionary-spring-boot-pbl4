@@ -19,7 +19,7 @@ public interface DataPerDayService {
 
     Integer getDayId();
 
-    DataPerDay updateAccountDPD(Integer accountId, int exp, int onlHours);
+    DataPerDay updateAccountDPD(Integer accountId, int exp, float onlHours);
 
     AccountStats getAccountStats(int accountId);
 

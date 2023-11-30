@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LearnServiceImpl implements LearnService {
@@ -66,6 +67,12 @@ public class LearnServiceImpl implements LearnService {
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public boolean isDoneLevel(int account, int stageId, int levelId) {
+        Optional<LevelFulfill> fulfill = levelFulfillRepository.findById(new LevelFulfillId(new LevelId(stageId, levelId), account));
+        return fulfill.isPresent();
     }
 
 }

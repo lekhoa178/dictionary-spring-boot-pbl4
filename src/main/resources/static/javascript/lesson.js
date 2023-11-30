@@ -81,7 +81,6 @@ checkBtn.addEventListener('click',  async function(e) {
             type: 'POST',
             url: '/lesson/lostHeart',
             success: function (response) {
-                console.log(response)
                 if (Number(response) === 0)
                     window.location = '/learn'
 
@@ -118,7 +117,7 @@ bottomContainer.addEventListener('click', async function(e) {
         nextQuestion();
     }
     else {
-        if (heart > 0) {
+        if (parseInt(heart.textContent) > 0) {
             document.querySelector('.base-container').innerHTML
                 = await AJAX(`/lesson/finish/${stageId}/${levelId}/${correctAns} ${correctAns / totalQuestion * 100}`);
         }

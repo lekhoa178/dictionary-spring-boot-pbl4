@@ -2,6 +2,7 @@ package com.pbl4.monolingo.controller;
 
 import com.pbl4.monolingo.entity.*;
 import com.pbl4.monolingo.service.*;
+import com.pbl4.monolingo.utility.dto.AccountDPDStat;
 import com.pbl4.monolingo.utility.dto.AccountExp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -190,7 +191,7 @@ public class ApplicationController {
         if (principal != null) {
             Account account = accountService.getAccountByUsername(principal.getName());
             model.addAttribute("stats", dataPerDayService.getAccountStats(account.getAccountId()));
-            model.addAttribute("statPerDay", dataPerDayService.getAccountDPDs(account.getAccountId()));
+            model.addAttribute("dayStats", dataPerDayService.getAccountDPDStat(account.getAccountId()));
 
             if (requestSource == null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
@@ -199,6 +200,18 @@ public class ApplicationController {
         }
 
         return "fragments/profile";
+    }
+
+    @GetMapping("/test-profile")
+
+    public String showTest(Model model, Principal principal,
+                              @RequestHeader(value = "request-source", required = false) String requestSource) {
+        Map<String, Integer> surveyMap = new LinkedHashMap<>();
+        surveyMap.put("Java", 40);
+        surveyMap.put("Python", 50);
+        surveyMap.put(".NET", 20);
+        model.addAttribute("surveyMap", surveyMap);
+        return "test";
     }
 
     @GetMapping("/lesson")

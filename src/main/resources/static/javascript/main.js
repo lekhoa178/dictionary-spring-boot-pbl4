@@ -16,8 +16,7 @@ async function init() {
   }
   fragmentEl.classList.add('menu--tab-active');
 
-  fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
-
+  [fragmentContainer.innerHTML] = await Promise.all([AJAX(`/${fragment}`)]);
   const path = `/javascript/fragments/${fragment}.js`;
   if (loadedScript.has(path))
     return;

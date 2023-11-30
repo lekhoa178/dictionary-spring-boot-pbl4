@@ -4,6 +4,7 @@ import com.pbl4.monolingo.dao.DataPerDayRepository;
 import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.entity.embeddable.DataPerDayId;
+import com.pbl4.monolingo.utility.dto.AccountDPDStat;
 import com.pbl4.monolingo.utility.dto.AccountExp;
 import lombok.Getter;
 import com.pbl4.monolingo.utility.dto.AccountStats;
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DataPerDayServiceImpl implements DataPerDayService {
@@ -32,6 +30,37 @@ public class DataPerDayServiceImpl implements DataPerDayService {
     @Override
     public List<DataPerDay> getAccountDPDs(Integer accountId) {
         return dataPerDayRepository.findAllByIdAccountId(accountId);
+    }
+
+    @Override
+    public AccountDPDStat getAccountDPDStat(Integer accountId) {
+        List<Integer> exps = new ArrayList<>();
+        List<Integer> onlineHours = new ArrayList<>();
+        List<String> days = new ArrayList<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter rFormatter = DateTimeFormatter.ofPattern("MM-dd");
+
+        List<DataPerDay> dpds = getAccountDPDs(accountId);
+
+        int minId = dpds.get(0).getId().getDayId();
+        int maxId = dpds.get(dpds.size() - 1).getId().getDayId();
+        LocalDate firstDate = LocalDate.parse(String.valueOf(minId), formatter);
+
+        for (int i = 0; i <= maxId - minId; ++i) {
+            days.add(firstDate.plusDays(i).format(rFormatter));
+            exps.add(0);
+            onlineHours.add(0);
+        }
+
+        for (DataPerDay d : dpds) {
+            int index = d.getId().getDayId() - minId;
+
+            exps.set(index, d.getExperience());
+            onlineHours.set(index, d.getOnlineHours().intValue());
+        }
+
+        return new AccountDPDStat(exps, onlineHours, days);
     }
 
     @Override

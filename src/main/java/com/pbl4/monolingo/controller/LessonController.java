@@ -1,13 +1,12 @@
 package com.pbl4.monolingo.controller;
 
 import com.pbl4.monolingo.dao.LevelFulfillRepository;
+import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.entity.embeddable.LevelId;
-import com.pbl4.monolingo.service.AccountService;
-import com.pbl4.monolingo.service.LearnService;
+import com.pbl4.monolingo.service.*;
 import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.ExtraInformation;
 import com.pbl4.monolingo.service.AccountService;
-import com.pbl4.monolingo.service.ExtraInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,12 +22,14 @@ public class LessonController {
     private final LearnService learnService;
     private final AccountService accountService;
     private final ExtraInfoService extraInfoService;
+    private final DataPerDayService dataPerDayService;
     
     @Autowired
-    public LessonController(LearnService learnService, ExtraInfoService extraInfoService, AccountService accountService) {
+    public LessonController(LearnService learnService, ExtraInfoService extraInfoService, AccountService accountService, DataPerDayService dataPerDayService) {
         this.learnService = learnService;
         this.accountService = accountService;
         this.extraInfoService = extraInfoService;
+        this.dataPerDayService = dataPerDayService;
     }
 
     @GetMapping("/{stageId}/{levelId}")
@@ -52,14 +53,24 @@ public class LessonController {
         if (requestSource == null)
             return "redirect:/learn";
 
+        System.out.println(data);
+
+
+        int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+
         int exp = Integer.parseInt(data.split(" ")[0]);
-        int precise = Integer.parseInt(data.split(" ")[1]);
+        float precise = Float.parseFloat(data.split(" ")[1]);
 
         model.addAttribute("exp", exp);
         model.addAttribute("precise", precise);
 
-        int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
-        learnService.finishLevel(accountId, stageId, levelId);
+
+        dataPerDayService.updateAccountDPD(accountId, exp, 0);
+
+        if (!learnService.isDoneLevel(accountId, stageId, levelId)) {
+            learnService.finishLevel(accountId, stageId, levelId);
+            System.out.println("In use");
+        }
         return "lessonFinish";
     }
 
@@ -74,5 +85,20 @@ public class LessonController {
     @GetMapping("/heart")
     public ResponseEntity<Integer> getHeart(Principal principal) {
         return ResponseEntity.ok(accountService.getAccountInfoByUsername(principal.getName()).getHearts());
+    }
+
+    @GetMapping("/test/{data}")
+    public String test(Model model, Principal principal,
+                                        @PathVariable String data) {
+        int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+
+        int exp = Integer.parseInt(data.split(" ")[0]);
+        int precise = Integer.parseInt(data.split(" ")[1]);
+
+        model.addAttribute("exp", exp);
+        model.addAttribute("precise", precise);
+
+        dataPerDayService.updateAccountDPD(accountId, exp, 0);
+        return "lessonFinish";
     }
 }

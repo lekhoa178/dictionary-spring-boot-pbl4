@@ -9,4 +9,5 @@ public interface LearnService {
 
     List<StageLevelState> getAccountStages(int accountId);
     void finishLevel(int accountId, int stageId, int levelId);
+    boolean isDoneLevel(int account, int stageId, int levelId);
 }

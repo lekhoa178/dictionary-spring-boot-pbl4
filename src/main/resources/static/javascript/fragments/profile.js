@@ -21,7 +21,6 @@ $(function(){
         xAxis: {
             type: 'datetime',
             categories: days,
-            crosshair: true
         },
         yAxis: {
             min: 0,
@@ -38,11 +37,12 @@ $(function(){
             shared: true,
             useHTML: true
         },
+
         plotOptions: {
             line: {
                 pointPadding: 0.2,
                 borderWidth: 0
-            }
+            },
         },
         series: [{
             name: 'Experiences',
@@ -50,6 +50,21 @@ $(function(){
         }, {
             name: 'Online Hours',
             data: onlineHours
-        }]
+        }],
+
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    legend: {
+                        layout: 'horizontal',
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    }
+                }
+            }]
+        }
     });
 });

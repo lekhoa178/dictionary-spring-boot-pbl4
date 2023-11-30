@@ -70,12 +70,13 @@ public class LessonController {
 
         dataPerDayService.updateAccountDPD(accountId, exp, 0);
 
-        if (!fulfilled) {
+        if (!fulfilled)
             learnService.finishLevel(accountId, stageId, levelId);
-        } else {
+        else
             dataPerDayService.updateAccountDPD(accountId, exp, 0);
 
         return "lessonFinish";
+
     }
 
     @PostMapping("/lostHeart")

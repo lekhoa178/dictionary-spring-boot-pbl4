@@ -56,8 +56,15 @@ menu.addEventListener('click', async function (e) {
   fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
 
   const path = `/javascript/fragments/${fragment}.js`;
-  if (loadedScript.has(path))
+  if (loadedScript.has(path)) {
+    if (fragment === 'profile') {
+      const script = document.createElement('script');
+      const text = document.createTextNode(await AJAX(path));
+      script.appendChild(text);
+      fragmentContainer.append(script);
+    }
     return;
+  }
 
   const script = document.createElement('script');
   const text = document.createTextNode(await AJAX(path));

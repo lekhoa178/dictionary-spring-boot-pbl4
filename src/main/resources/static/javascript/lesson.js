@@ -11,11 +11,13 @@ const requestTitleEl = document.querySelector('.request--title');
 const progressEl = document.querySelector('.progress');
 
 let questions = [];
+let questionTypes = [];
+let answerResults = [];
 
 let orViSentence = '';
 let correctAns = 0;
 let progress = 0;
-let totalQuestion = 13;
+let totalQuestion = 2;
 let heart = document.querySelector('.resource--items-text-heart');
 let type = 0;
 
@@ -65,6 +67,7 @@ checkBtn.addEventListener('click', async function (e) {
 
   let noticeHTML = '';
   if (orViSentence === ansSentence.substring(1)) {
+    answerResults[progress] = true;
     correctAns++;
 
     noticeHTML = `
@@ -76,6 +79,8 @@ checkBtn.addEventListener('click', async function (e) {
                 <button class="btn btn--continue btn--correct">TIẾP TỤC</button>
             </div>`;
   } else {
+    answerResults[progress] = false;
+
     $.ajax({
       type: 'POST',
       url: '/lesson/lostHeart',
@@ -121,22 +126,68 @@ bottomContainer.addEventListener('click', async function (e) {
           (correctAns / totalQuestion) * 100
         }`
       );
+
+      const reviewBodyEl = document.querySelector(".review--body");
+      for (let i = 0; i < totalQuestion; ++i) {
+        let [enSentence, viSentence] = questions[i].split('/');
+        if (enSentence.size > 40)
+        enSentence = enSentence.slice(0, 40) + "...";
+
+          reviewBodyEl.insertAdjacentHTML('beforeend',
+            `<div class="review--item" style="background-color: ${answerResults[i] ? "#c6ffbb" : "#ffcdd3"}"
+                        data-index="${i}">
+                    <p class="review--item--header">${questionTypes[i] >= 1 ? "Dịch lại câu" : "Luyện nghe câu"}</p>
+                    <p class="review--item--sentence">${enSentence}</p>
+                  </div>`)
+      }
     }
   }
 });
 
 document.addEventListener('click', async function (e) {
-  if (!e.target.classList.contains('btn--end')) return;
+  if (e.target.classList.contains('btn--end')) {
+    window.location.replace('/learn');
+    checkBtn.classList.add('btn--check--inactive');
+  }
+  else if (e.target.classList.contains('btn--review')) {
+    const panelEl = document.querySelector('.review--overlay');
+    panelEl.classList.remove("hidden");
+  }
+  else if (e.target.classList.contains('review--collapse-btn')) {
+    const panelEl = document.querySelector('.review--overlay');
+    panelEl.classList.add("hidden");
+  }
+  else if (e.target.closest('.review--item')) {
+    const detailEl = document.querySelector('.review--detail--overlay');
+    detailEl.classList.remove("hidden");
 
-  window.location.replace('/learn');
-  checkBtn.classList.add('btn--check--inactive');
+    const detailConEl = document.querySelector('.review--detail-container');
+    const index = e.target.closest('.review--item').dataset.index;
+    console.log(index);
+    let [enSentence, viSentence] = questions[index].split('/');
+
+    detailConEl.innerHTML = `
+              <div class="review--header">
+                <div class="review--title">Câu ${parseInt(index) + 1}:</div>
+                <button class="review--detail--collapse-btn">X</button>
+              </div>
+              <p class="review--detail--header">${questionTypes[index] >= 1 ? "Dịch lại câu" : "Luyện nghe câu"}</p>
+              <p class="review--detail--sentence">Câu hỏi: ${enSentence}</p>
+              <p class="review--detail--sentence">Câu trả lời: ${viSentence}</p>
+    `
+  }
+  else if (e.target.classList.contains('review--detail--collapse-btn')) {
+    const detailEl = document.querySelector('.review--detail--overlay');
+    detailEl.classList.add("hidden");
+  }
+
 });
 
 const nextQuestion = function () {
   progressEl.style.width = `${(100 * progress) / totalQuestion}%`;
   answerContainer.innerText = '';
 
-  type = Math.round(Math.random() * 2);
+  type = questionTypes[progress];
 
   let randomQues = 0;
   while (randomQues === progress) {
@@ -211,6 +262,11 @@ async function setupRound() {
     `/cfg/sentences/${stageId}/${levelId}/${totalQuestion}`,
     true
   );
+
+  questionTypes = [];
+  for (let i = 0; i < totalQuestion; i++) {
+    questionTypes.push(Math.round(Math.random() * 2));
+  }
 
   $.ajax({
     type: 'GET',

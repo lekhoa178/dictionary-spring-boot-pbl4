@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -47,14 +48,21 @@ public class DataPerDayServiceImpl implements DataPerDayService {
         int maxId = dpds.get(dpds.size() - 1).getId().getDayId();
         LocalDate firstDate = LocalDate.parse(String.valueOf(minId), formatter);
 
-        for (int i = 0; i <= maxId - minId; ++i) {
+        LocalDate minDay = LocalDate.parse(String.valueOf(minId), formatter);
+        LocalDate maxDay = LocalDate.parse(String.valueOf(maxId), formatter);
+        int offset = (int) ChronoUnit.DAYS.between(minDay, maxDay);
+        System.out.println(offset);
+
+
+        for (int i = 0; i <= offset; ++i) {
             days.add(firstDate.plusDays(i).format(rFormatter));
             exps.add(0);
             onlineHours.add(0);
         }
 
         for (DataPerDay d : dpds) {
-            int index = d.getId().getDayId() - minId;
+            LocalDate current = LocalDate.parse(String.valueOf(d.getId().getDayId()), formatter);
+            int index = (int) ChronoUnit.DAYS.between(minDay, current);
 
             exps.set(index, d.getExperience());
             onlineHours.set(index, d.getOnlineHours().intValue());

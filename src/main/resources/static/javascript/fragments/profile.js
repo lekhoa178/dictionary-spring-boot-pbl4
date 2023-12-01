@@ -21,6 +21,7 @@ $(function(){
         xAxis: {
             type: 'datetime',
             categories: days,
+            drilldow: true
         },
         yAxis: {
             min: 0,

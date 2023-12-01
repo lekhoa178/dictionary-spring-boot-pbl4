@@ -37,13 +37,16 @@ public class LessonController {
 
     @GetMapping("/{stageId}/{levelId}")
 
-    public String showLesson(Model model,
+    public String showLesson(Model model, Principal principal,
                              @PathVariable int stageId,
                              @PathVariable int levelId) {
+        Account account = accountService.getAccountByUsername(principal.getName());
+
         model.addAttribute("stage", stageId);
         model.addAttribute("level", levelId);
+        model.addAttribute("account", account);
 
-        return "lesson.html";
+        return "lesson";
     }
 
     @GetMapping("/finish/{stageId}/{levelId}/{fulfilled}/{data}")

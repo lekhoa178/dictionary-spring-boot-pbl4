@@ -73,6 +73,9 @@
 
 .profile-text {
     font-weight: 400;
+    outline: none;
+    border: none;
+    display: inline-block;
     color: #888888;
 }
 
@@ -88,15 +91,27 @@
     text-transform: none;
 }
 
-.profile-text:hover {
+.profile-text-container:hover .profile-text {
     text-decoration: underline;
     font-size: 20px;
 }
 
-.profile-text:hover::after {
+.edit-btn {
+    visibility: hidden;
+}
+.profile-text-container:hover .edit-btn{
     content: "✒️";
     font-size: 15px;
     margin-left: 20px;
     text-decoration: none;
     cursor: pointer;
+    visibility: visible;
 }
+
+/*.profile-text:hover::after {*/
+/*    content: "✒️";*/
+/*    font-size: 15px;*/
+/*    margin-left: 20px;*/
+/*    text-decoration: none;*/
+/*    cursor: pointer;*/
+/*}*/

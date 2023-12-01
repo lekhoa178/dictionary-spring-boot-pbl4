@@ -228,7 +228,6 @@ public class AdminController {
                                       @RequestHeader(value = "request-source", required = false) String requestSource,
                                       @PathVariable(value = "stageId") int stageId) {
         Stage stage = stageService.getStageById(stageId);
-        System.out.println(stage.getStageId());
         model.addAttribute("stage", stage);
 
         return "fragments_admin/stage-form";
@@ -238,7 +237,7 @@ public class AdminController {
     public String saveStage(@ModelAttribute("stage") Stage stage) {
         List<Level> levels = levelService.getLevelByStageId(stage.getStageId());
         stage.setLevels(levels);
-        System.out.println(stage.toString());
+
         stageService.save(stage);
         return "redirect:/admin/stage";
     }
@@ -266,15 +265,11 @@ public class AdminController {
         int stageId = vocabularies.get(0).getId().getLevelId().getStageId();
         int levelId = vocabularies.get(0).getId().getLevelId().getLevelId();
 
-        System.out.println(vocabularies.size());
         for (Vocabulary vocabulary : vocabularies) {
-
-            System.out.println(vocabulary.toString());
             if(vocabulary.getId().getVocabularyNum() == 0)
                 vocabulary.setId(new VocabularyId(new LevelId(stageId, levelId), vocabularyService.findMaxId() + 1));
 
             Vocabulary rs = vocabularyService.save(vocabulary);
-            System.out.println("success");
         }
         List<Vocabulary> temp_vocabularies = levelService.getVocabularyByLevelId(new LevelId(stageId, levelId));
 

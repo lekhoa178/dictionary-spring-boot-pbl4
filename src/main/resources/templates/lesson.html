@@ -31,48 +31,7 @@
             <span class="
                                 resource--items-text
                                 resource--items-text-heart"
-                      ></span>
-            </div>
-        </div>
-
-        <div class="game--container">
-            <h3 class="request--title">Viết lại bằng Tiếng Việt</h3>
-            <div class="sentence--container">
-                <i class="fa-solid fa-volume-low volume--icon icon"></i>
-                <p class="game--sentence">Wait a second...</p>
-            </div>
-
-            <div class="answer--panel">
-            </div>
-
-            <div class="game--cards">
-
-            </div>
-
-        </div>
-
-        <div class="bottom-container">
-            <div class="default-container">
-                <button class="btn btn--pass">BỎ QUA</button>
-                <button class="btn btn--check btn--check--inactive">KIỂM TRA</button>
-            </div>
-
-<!--            <div class="correct-container default-container">-->
-<!--                <div style="display: flex; flex-direction: row; gap: 20px; align-items: center">-->
-<!--                    <i class="fa-solid fa-circle-check correct-icon"></i>-->
-<!--                    <p style="font-weight: bold; color: #57b846; font-size: 22px">TUYỆT VỜI</p>-->
-<!--                </div>-->
-<!--                <button class="btn btn&#45;&#45;continue btn&#45;&#45;correct">TIẾP TỤC</button>-->
-<!--            </div>-->
-
-<!--            <div class="incorrect-container default-container">-->
-<!--                <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 5px">-->
-<!--                    <i class="fa-solid fa-circle-xmark incorrect-icon"></i>-->
-<!--                    <p style="color: #FF4B4B; font-weight: bold; font-size: 22px" class="correct-answer">ĐÁP ÁN ĐÚNG:</p>-->
-<!--                    <p style="color: #FF4B4B" class="correct-answer">TUYỆT VỜI</p>-->
-<!--                </div>-->
-<!--                <button class="btn btn&#45;&#45;continue btn&#45;&#45;incorrect">TIẾP TỤC</button>-->
-<!--            </div>-->
+            ></span>
         </div>
     </div>
 
@@ -115,19 +74,27 @@
         <!--                <button class="btn btn&#45;&#45;continue btn&#45;&#45;incorrect">TIẾP TỤC</button>-->
         <!--            </div>-->
     </div>
+    <dialog class="dialog-container" >
+        <div class="dialog-body">
+            <div class="img-container">
+                <img alt=""
+                     th:src="@{/img/cry-girl.jpg}"
+                     class="resource--items-icon">
+                <span class="
+                                resource--items-text
+                                resource--items-text-heart"
+                ></span>
+            </div>
 
-    <div class="pop-up-container">
-        <div class="img-container">
+            <div class="title">Bạn đã hết trái tim!</div>
+            <div class="content">Bạn có mua thêm trái tim không ?</div>
 
+            <div class="btn-field">
+                <button class="dialog-btn buy-btn" th:disabled="${account.extraInformation.balance < 200}"> Mua với giá: 200</button>
+                <button class="dialog-btn exit-btn"> Không, cảm ơn</button>
+            </div>
         </div>
-
-        <div class="title">Bạn đã hết trái tim!</div>
-        <div class="content">Bạn có mua thêm trái tim không ?</div>
-        <div class="btn-field">
-            <div class="buy-btn"> Mua với giá: 200</div>
-            <div class="exit-btn"> Không, cảm ơn</div>
-        </div>
-    </div>
+    </dialog>
 </div>
 </body>
 </html>

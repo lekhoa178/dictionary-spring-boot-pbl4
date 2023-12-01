@@ -4,11 +4,13 @@ import com.pbl4.monolingo.entity.*;
 import com.pbl4.monolingo.service.*;
 import com.pbl4.monolingo.utility.dto.AccountExp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -175,12 +177,18 @@ public class ApplicationController {
     }
 
     @PostMapping("/store/heart")
-    public String buyHearts(Principal principal) {
+    @ResponseBody
+    public ExtraInformation buyHearts(Principal principal) {
+        int heart = 0;
+        ExtraInformation temp = new ExtraInformation();
         if (principal != null) {
             Account account = accountService.getAccountByUsername(principal.getName());
             extraInfoService.buyHearts(account.getAccountId());
+
+            temp.setHearts(account.getExtraInformation().getHearts());
+            temp.setBalance(account.getExtraInformation().getBalance());
         }
-        return "redirect:/store";
+        return temp;
     }
 
     @GetMapping("/profile")

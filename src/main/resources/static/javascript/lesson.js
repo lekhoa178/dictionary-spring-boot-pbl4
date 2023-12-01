@@ -7,9 +7,13 @@ const passBtn = document.querySelector('.btn--pass');
 const checkBtn = document.querySelector('.btn--check');
 const volumeBtn = document.querySelector('.volume--icon');
 const requestTitleEl = document.querySelector('.request--title');
-
+const dialog = document.querySelector('.dialog-container');
+const dialogExitBtn = document.querySelector('.exit-btn');
+const dialogBuyHeartBtn = document.querySelector('.buy-btn');
 const progressEl = document.querySelector('.progress');
 
+if (dialog == null)
+    console.log("null")
 let questions = [];
 
 let orViSentence = "";
@@ -82,10 +86,12 @@ checkBtn.addEventListener('click',  async function(e) {
             type: 'POST',
             url: '/lesson/lostHeart',
             success: function (response) {
-                console.log(response)
-                if (Number(response) === 0)
-                    window.location = '/learn'
 
+                if (Number(response) === 0)
+                {
+                    // window.location = '/learn'
+                    dialog.style.visibility = 'visible'
+                }
                 heart.textContent = response
             },
             error: function (error) {
@@ -243,6 +249,32 @@ volumeBtn.addEventListener('click', e => {
     if ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) {
         speakText(gameSentence.innerText);
     }
+})
+
+dialogExitBtn.addEventListener('click', function (e) {
+    window.location.replace('/learn')
+})
+
+dialogBuyHeartBtn.addEventListener('click', function (e) {
+    $.ajax({
+        type: 'POST',
+        url: '/store/heart',
+        success: function (response) {
+            console.log(response.balance)
+            dialog.style.visibility = 'hidden';
+            heart.textContent = response.hearts;
+
+            if (response.balance < 200)
+            {
+                if (dialogExitBtn == null)
+                    console.log("null")
+                dialogBuyHeartBtn.disabled = true
+            }
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
 })
 
 // ----------------- UTILITY --------------------

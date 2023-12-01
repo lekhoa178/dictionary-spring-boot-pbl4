@@ -1,14 +1,41 @@
 <div class="profile-container">
     <div class="personal-container">
-        <p  class="profile-text profile-text--title"
-            style="font-size: 20px; color: black; margin-bottom: 10px; font-weight: bold"
-            th:text="${stats.account.getName()}">
-        </p>
-        <p class="profile-text" th:text="${stats.account.getGender() ? 'nữ' : 'nam'}"></p>
-        <p class="profile-text" th:text="${#dates.format(stats.account.getBirthdate(), 'dd-MM-yyyy')}"></p>
-        <p class="profile-text profile-text--email" th:text="${stats.account.getEmail()}"></p>
+        <div class="profile-text-container">
+            <input  class="profile-text profile-text--title"
+                    style="font-size: 20px; color: black; margin-bottom: 10px; font-weight: bold"
+                    th:value="${stats.account.getName()}" readonly/>
+            <span class="edit-btn">✒️</span>
+        </div>
+
+<!--        <p class="profile-text" th:text="${stats.account.getGender()  ? 'nữ' : 'nam'}"></p>-->
+        <div class="profile-text-container">
+            <span style="font-size: 17px; margin-right: 10px;" >Giới tính</span>
+            <input type="radio"  th:checked="${stats.account.getGender()}" value="true" name="gender-rd" id="male-btn" disabled>
+            <label for="male-btn">Nam</label>
+            <input type="radio"  th:checked="${!stats.account.getGender()}" value="false" name="gender-rd" id="fermale-btn" disabled>
+            <label for="fermale-btn">Nữ</label>
+        </div>
+        <div class="profile-text-container">
+            <input type="date" class="profile-text" th:value="${#dates.format(stats.account.getBirthdate(), 'yyyy-MM-dd')}" readonly>
+            <span class="edit-btn">✒️</span>
+        </div>
+        <div class="profile-text-container">
+            <input class="profile-text profile-text--email" th:value="${stats.account.getEmail()}" readonly/>
+            <span class="edit-btn">✒️</span>
+        </div>
+
+        <div class="btn-container">
+            <input type="button" value="Lưu thay đổi" disabled>
+        </div>
     </div>
 
+<!--    <p  class="profile-text profile-text&#45;&#45;title"-->
+<!--        style="font-size: 20px; color: black; margin-bottom: 10px; font-weight: bold"-->
+<!--        th:text="${stats.account.getName()}">-->
+<!--    </p>-->
+<!--    <p class="profile-text" th:text="${stats.account.getGender()  ? 'nữ' : 'nam'}"></p>-->
+<!--    <p class="profile-text" th:text="${#dates.format(stats.account.getBirthdate(), 'dd-MM-yyyy')}"></p>-->
+<!--    <p class="profile-text profile-text&#45;&#45;email" th:text="${stats.account.getEmail()}"></p>-->
     <p style="font-weight: bold; font-size: 20px">Thống kê</p>
     <div class="stats-container">
         <div class="stats-item">

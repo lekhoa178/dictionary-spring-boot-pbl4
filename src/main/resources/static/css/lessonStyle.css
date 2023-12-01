@@ -394,3 +394,113 @@ span {
     content: "%";
     color: #64D014;
 }
+
+.dialog-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+
+    visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(0, 0, 0, 0.5);
+}
+
+.dialog-body {
+    background-color: white;
+    height: 400px;
+    width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 15px;
+}
+
+.btn-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    flex:1;
+}
+
+.dialog-btn {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    border: 2px solid #cecece;
+    box-shadow: 0 2px 0 0 #cecece;
+    background-color: white;
+    padding: 10px;
+    border-radius: 15px;
+    grid-column: 3/4;
+    grid-row: 1/2;
+    text-align: center;
+    justify-content: center;
+    cursor: pointer;
+
+    text-transform: uppercase;
+    font-size: 17px;
+    font-weight: bold;
+
+    width: 300px;
+}
+
+.dialog-btn:not(:disabled):active {
+    transform: translateY(2px);
+    box-shadow: none;
+}
+
+.dialog-btn:not(:disabled) {
+    color: darkgray;
+}
+
+.buy-btn:not(:disabled) {
+    color: white;
+    background-color: #1cb0f6;
+    box-shadow: 0 2px #1899d6;
+    border: 1px solid #1899d6
+}
+
+.buy-btn:not(:disabled):hover {
+    background-color: #1fc1ff;
+}
+.exit-btn:hover {
+    background-color: #e5e5e5;
+}
+.img-container {
+    height: 40%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-container img {
+    height: 80%;
+    width: 40%;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    height: 15%;
+}
+
+.content {
+    font-size: 17px;
+    color: darkgray;
+
+    height: 10%;
+}

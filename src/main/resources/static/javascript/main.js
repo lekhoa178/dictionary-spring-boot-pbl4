@@ -45,6 +45,11 @@ menu.addEventListener('click', async function (e) {
       return;
 
     fragment = subTarget.id.replace('fragment-', '');
+
+    if(fragment === "logout"){
+      window.location = "/public/logout";
+      return;
+    }
   }
   if (target.classList.contains('.menu--tab-active')) return;
 
@@ -148,7 +153,6 @@ searchBar.addEventListener('input', async function (e) {
     searchResults.classList.add('hidden');
   }
 });
-
 searchForm.addEventListener('submit', async function (e) {
   e.preventDefault();
 
@@ -185,14 +189,14 @@ searchResults.addEventListener('click', async function (e) {
 // ----------------- UTILITY --------------------
 
 async function AJAX(fragment, json = false) {
-  var token = sessionStorage.getItem('jwtToken');
-  if (token) {
-    $.ajaxSetup({
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    });
-  }
+  // var token = sessionStorage.getItem('jwtToken');
+  // if (token) {
+  //   $.ajaxSetup({
+  //     headers: {
+  //       Authorization: 'Bearer ' + token,
+  //     },
+  //   });
+  // }
   // console.log('Token: ', token);
 
   try {

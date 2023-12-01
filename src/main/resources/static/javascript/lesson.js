@@ -7,11 +7,14 @@ const passBtn = document.querySelector('.btn--pass');
 const checkBtn = document.querySelector('.btn--check');
 const volumeBtn = document.querySelector('.volume--icon');
 const requestTitleEl = document.querySelector('.request--title');
-
+const dialog = document.querySelector('.dialog-container');
+const dialogExitBtn = document.querySelector('.exit-btn');
+const dialogBuyHeartBtn = document.querySelector('.buy-btn');
 const progressEl = document.querySelector('.progress');
 
-let stageType = "learn";
+let stageType = 'learn';
 
+if (dialog == null) console.log('null');
 let questions = [];
 let questionTypes = [];
 let answerResults = [];
@@ -82,14 +85,14 @@ checkBtn.addEventListener('click', async function (e) {
                 <button class="btn btn--continue btn--correct">TIẾP TỤC</button>
             </div>`;
   } else {
-    answerResults[progress] = false;
-
     $.ajax({
       type: 'POST',
       url: '/lesson/lostHeart',
       success: function (response) {
-        if (Number(response) === 0) window.location = '/learn';
-
+        if (Number(response) === 0) {
+          // window.location = '/learn'
+          dialog.style.visibility = 'visible';
+        }
         heart.textContent = response;
       },
       error: function (error) {
@@ -130,18 +133,23 @@ bottomContainer.addEventListener('click', async function (e) {
         }`
       );
 
-      const reviewBodyEl = document.querySelector(".review--body");
+      const reviewBodyEl = document.querySelector('.review--body');
       for (let i = 0; i < totalQuestion; ++i) {
         let [enSentence, viSentence] = questions[i].split('/');
-        if (enSentence.size > 40)
-        enSentence = enSentence.slice(0, 40) + "...";
+        if (enSentence.size > 40) enSentence = enSentence.slice(0, 40) + '...';
 
-          reviewBodyEl.insertAdjacentHTML('beforeend',
-            `<div class="review--item" style="background-color: ${answerResults[i] ? "#c6ffbb" : "#ffcdd3"}"
+        reviewBodyEl.insertAdjacentHTML(
+          'beforeend',
+          `<div class="review--item" style="background-color: ${
+            answerResults[i] ? '#c6ffbb' : '#ffcdd3'
+          }"
                         data-index="${i}">
-                    <p class="review--item--header">${questionTypes[i] >= 1 ? "Dịch lại câu" : "Luyện nghe câu"}</p>
+                    <p class="review--item--header">${
+                      questionTypes[i] >= 1 ? 'Dịch lại câu' : 'Luyện nghe câu'
+                    }</p>
                     <p class="review--item--sentence">${enSentence}</p>
-                  </div>`)
+                  </div>`
+        );
       }
     }
   }
@@ -151,18 +159,15 @@ document.addEventListener('click', async function (e) {
   if (e.target.classList.contains('btn--end')) {
     window.location.replace('/learn');
     checkBtn.classList.add('btn--check--inactive');
-  }
-  else if (e.target.classList.contains('btn--review')) {
+  } else if (e.target.classList.contains('btn--review')) {
     const panelEl = document.querySelector('.review--overlay');
-    panelEl.classList.remove("hidden");
-  }
-  else if (e.target.classList.contains('review--collapse-btn')) {
+    panelEl.classList.remove('hidden');
+  } else if (e.target.classList.contains('review--collapse-btn')) {
     const panelEl = document.querySelector('.review--overlay');
-    panelEl.classList.add("hidden");
-  }
-  else if (e.target.closest('.review--item')) {
+    panelEl.classList.add('hidden');
+  } else if (e.target.closest('.review--item')) {
     const detailEl = document.querySelector('.review--detail--overlay');
-    detailEl.classList.remove("hidden");
+    detailEl.classList.remove('hidden');
 
     const detailConEl = document.querySelector('.review--detail-container');
     const index = e.target.closest('.review--item').dataset.index;
@@ -174,16 +179,16 @@ document.addEventListener('click', async function (e) {
                 <div class="review--title">Câu ${parseInt(index) + 1}:</div>
                 <button class="review--detail--collapse-btn">X</button>
               </div>
-              <p class="review--detail--header">${questionTypes[index] >= 1 ? "Dịch lại câu" : "Luyện nghe câu"}</p>
+              <p class="review--detail--header">${
+                questionTypes[index] >= 1 ? 'Dịch lại câu' : 'Luyện nghe câu'
+              }</p>
               <p class="review--detail--sentence">Câu hỏi: ${enSentence}</p>
               <p class="review--detail--sentence">Câu trả lời: ${viSentence}</p>
-    `
-  }
-  else if (e.target.classList.contains('review--detail--collapse-btn')) {
+    `;
+  } else if (e.target.classList.contains('review--detail--collapse-btn')) {
     const detailEl = document.querySelector('.review--detail--overlay');
-    detailEl.classList.add("hidden");
+    detailEl.classList.add('hidden');
   }
-
 });
 
 const nextQuestion = function () {
@@ -261,24 +266,26 @@ const nextQuestion = function () {
 };
 
 async function setupRound() {
-  stageType = document.getElementById("stage-metadata").dataset.type;
-  if (stageType === "learn") {
-
+  stageType = document.getElementById('stage-metadata').dataset.type;
+  if (stageType === 'learn') {
     questions = await AJAX(
-        `/cfg/sentences/${stageId}/${levelId}/${totalQuestion}`,
-        true
+      `/cfg/sentences/${stageId}/${levelId}/${totalQuestion}`,
+      true
     );
-
   } else {
-
     const jsonQuestions = await AJAX(
-        `/practice/sentences/${accountId}/${totalQuestion}`,
-        true);
+      `/practice/sentences/${accountId}/${totalQuestion}`,
+      true
+    );
 
     console.log(jsonQuestions);
 
     for (let i = 0; i < jsonQuestions.sentences.length; ++i) {
-      questions.push(jsonQuestions.sentences[i].English + "/" + jsonQuestions.sentences[i].Vietnamese);
+      questions.push(
+        jsonQuestions.sentences[i].English +
+          '/' +
+          jsonQuestions.sentences[i].Vietnamese
+      );
     }
 
     console.log(questions);
@@ -324,6 +331,30 @@ volumeBtn.addEventListener('click', (e) => {
   if ('speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) {
     speakText(gameSentence.innerText);
   }
+});
+
+dialogExitBtn.addEventListener('click', function (e) {
+  window.location.replace('/learn');
+});
+
+dialogBuyHeartBtn.addEventListener('click', function (e) {
+  $.ajax({
+    type: 'POST',
+    url: '/store/heart',
+    success: function (response) {
+      console.log(response.balance);
+      dialog.style.visibility = 'hidden';
+      heart.textContent = response.hearts;
+
+      if (response.balance < 200) {
+        if (dialogExitBtn == null) console.log('null');
+        dialogBuyHeartBtn.disabled = true;
+      }
+    },
+    error: function (error) {
+      console.log(error);
+    },
+  });
 });
 
 // ----------------- UTILITY --------------------

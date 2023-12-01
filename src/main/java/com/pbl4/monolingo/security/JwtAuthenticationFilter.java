@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(token == "") {
             token = getTokenFromRequest(request);
         }
-        System.out.println("Token from cookie "+ token);
+//        System.out.println("Token from cookie "+ token);
         final String authHeader = request.getHeader("Authorization");
         final String jwt ;
         final String username;
@@ -88,7 +88,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }
-
         return "";
     }
 }

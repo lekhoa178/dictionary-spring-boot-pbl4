@@ -100,9 +100,11 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
     public void buyHearts(int accountId) {
         ExtraInformation extraInformation = extraInformationRepository.findExtraInformationByAccountId(accountId);
 
-        extraInformation.setHearts(5);
-        extraInformation.setBalance(extraInformation.getBalance() - 200);
-        extraInformation.setLostHeartTimes(null);
+        if (extraInformation.getBalance() >= 200) {
+            extraInformation.setHearts(5);
+            extraInformation.setBalance(extraInformation.getBalance() - 200);
+            extraInformation.setLostHeartTimes(null);
+        }
 
         extraInformationRepository.save(extraInformation);
     }

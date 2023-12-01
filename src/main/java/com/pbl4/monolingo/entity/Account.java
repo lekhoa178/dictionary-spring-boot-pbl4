@@ -81,6 +81,21 @@ public class Account implements UserDetails {
         this.type = type;
     }
 
+    public Account(String username, String password, Boolean enabled, AccountType type) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.type = type;
+    }
+
+    public Account(String username, String password, String email, Boolean enabled, AccountType type) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.enabled = enabled;
+        this.type = type;
+    }
+
     public Integer getAccountId() {
         return accountId;
     }

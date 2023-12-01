@@ -27,8 +27,6 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-                .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/css/**").permitAll()
                 .requestMatchers("/img/**").permitAll()
@@ -46,19 +44,20 @@ public class SecurityConfiguration {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+                .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.formLogin(formLogin -> formLogin.loginPage("/login").permitAll());
+//        http.formLogin(formLogin -> formLogin.loginPage("/login").permitAll());
 
         http.logout(logout -> logout
-                .logoutUrl("/logout") // URL to trigger logout (e.g. POST /logout)
+                .logoutUrl("public/logout") // URL to trigger logout (e.g. POST /logout)
                 .logoutSuccessHandler(logoutSuccessHandler()) // Your custom logout success handler if required
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID") // If cookies are used, adjust accordingly for JWT
                 .permitAll()
-
         );
 
 //                .addFilterBefore((Filter) new JwtTokenInterceptor(),UsernamePasswordAuthenticationFilter.class);
@@ -69,9 +68,7 @@ public class SecurityConfiguration {
     public LogoutSuccessHandler logoutSuccessHandler() {
 
         return (request, response, authentication) -> {
-
             // Custom logic after successful logout, e.g. redirect to login page
-
             response.sendRedirect("/public/login");
 
         };

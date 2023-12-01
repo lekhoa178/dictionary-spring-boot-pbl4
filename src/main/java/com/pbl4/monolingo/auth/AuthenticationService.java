@@ -3,8 +3,10 @@ package com.pbl4.monolingo.auth;
 
 import com.pbl4.monolingo.dao.AccountRepository;
 import com.pbl4.monolingo.dao.AccountTypeRepository;
+import com.pbl4.monolingo.dao.ExtraInformationRepository;
 import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.AccountType;
+import com.pbl4.monolingo.entity.ExtraInformation;
 import com.pbl4.monolingo.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +27,20 @@ public class    AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final AccountTypeRepository accountTypeRepository;
+    private final ExtraInformationRepository extraInformationRepository;
     private final Map<Integer, LocalDateTime> loginTimes = new HashMap<>();
 
     public AuthenticationResponse register(RegisterRequest request) {
-//        var user = Account.builder().username(request.getUsername())
-//                .password(passwordEncoder.encode(request.getPassword()))
-//                .role(Role.USER)
-//                .build();
         AccountType accountType = accountTypeRepository.findAccountTypeByType("ROLE_LEARNER").orElseThrow();
-        var user = new Account(request.getUsername(),passwordEncoder.encode(request.getPassword()),accountType);
-//        ExtraInformation newExtra = user;
-        repository .save(user);
-
+        var user = new Account(request.getUsername(),passwordEncoder.encode(request.getPassword()),request.getEmail(),true,accountType);
+        ExtraInformation newExtra = new ExtraInformation();
+        newExtra.setBalance(0);
+        newExtra.setHearts(5);
+        newExtra.setNumberOfLoginDay(0);
+        newExtra.setNumberOfConsecutiveDay(0);
+        newExtra.setAccount(user);
+        repository.save(user);
+        extraInformationRepository.save(newExtra);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }

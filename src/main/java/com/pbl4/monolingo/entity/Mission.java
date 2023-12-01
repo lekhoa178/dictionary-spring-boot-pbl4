@@ -7,28 +7,38 @@ import jakarta.persistence.*;
 public class Mission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "misison_id")
     private Integer id;
-    @Column
+
+    @Column(name = "name")
     private String name;
-    @Column
+
+    @Column(name = "description")
     private String description;
-    @Column
+
+    @Column(name = "point")
     private Integer point;
 
-    public Mission(String name, String description, Integer point) {
-        this.name = name;
-        this.description = description;
-        this.point = point;
-    }
+    @Column(name = "type")
+    private Integer type;
 
-    public Mission() {
-    }
+    public Mission() {}
 
-    public Mission(Integer id, String name, String description, Integer point) {
+
+    public Mission(Integer id, String name, String description, Integer point, Integer type) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.point = point;
+        this.type = type;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -55,11 +65,22 @@ public class Mission {
         this.point = point;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getType() {
+        return type;
     }
 
-    public Integer getId() {
-        return id;
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Mission{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", point=" + point +
+                ", type=" + type +
+                '}';
     }
 }

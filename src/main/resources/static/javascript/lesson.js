@@ -267,12 +267,12 @@ const nextQuestion = function () {
 
 async function setupRound() {
   stageType = document.getElementById('stage-metadata').dataset.type;
-  if (stageType === 'learn') {
+  if (stageType === 'learn' || stageType === 'listen') {
     questions = await AJAX(
       `/cfg/sentences/${stageId}/${levelId}/${totalQuestion}`,
       true
     );
-  } else {
+  } else if (stageType === 'practice') {
     const jsonQuestions = await AJAX(
       `/practice/sentences/${accountId}/${totalQuestion}`,
       true
@@ -292,8 +292,14 @@ async function setupRound() {
   }
 
   questionTypes = [];
-  for (let i = 0; i < totalQuestion; i++) {
-    questionTypes.push(Math.round(Math.random() * 2));
+  if (stageType === 'listen') {
+    for (let i = 0; i < totalQuestion; i++) {
+      questionTypes.push(0);
+    }
+  } else {
+    for (let i = 0; i < totalQuestion; i++) {
+      questionTypes.push(Math.round(Math.random() * 2));
+    }
   }
 
   $.ajax({

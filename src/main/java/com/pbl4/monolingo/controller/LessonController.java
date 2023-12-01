@@ -2,6 +2,7 @@ package com.pbl4.monolingo.controller;
 
 import com.pbl4.monolingo.dao.LevelFulfillRepository;
 import com.pbl4.monolingo.entity.DataPerDay;
+import com.pbl4.monolingo.entity.LevelFulfill;
 import com.pbl4.monolingo.entity.embeddable.LevelId;
 import com.pbl4.monolingo.service.*;
 import com.pbl4.monolingo.entity.Account;
@@ -14,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/lesson")
@@ -23,16 +26,19 @@ public class LessonController {
     private final AccountService accountService;
     private final ExtraInfoService extraInfoService;
     private final DataPerDayService dataPerDayService;
+    private final LevelFulfillRepository levelFulfillRepository;
     
     @Autowired
     public LessonController(LearnService learnService,
                             ExtraInfoService extraInfoService,
                             AccountService accountService,
-                            DataPerDayService dataPerDayService) {
+                            DataPerDayService dataPerDayService,
+                            LevelFulfillRepository levelFulfillRepository) {
         this.learnService = learnService;
         this.accountService = accountService;
         this.extraInfoService = extraInfoService;
         this.dataPerDayService = dataPerDayService;
+        this.levelFulfillRepository = levelFulfillRepository;
     }
 
     @GetMapping("/{stageId}/{levelId}")
@@ -44,7 +50,7 @@ public class LessonController {
 
         model.addAttribute("type", "learn");
 
-        model.addAttribute("accountId", -1);
+        model.addAttribute("accountId", account.getAccountId());
         model.addAttribute("stage", stageId);
         model.addAttribute("level", levelId);
         model.addAttribute("account", account);
@@ -52,18 +58,35 @@ public class LessonController {
         return "lesson";
     }
 
-    @GetMapping("/{accountId}")
+    @GetMapping("/practice")
 
     public String showPracticeNotebook(Principal principal,
-                                        Model model,
-                                      @PathVariable int accountId) {
+                                        Model model) {
         Account account = accountService.getAccountByUsername(principal.getName());
+
 
         model.addAttribute("type", "practice");
 
-        model.addAttribute("accountId", accountId);
+        model.addAttribute("accountId", account.getAccountId());
         model.addAttribute("stage", -1);
         model.addAttribute("level", -1);
+        model.addAttribute("account", account);
+
+        return "lesson.html";
+    }
+
+    @GetMapping("/listen")
+    public String showPracticeListen(Principal principal,
+                                       Model model) {
+        Account account = accountService.getAccountByUsername(principal.getName());
+        List<LevelFulfill> fulfills = levelFulfillRepository.findAllByIdAccountId(account.getAccountId());
+        int rand = (new Random()).nextInt(0, fulfills.size());
+
+        model.addAttribute("type", "listen");
+
+        model.addAttribute("accountId", account.getAccountId());
+        model.addAttribute("stage", fulfills.get(rand).getId().getLevelId().getStageId());
+        model.addAttribute("level", fulfills.get(rand).getId().getLevelId().getLevelId());
         model.addAttribute("account", account);
 
         return "lesson.html";

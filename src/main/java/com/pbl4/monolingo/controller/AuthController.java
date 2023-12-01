@@ -171,12 +171,25 @@ public class AuthController {
         if(rs){
             mailCurrent = mail;
 //            model.addAttribute("email",mail);
-            return "redirect:/public/signup";
+            return "non_function/VerifyOTPRegister";
         }
         else {
             return "non_function/SendOTPRegister";
         }
-
+    }
+    @PostMapping("/verifyOTPRegister")
+    public String verifyRegister(@RequestParam("pr1") int num1, @RequestParam("pr2") int num2,
+                                 @RequestParam("pr3") int num3, @RequestParam("pr4") int num4,
+                                 @RequestParam("pr5") int num5, @RequestParam("pr6") int num6,
+                                 Model model, HttpServletRequest request){
+        String otp = num1+""+num2+num3+num4+num5+num6;
+        boolean check = mailSender.verifyOtpMail(otp,request);
+        if(!check){
+            model.addAttribute("msg","Nhập sai otp");
+            return "non_function/VerifyOTPRegister";
+        }
+        System.out.println(otp);
+        return "redirect:/public/signup";
     }
 
 }

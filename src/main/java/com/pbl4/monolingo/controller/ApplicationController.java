@@ -3,6 +3,7 @@ package com.pbl4.monolingo.controller;
 import com.pbl4.monolingo.entity.*;
 import com.pbl4.monolingo.service.*;
 import com.pbl4.monolingo.utility.dto.AccountExp;
+import com.pbl4.monolingo.utility.dto.AccountStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -188,7 +189,9 @@ public class ApplicationController {
     public String showProfile(Model model, Principal principal,
                               @RequestHeader(value = "request-source", required = false) String requestSource) {
         if (principal != null) {
+            System.out.println(principal);
             Account account = accountService.getAccountByUsername(principal.getName());
+            AccountStats dataPerDay = dataPerDayService.getAccountStats(account.getAccountId());
             model.addAttribute("stats", dataPerDayService.getAccountStats(account.getAccountId()));
             model.addAttribute("statPerDay", dataPerDayService.getAccountDPDs(account.getAccountId()));
 

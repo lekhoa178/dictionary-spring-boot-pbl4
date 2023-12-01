@@ -56,13 +56,18 @@ public class ApplicationController {
 
             model.addAttribute("stageColors", StageColors);
             model.addAttribute("stages", learnService.getAccountStages(accountId));
+            model.addAttribute("accountId", accountId);
+
+            if (requestSource == null) {
+                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+                return "main";
+            } else {
+                return "fragments/learn";
+            }
         }
 
-        if (requestSource == null && principal != null) {
-            model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-            return "main";
-        } else
-            return "fragments/learn";
+        return "main";
+
     }
 
 //    @GetMapping("/practice")
@@ -111,15 +116,17 @@ public class ApplicationController {
             model.addAttribute("current", currentAcc);
 
             model.addAttribute("foundIndex", index.isPresent() ? index.getAsInt() : -1);
+
+            if (requestSource == null) {
+                model.addAttribute("accountId", curAccountId);
+                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+                return "main";
+            } else {
+                return "fragments/rank";
+            }
         }
 
-        if (requestSource == null) {
-            if (principal != null) {
-                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-            }
-            return "main";
-        } else
-            return "fragments/rank";
+        return "main";
     }
 
     @GetMapping("/practice")
@@ -139,40 +146,59 @@ public class ApplicationController {
                     notebook.getLexicon().getSynset().setDefinition(synset.getDefinition().substring(0, 25).concat("..."));
             }
             model.addAttribute("notebooks", notebooks);
+
+            if (requestSource == null) {
+                model.addAttribute("accountId", accountId);
+                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+                return "main";
+            } else {
+                return "fragments/practice";
+            }
         }
 
-        if (requestSource == null & principal != null) {
-            model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-            return "main";
-        } else
-            return "fragments/practice";
+
+        return "main";
     }
 
     @GetMapping("/mission")
 
     public String showMission(Model model, Principal principal,
                               @RequestHeader(value = "request-source", required = false) String requestSource) {
-        if (requestSource == null) {
-            if (principal != null) {
+        if (principal != null) {
+            int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+
+            if (requestSource == null) {
+                model.addAttribute("accountId", accountId);
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+                return "main";
+            } else {
+                return "fragments/mission";
             }
-            return "main";
-        } else
-            return "fragments/mission";
+        }
+
+        return "main";
+
     }
 
     @GetMapping("/store")
 
     public String showStore(Model model, Principal principal,
                             @RequestHeader(value = "request-source", required = false) String requestSource) {
-        model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-        if (requestSource == null) {
-            if (principal != null) {
-                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+        if (principal != null) {
+            int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+
+            model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+
+            if (requestSource == null) {
+                model.addAttribute("accountId", accountId);
+                return "main";
+            } else {
+                return "fragments/store";
             }
-            return "main";
-        } else
-            return "fragments/store";
+        }
+
+        return "main";
+
     }
 
     @PostMapping("/store/heart")
@@ -200,18 +226,6 @@ public class ApplicationController {
         }
 
         return "fragments/profile";
-    }
-
-    @GetMapping("/test-profile")
-
-    public String showTest(Model model, Principal principal,
-                              @RequestHeader(value = "request-source", required = false) String requestSource) {
-        Map<String, Integer> surveyMap = new LinkedHashMap<>();
-        surveyMap.put("Java", 40);
-        surveyMap.put("Python", 50);
-        surveyMap.put(".NET", 20);
-        model.addAttribute("surveyMap", surveyMap);
-        return "test";
     }
 
     @GetMapping("/lesson")

@@ -10,6 +10,7 @@ public class ChatGPTRequest {
 
     private String model;
     private List<Message> messages;
+    private float temperature = 0.7f;
 
     public ChatGPTRequest(String model, String prompt) {
         this.model = model;

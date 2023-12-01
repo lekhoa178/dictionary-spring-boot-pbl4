@@ -12,7 +12,8 @@
     <script defer th:src="@{/javascript/lesson.js}"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
-<body class="base-container" th:data-level="${level}" th:data-stage="${stage}">
+<div id="stage-metadata" th:data-type="${type}"}> </div>
+<body class="base-container" th:data-level="${level}" th:data-stage="${stage}" th:data-account-id="${accountId}">
     <div class="container">
         <div class="top-container">
             <i class="fa-solid fa-x return--btn"></i>

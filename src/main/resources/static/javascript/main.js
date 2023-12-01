@@ -1,6 +1,7 @@
 const menu = document.querySelector('.menu');
 const tabs = menu.querySelectorAll('.menu--tabs');
 const fragmentContainer = document.querySelector('.content-container');
+const accountId = document.getElementById('metadata').dataset.accountId;
 // const token = document.querySelector("#show-token").textContent;
 // document.cookie = "jwtToken=" + token + "; path=/";
 //

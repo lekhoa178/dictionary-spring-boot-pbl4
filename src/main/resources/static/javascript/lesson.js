@@ -10,6 +10,8 @@ const requestTitleEl = document.querySelector('.request--title');
 
 const progressEl = document.querySelector('.progress');
 
+let stageType = "learn";
+
 let questions = [];
 let questionTypes = [];
 let answerResults = [];
@@ -17,13 +19,14 @@ let answerResults = [];
 let orViSentence = '';
 let correctAns = 0;
 let progress = 0;
-let totalQuestion = 2;
+let totalQuestion = 13;
 let heart = document.querySelector('.resource--items-text-heart');
 let type = 0;
 
 const bodyEl = document.querySelector('.base-container');
 const stageId = bodyEl.dataset.stage;
 const levelId = bodyEl.dataset.level;
+const accountId = bodyEl.dataset.accountId;
 const fulfilled = bodyEl.dataset.fulfilled === true ? 1 : 0;
 
 setupRound();
@@ -258,10 +261,28 @@ const nextQuestion = function () {
 };
 
 async function setupRound() {
-  questions = await AJAX(
-    `/cfg/sentences/${stageId}/${levelId}/${totalQuestion}`,
-    true
-  );
+  stageType = document.getElementById("stage-metadata").dataset.type;
+  if (stageType === "learn") {
+
+    questions = await AJAX(
+        `/cfg/sentences/${stageId}/${levelId}/${totalQuestion}`,
+        true
+    );
+
+  } else {
+
+    const jsonQuestions = await AJAX(
+        `/practice/sentences/${accountId}/${totalQuestion}`,
+        true);
+
+    console.log(jsonQuestions);
+
+    for (let i = 0; i < jsonQuestions.sentences.length; ++i) {
+      questions.push(jsonQuestions.sentences[i].English + "/" + jsonQuestions.sentences[i].Vietnamese);
+    }
+
+    console.log(questions);
+  }
 
   questionTypes = [];
   for (let i = 0; i < totalQuestion; i++) {

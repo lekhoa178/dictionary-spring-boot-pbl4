@@ -40,8 +40,24 @@ public class LessonController {
     public String showLesson(Model model,
                              @PathVariable int stageId,
                              @PathVariable int levelId) {
+        model.addAttribute("type", "learn");
+
+        model.addAttribute("accountId", -1);
         model.addAttribute("stage", stageId);
         model.addAttribute("level", levelId);
+
+        return "lesson.html";
+    }
+
+    @GetMapping("/{accountId}")
+
+    public String showPracticeNotebook(Model model,
+                                      @PathVariable int accountId) {
+        model.addAttribute("type", "practice");
+
+        model.addAttribute("accountId", accountId);
+        model.addAttribute("stage", -1);
+        model.addAttribute("level", -1);
 
         return "lesson.html";
     }
@@ -68,9 +84,7 @@ public class LessonController {
         model.addAttribute("exp", exp);
         model.addAttribute("precise", precise);
 
-        dataPerDayService.updateAccountDPD(accountId, exp, 0);
-
-        if (!fulfilled)
+        if (!fulfilled && stageId != -1)
             learnService.finishLevel(accountId, stageId, levelId);
         else
             dataPerDayService.updateAccountDPD(accountId, exp, 0);

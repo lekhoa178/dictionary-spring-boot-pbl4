@@ -1,5 +1,3 @@
-const learnBtn = document.querySelector('.practice-btn--learn');
-
 fragmentContainer.addEventListener('click', async function(e){
     const wordCardEl = e.target.closest('.word-card');
     if (wordCardEl == null) return;
@@ -11,6 +9,8 @@ fragmentContainer.addEventListener('click', async function(e){
     fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
 })
 
-learnBtn.addEventListener('click', e => {
+fragmentContainer.addEventListener('click', e => {
+    if (!e.target.closest('.practice-btn--learn')) return;
+
     window.location = `/lesson/${accountId}`;
 })

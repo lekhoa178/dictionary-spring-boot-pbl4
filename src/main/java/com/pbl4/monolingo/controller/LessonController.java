@@ -54,13 +54,17 @@ public class LessonController {
 
     @GetMapping("/{accountId}")
 
-    public String showPracticeNotebook(Model model,
+    public String showPracticeNotebook(Principal principal,
+                                        Model model,
                                       @PathVariable int accountId) {
+        Account account = accountService.getAccountByUsername(principal.getName());
+
         model.addAttribute("type", "practice");
 
         model.addAttribute("accountId", accountId);
         model.addAttribute("stage", -1);
         model.addAttribute("level", -1);
+        model.addAttribute("account", account);
 
         return "lesson.html";
     }

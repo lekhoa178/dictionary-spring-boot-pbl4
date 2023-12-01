@@ -34,6 +34,10 @@ public class ApplicationController {
                                  AccountService accountService,
                                  NotebookService notebookService,
                                  DataPerDayService dataPerDayService, ExtraInfoService extraInfoService) {
+        Map<String, String> env = System.getenv();
+        for (String envName : env.keySet()) {
+            System.out.format("%s=%s%n", envName, env.get(envName));
+        }
         this.learnService = learnService;
         this.accountService = accountService;
         this.notebookService = notebookService;

@@ -4,6 +4,7 @@ import com.pbl4.monolingo.dao.DataPerDayRepository;
 import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.entity.embeddable.DataPerDayId;
+import com.pbl4.monolingo.utility.dto.AccountDPDStat;
 import com.pbl4.monolingo.utility.dto.AccountExp;
 import lombok.Getter;
 import com.pbl4.monolingo.utility.dto.AccountStats;
@@ -13,10 +14,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
 public class DataPerDayServiceImpl implements DataPerDayService {
@@ -35,6 +34,44 @@ public class DataPerDayServiceImpl implements DataPerDayService {
     }
 
     @Override
+    public AccountDPDStat getAccountDPDStat(Integer accountId) {
+        List<Integer> exps = new ArrayList<>();
+        List<Integer> onlineHours = new ArrayList<>();
+        List<String> days = new ArrayList<>();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter rFormatter = DateTimeFormatter.ofPattern("MM-dd");
+
+        List<DataPerDay> dpds = getAccountDPDs(accountId);
+
+        int minId = dpds.get(0).getId().getDayId();
+        int maxId = dpds.get(dpds.size() - 1).getId().getDayId();
+        LocalDate firstDate = LocalDate.parse(String.valueOf(minId), formatter);
+
+        LocalDate minDay = LocalDate.parse(String.valueOf(minId), formatter);
+        LocalDate maxDay = LocalDate.parse(String.valueOf(maxId), formatter);
+        int offset = (int) ChronoUnit.DAYS.between(minDay, maxDay);
+        System.out.println(offset);
+
+
+        for (int i = 0; i <= offset; ++i) {
+            days.add(firstDate.plusDays(i).format(rFormatter));
+            exps.add(0);
+            onlineHours.add(0);
+        }
+
+        for (DataPerDay d : dpds) {
+            LocalDate current = LocalDate.parse(String.valueOf(d.getId().getDayId()), formatter);
+            int index = (int) ChronoUnit.DAYS.between(minDay, current);
+
+            exps.set(index, d.getExperience());
+            onlineHours.set(index, d.getOnlineHours().intValue());
+        }
+
+        return new AccountDPDStat(exps, onlineHours, days);
+    }
+
+    @Override
     public DataPerDay getAccountDPD(Integer accountId) {
         Optional<DataPerDay> result = dataPerDayRepository.findById(new DataPerDayId(getDayId(), accountId));
 
@@ -43,8 +80,8 @@ public class DataPerDayServiceImpl implements DataPerDayService {
 
 
     @Override
-    public DataPerDay updateAccountDPD(Integer accountId, int exp, int onlHours) {
-        DataPerDay dpd = getAccountDPD(accountId);
+    public DataPerDay updateAccountDPD(Integer accountId, int exp, float onlHours) {
+        DataPerDay dpd = new DataPerDay(new DataPerDayId(getDayId(), accountId), 0, 0f);
         dpd.setExperience(dpd.getExperience() + exp);
         dpd.setOnlineHours(dpd.getOnlineHours() + onlHours);
 

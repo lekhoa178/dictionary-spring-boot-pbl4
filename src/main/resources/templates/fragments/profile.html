@@ -1,3 +1,7 @@
+<div id="profile-stats" th:data-days="${dayStats.getDays()}"
+        th:data-exps="${dayStats.getExperiences()}"
+        th:data-online-hours="${dayStats.getOnlineHours()}"> </div>
+
 <div class="profile-container">
     <div class="personal-container">
         <p  class="profile-text profile-text--title"
@@ -31,7 +35,5 @@
     </div>
 
     <p style="font-weight: bold; font-size: 20px">Biểu đồ</p>
-    <div>
-        <canvas th:id="experienceChart" width="400" height="200"></canvas>
-    </div>
+    <div th:id="chart" style="width:600px; height:600px"></div>
 </div>

@@ -10,7 +10,7 @@ public interface AccountService {
 
     ExtraInformation getAccountInfoByUsername(String username);
     Account getAccountByUsername(String username);
-    void save(Account account);
+//    void save(Account account);
 
     List<Account> getAllAccount();
     Page<Account> getAccountWithPage(int offset, int size);
@@ -18,4 +18,6 @@ public interface AccountService {
     Account getAccountById(int id);
     void deleteAccountById(int id);
     List<Account> searchAccount(String keyword);
+    Account getAccountByEmail(String mail);
+    void changePassword(Account account, String newPassword);
  }

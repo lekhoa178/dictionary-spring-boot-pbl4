@@ -26,23 +26,22 @@ public class ApplicationController {
     private final AccountService accountService;
     private final NotebookService notebookService;
     private final DataPerDayService dataPerDayService;
-
+    private final DailyMissionService dailyMissionService;
     private final ExtraInfoService extraInfoService;
 
     @Autowired
     public ApplicationController(LearnService learnService,
                                  AccountService accountService,
                                  NotebookService notebookService,
-                                 DataPerDayService dataPerDayService, ExtraInfoService extraInfoService) {
-        Map<String, String> env = System.getenv();
-        for (String envName : env.keySet()) {
-            System.out.format("%s=%s%n", envName, env.get(envName));
-        }
+                                 DataPerDayService dataPerDayService,
+                                 ExtraInfoService extraInfoService,
+                                 DailyMissionService dailyMissionService) {
         this.learnService = learnService;
         this.accountService = accountService;
         this.notebookService = notebookService;
         this.dataPerDayService = dataPerDayService;
         this.extraInfoService = extraInfoService;
+        this.dailyMissionService = dailyMissionService;
     }
 
     // add default endpoint
@@ -60,6 +59,8 @@ public class ApplicationController {
 
         if (principal != null) {
             int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+            List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), accountId);
+            model.addAttribute("dailyMissions", dailyMissions);
 
             model.addAttribute("stageColors", StageColors);
             model.addAttribute("stages", learnService.getAccountStages(accountId));
@@ -114,6 +115,8 @@ public class ApplicationController {
 
             List<AccountExp> accountExps = dataPerDayService.getAllAccountOrderBySumExp();
             AccountExp currentAcc = dataPerDayService.getAccountSumExpById(curAccountId);
+            List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), curAccountId);
+            model.addAttribute("dailyMissions", dailyMissions);
 
             OptionalInt index = IntStream.range(0, accountExps.size())
                     .filter(i -> curAccountId == accountExps.get(i).getAccount().getAccountId())
@@ -143,6 +146,8 @@ public class ApplicationController {
         if (principal != null) {
             int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
             List<Notebook> notebooks = notebookService.getAllNotebooksByAccountId(accountId);
+            List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), accountId);
+            model.addAttribute("dailyMissions", dailyMissions);
 
             for (Notebook notebook :
                     notebooks) {
@@ -173,6 +178,8 @@ public class ApplicationController {
                               @RequestHeader(value = "request-source", required = false) String requestSource) {
         if (principal != null) {
             int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+            List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), accountId);
+            model.addAttribute("dailyMissions", dailyMissions);
 
             if (requestSource == null) {
                 model.addAttribute("accountId", accountId);
@@ -193,6 +200,8 @@ public class ApplicationController {
                             @RequestHeader(value = "request-source", required = false) String requestSource) {
         if (principal != null) {
             int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+            List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), accountId);
+            model.addAttribute("dailyMissions", dailyMissions);
 
             model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
 
@@ -233,6 +242,9 @@ public class ApplicationController {
             AccountStats dataPerDay = dataPerDayService.getAccountStats(account.getAccountId());
             model.addAttribute("stats", dataPerDayService.getAccountStats(account.getAccountId()));
             model.addAttribute("dayStats", dataPerDayService.getAccountDPDStat(account.getAccountId()));
+
+            List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), account.getAccountId());
+            model.addAttribute("dailyMissions", dailyMissions);
 
             if (requestSource == null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));

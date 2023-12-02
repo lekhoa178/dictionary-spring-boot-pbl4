@@ -2,6 +2,8 @@ const menu = document.querySelector('.menu');
 const tabs = menu.querySelectorAll('.menu--tabs');
 const fragmentContainer = document.querySelector('.content-container');
 const accountId = document.getElementById('metadata').dataset.accountId;
+const missionBtn = document.querySelector('.mission--header-detail');
+
 // const token = document.querySelector("#show-token").textContent;
 // document.cookie = "jwtToken=" + token + "; path=/";
 //
@@ -79,6 +81,28 @@ menu.addEventListener('click', async function (e) {
 
   loadedScript.add(path);
 
+});
+
+missionBtn.addEventListener('click', async function(e) {
+  e.preventDefault();
+  const fragment = "mission";
+  const fragmentEl = document.getElementById(`fragment-${fragment}`).closest('.menu--tabs');
+  for (let i = 0; i < tabs.length; ++i) {
+    tabs[i].classList.remove('menu--tab-active');
+  }
+  fragmentEl.classList.add('menu--tab-active');
+
+  [fragmentContainer.innerHTML] = await Promise.all([AJAX(`/${fragment}`)]);
+  const path = `/javascript/fragments/${fragment}.js`;
+  if (loadedScript.has(path))
+    return;
+
+  const script = document.createElement('script');
+  const text = document.createTextNode(await AJAX(path));
+  script.appendChild(text);
+  fragmentContainer.append(script);
+
+  loadedScript.add(path);
 });
 
 // ------------------- SEARCH ----------------

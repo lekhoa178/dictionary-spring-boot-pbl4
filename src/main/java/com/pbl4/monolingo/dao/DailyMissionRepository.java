@@ -13,5 +13,5 @@ import java.util.List;
 
 @Repository
 public interface DailyMissionRepository extends JpaRepository<DailyMission, DailyMissionId> {
-
+    List<DailyMission> getAllByIdDayIdAndIdAccountId(int dayId, int accountId);
 }

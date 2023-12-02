@@ -7,8 +7,9 @@
     </div>
 
     <div class="info-container">
-        <img th:src="@{/img/firework.png}" alt="" class="finish-image"/>
-        <p class="finish-title">Hoàn thành bài học</p>
+        <img th:src="@{/img/firework.png}" alt="" class="finish-image" th:if="${precise > 60.0}"/>
+        <img th:src="@{/img/struggle.png}" alt="" class="finish-image" th:if="${precise <= 60.0}"/>
+        <p class="finish-title" th:text="${precise > 60 ? 'Hoàn thành bài học' : 'Rất tiếc, hãy thử lại nhé'}"></p>
         <div class="finish-frame exp-frame">
             <i class="fa-solid fa-bolt-lightning exp-icon"></i>
             <p class="exp-amount" th:text="${exp}"></p>
@@ -24,6 +25,31 @@
         <div class="default-container">
             <button class="btn btn--review">XEM LẠI BÀI HỌC</button>
             <button class="btn btn--end">TIẾP TỤC</button>
+        </div>
+    </div>
+
+    <div class="mission-completion-container">
+        <p class="mission-completion--title">Nhiệm vụ hôm nay</p>
+
+        <div class="mission-completion--item" th:each="mission : ${dailyMissions}">
+            <img class="mission-completion--icon" th:src="@{/img/dart.png}" alt=""/>
+            <p class="mission-completion--header" th:text="${mission.getMission().getName()}"></p>
+            <p class="mission-completion--body" th:text="${mission.getMission().getDescription()}"></p>
+            <div class="mission-completion--awards">
+                <p class="mission-completion--coin" th:text="${mission.getMission().getPoint()}"></p>
+                <img class="mission-completion--icon--gem" th:src="@{/img/gems.png}" alt=""/>
+            </div>
+            <div class="mission--progress-bound" >
+                <div class="mission--progress-bar">
+                    <div class="mission--progress"
+                         th:style="|width: ${mission.getProgress() / mission.getMission().getTarget() * 100}%;
+                          background-color: ${mission.getMission().getTarget() == mission.getProgress() ? '#64D014' : '#4AF'}|"></div>
+                    <h3 class="mission--progress-text"
+                        th:text="${mission.getProgress()} + '/' + ${#strings.toString(mission.getMission().getTarget())}"></h3>
+                </div>
+                <img th:src="@{/img/treasure-chest-close.png}" style="width: 40px">
+
+            </div>
         </div>
     </div>
 

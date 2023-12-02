@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 @Service
 public class ExtraInfoServiceImpl implements ExtraInfoService {
@@ -107,5 +108,15 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
         }
 
         extraInformationRepository.save(extraInformation);
+    }
+
+    @Override
+    public void updateCoin(int accountId, int offset) {
+        Optional<ExtraInformation> extra = extraInformationRepository.findById(accountId);
+        if (extra.isPresent()) {
+            extra.get().setBalance(extra.get().getBalance() + offset);
+
+            extraInformationRepository.save(extra.get());
+        }
     }
 }

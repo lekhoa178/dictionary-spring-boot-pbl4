@@ -27,18 +27,21 @@ public class LessonController {
     private final ExtraInfoService extraInfoService;
     private final DataPerDayService dataPerDayService;
     private final LevelFulfillRepository levelFulfillRepository;
+    private final DailyMissionService dailyMissionService;
     
     @Autowired
     public LessonController(LearnService learnService,
                             ExtraInfoService extraInfoService,
                             AccountService accountService,
                             DataPerDayService dataPerDayService,
-                            LevelFulfillRepository levelFulfillRepository) {
+                            LevelFulfillRepository levelFulfillRepository,
+                            DailyMissionService dailyMissionService) {
         this.learnService = learnService;
         this.accountService = accountService;
         this.extraInfoService = extraInfoService;
         this.dataPerDayService = dataPerDayService;
         this.levelFulfillRepository = levelFulfillRepository;
+        this.dailyMissionService = dailyMissionService;
     }
 
     @GetMapping("/{stageId}/{levelId}")
@@ -92,13 +95,14 @@ public class LessonController {
         return "lesson.html";
     }
 
-    @GetMapping("/finish/{stageId}/{levelId}/{fulfilled}/{data}")
+    @GetMapping("/finish/{stageId}/{levelId}/{fulfilled}/{data}/{type}")
 
     public String showLessonFinish(Model model, Principal principal,
                                    @PathVariable String data,
                                    @PathVariable int stageId,
                                    @PathVariable int levelId,
                                    @PathVariable boolean fulfilled,
+                                   @PathVariable String type,
                                    @RequestHeader(value = "request-source", required = false) String requestSource) {
         if (requestSource == null)
             return "redirect:/learn";
@@ -114,10 +118,16 @@ public class LessonController {
         model.addAttribute("exp", exp);
         model.addAttribute("precise", precise);
 
-        if (!fulfilled && stageId != -1)
+        if (!fulfilled && stageId != -1 && precise > 60)
             learnService.finishLevel(accountId, stageId, levelId);
-        else
-            dataPerDayService.updateAccountDPD(accountId, exp, 0);
+
+        dataPerDayService.updateAccountDPD(accountId, exp, 0);
+
+        int earned = dailyMissionService.updateDailyMission(accountId, exp, precise, type);
+        extraInfoService.updateCoin(accountId, earned);
+
+        model.addAttribute("dailyMissions",
+                dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), accountId));
 
         return "lessonFinish";
 

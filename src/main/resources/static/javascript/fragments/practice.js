@@ -7,6 +7,10 @@ fragmentContainer.addEventListener('click', async function(e){
 
     history.pushState(history.state, document.title, `/meaning/${word}`);
     fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
+})
 
-    console.log("Hello");
+fragmentContainer.addEventListener('click', e => {
+    if (!e.target.closest('.practice-btn--learn')) return;
+
+    window.location = `/lesson/${accountId}`;
 })

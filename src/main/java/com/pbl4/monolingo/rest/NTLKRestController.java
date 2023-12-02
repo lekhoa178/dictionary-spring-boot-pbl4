@@ -3,10 +3,7 @@ package com.pbl4.monolingo.rest;
 import com.pbl4.monolingo.entity.embeddable.LevelId;
 import com.pbl4.monolingo.service.NLTKService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import simplenlg.framework.*;
 import simplenlg.lexicon.*;
 import simplenlg.realiser.english.*;
@@ -17,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/cfg")
 public class NTLKRestController {
 
     private final NLTKService nltkService;
@@ -26,7 +24,7 @@ public class NTLKRestController {
         this.nltkService = nltkService;
     }
 
-    @GetMapping("/cfg/sentence")
+    @GetMapping("/sentence")
     public String tokenizeText() {
 //        Lexicon lexicon = Lexicon.getDefaultLexicon();
 //        NLGFactory nlgFactory = new NLGFactory(lexicon);
@@ -52,7 +50,7 @@ public class NTLKRestController {
         return nltkService.buildSentence(new LevelId(3, 1));
     }
 
-    @GetMapping("/cfg/sentences/{stageId}/{levelId}/{amount}")
+    @GetMapping("/sentences/{stageId}/{levelId}/{amount}")
     public List<String> getSentences(
             @PathVariable int stageId,
             @PathVariable int levelId,

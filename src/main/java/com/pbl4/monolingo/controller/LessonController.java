@@ -42,11 +42,31 @@ public class LessonController {
                              @PathVariable int levelId) {
         Account account = accountService.getAccountByUsername(principal.getName());
 
+        model.addAttribute("type", "learn");
+
+        model.addAttribute("accountId", -1);
         model.addAttribute("stage", stageId);
         model.addAttribute("level", levelId);
         model.addAttribute("account", account);
 
         return "lesson";
+    }
+
+    @GetMapping("/{accountId}")
+
+    public String showPracticeNotebook(Principal principal,
+                                        Model model,
+                                      @PathVariable int accountId) {
+        Account account = accountService.getAccountByUsername(principal.getName());
+
+        model.addAttribute("type", "practice");
+
+        model.addAttribute("accountId", accountId);
+        model.addAttribute("stage", -1);
+        model.addAttribute("level", -1);
+        model.addAttribute("account", account);
+
+        return "lesson.html";
     }
 
     @GetMapping("/finish/{stageId}/{levelId}/{fulfilled}/{data}")
@@ -69,9 +89,7 @@ public class LessonController {
         model.addAttribute("exp", exp);
         model.addAttribute("precise", precise);
 
-        dataPerDayService.updateAccountDPD(accountId, exp, 0);
-
-        if (!fulfilled)
+        if (!fulfilled && stageId != -1)
             learnService.finishLevel(accountId, stageId, levelId);
         else
             dataPerDayService.updateAccountDPD(accountId, exp, 0);

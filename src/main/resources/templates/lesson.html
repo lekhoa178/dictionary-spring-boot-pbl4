@@ -1,60 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" th:href="@{/css/lessonStyle.css}">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" th:href="@{/css/lessonStyle.css}" />
     <title>Monolingo - Học tiếng anh vui vẻ</title>
-    <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}">
+    <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}" />
     <script defer th:src="@{/javascript/lesson.js}"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-</head>
-<body class="base-container" th:data-level="${level}" th:data-stage="${stage}">
-<div class="container">
-    <div class="top-container">
+  </head>
+  <div id="stage-metadata" th:data-type="${type}"></div>
+  <body
+    class="base-container"
+    th:data-level="${level}"
+    th:data-stage="${stage}"
+    th:data-account-id="${accountId}"
+  >
+    <div class="container">
+      <div class="top-container">
         <i class="fa-solid fa-x return--btn"></i>
 
         <div class="progress-bar">
-            <div class="progress" id="progress"></div>
+          <div class="progress" id="progress"></div>
         </div>
 
         <div class="resource--items">
-            <img alt=""
-                 th:src="@{/img/heart.png}"
-                 class="resource--items-icon">
-            <span class="
-                                resource--items-text
-                                resource--items-text-heart"
-            ></span>
+          <img alt="" th:src="@{/img/heart.png}" class="resource--items-icon" />
+          <span class="resource--items-text resource--items-text-heart"></span>
         </div>
-    </div>
+      </div>
 
-    <div class="game--container">
+      <div class="game--container">
         <h3 class="request--title">Viết lại bằng Tiếng Việt</h3>
         <div class="sentence--container">
-            <i class="fa-solid fa-volume-low volume--icon icon"></i>
-            <p class="game--sentence">Wait a second...</p>
+          <i class="fa-solid fa-volume-low volume--icon icon"></i>
+          <p class="game--sentence">Wait a second...</p>
         </div>
 
-        <div class="answer--panel">
-        </div>
+        <div class="answer--panel"></div>
 
-        <div class="game--cards">
+        <div class="game--cards"></div>
+      </div>
 
-        </div>
-
-    </div>
-
-    <div class="bottom-container">
+      <div class="bottom-container">
         <div class="default-container">
-            <button class="btn btn--pass">BỎ QUA</button>
-            <button class="btn btn--check btn--check--inactive">KIỂM TRA</button>
+          <button class="btn btn--pass">BỎ QUA</button>
+          <button class="btn btn--check btn--check--inactive">KIỂM TRA</button>
         </div>
 
         <!--            <div class="correct-container default-container">-->
@@ -73,28 +76,34 @@
         <!--                </div>-->
         <!--                <button class="btn btn&#45;&#45;continue btn&#45;&#45;incorrect">TIẾP TỤC</button>-->
         <!--            </div>-->
-    </div>
-    <dialog class="dialog-container" >
+      </div>
+      <dialog class="dialog-container">
         <div class="dialog-body">
-            <div class="img-container">
-                <img alt=""
-                     th:src="@{/img/cry-girl.jpg}"
-                     class="resource--items-icon">
-                <span class="
-                                resource--items-text
-                                resource--items-text-heart"
-                ></span>
-            </div>
+          <div class="img-container">
+            <img
+              alt=""
+              th:src="@{/img/cry-girl.jpg}"
+              class="resource--items-icon"
+            />
+            <span
+              class="resource--items-text resource--items-text-heart"
+            ></span>
+          </div>
 
-            <div class="title">Bạn đã hết trái tim!</div>
-            <div class="content">Bạn có mua thêm trái tim không ?</div>
+          <div class="title">Bạn đã hết trái tim!</div>
+          <div class="content">Bạn có mua thêm trái tim không ?</div>
 
-            <div class="btn-field">
-                <button class="dialog-btn buy-btn" th:disabled="${account.extraInformation.balance < 200}"> Mua với giá: 200</button>
-                <button class="dialog-btn exit-btn"> Không, cảm ơn</button>
-            </div>
+          <div class="btn-field">
+            <button
+              class="dialog-btn buy-btn"
+              th:disabled="${account.extraInformation.balance < 200}"
+            >
+              Mua với giá: 200
+            </button>
+            <button class="dialog-btn exit-btn">Không, cảm ơn</button>
+          </div>
         </div>
-    </dialog>
-</div>
-</body>
+      </dialog>
+    </div>
+  </body>
 </html>

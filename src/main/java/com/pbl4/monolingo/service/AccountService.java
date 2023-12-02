@@ -4,6 +4,7 @@ import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.ExtraInformation;
 import org.springframework.data.domain.Page;
 
+import java.util.Date;
 import java.util.List;
 
 public interface AccountService {
@@ -20,4 +21,5 @@ public interface AccountService {
     List<Account> searchAccount(String keyword);
     Account getAccountByEmail(String mail);
     void changePassword(Account account, String newPassword);
+    void updateProfile(String name, boolean gender, Date birthDate, String email);
  }

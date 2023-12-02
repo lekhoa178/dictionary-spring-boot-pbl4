@@ -60,8 +60,6 @@ public class LessonController {
         if (requestSource == null)
             return "redirect:/learn";
 
-        System.out.println(data);
-
 
         int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
 

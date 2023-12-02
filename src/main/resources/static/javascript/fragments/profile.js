@@ -69,3 +69,80 @@ $(function(){
         }
     });
 });
+
+
+
+
+$('#edit-btn').on('click', function (e) {
+    let nameTxt = document.querySelector('.profile-text--title')
+    let maleBtn = document.getElementById('male-btn')
+    let femaleBtn = document.getElementById('female-btn')
+    let birthDatePicker = document.querySelector('.profile-text--birthDate')
+    let emailTxt = document.querySelector('.profile-text--email')
+
+    nameValue = document.querySelector('.profile-text--title').value
+
+    let genderBtns = document.getElementsByName("gender-rd");
+
+    for (let i = 0; i < genderBtns.length; i++) {
+        if (genderBtns[i].checked === true)
+            genderValue = genderBtns[i].value
+    }
+
+    birthDateValue = document.querySelector('.profile-text--birthDate').value
+    emailValue = document.querySelector('.profile-text--email').value
+
+    nameTxt.removeAttribute('readonly')
+
+    maleBtn.disabled = false
+    femaleBtn.disabled = false
+
+    birthDatePicker.removeAttribute('readonly')
+    emailTxt.removeAttribute('readonly')
+
+    document.querySelector('.save-btn').classList.remove('hidden')
+})
+
+function editProfile() {
+    let currentNameValue = document.querySelector('.profile-text--title').value
+
+    let currentGenderValue;
+
+    let genderBtns = document.getElementsByName("gender-rd");
+
+    for (let i = 0; i < genderBtns.length; i++) {
+        if (genderBtns[i].checked === true)
+            currentGenderValue = genderBtns[i].value
+    }
+
+    let currentBirthDateValue = document.querySelector('.profile-text--birthDate').value
+    let currentEmailValue = document.querySelector('.profile-text--email').value
+
+
+    let saveBtn = document.querySelector('.save-btn')
+    saveBtn.disabled = (currentNameValue === nameValue) && (currentGenderValue === genderValue)
+                        && (currentBirthDateValue === birthDateValue) && (currentEmailValue === emailValue)
+}
+
+function submitForm() {
+    let formData = new FormData(document.getElementById("profile-form"));
+
+    $.ajax({
+        type: 'POST',
+        url: '/profile/update',
+        data: formData,
+        processData: false,  // Prevent jQuery from automatically processing the data
+        contentType: false,
+        success: async function (response) {
+            $(fragmentContainer).html(response)
+            const script = document.createElement('script');
+            const text = document.createTextNode(await AJAX(`/javascript/fragments/profile.js`));
+            script.appendChild(text);
+            fragmentContainer.append(script);
+
+        },
+        error: function (error) {
+            alert(this.url)
+        }
+    });
+}

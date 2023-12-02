@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,10 +43,6 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findAccountByUsername(username);
     }
 
-//    @Override
-//    public void save(Account account) {
-//
-//    }
     public List<Account> getAllAccount() {
         return accountRepository.findAll();
     }
@@ -61,14 +58,29 @@ public class AccountServiceImpl implements AccountService {
         {
             MD5PasswordEncoder md5PasswordEncoder = new MD5PasswordEncoder();
             account.setPassword(md5PasswordEncoder.encode(account.getPassword()));
-        }
-        ExtraInformation newExtra = account.getExtraInformation();
-        newExtra.setHearts(5);
-        newExtra.setNumberOfConsecutiveDay(0);
-        newExtra.setNumberOfLoginDay(0);
-        newExtra.setAccount(account);
 
-        accountRepository.save(account);
+            ExtraInformation newExtra = account.getExtraInformation();
+            newExtra.setHearts(5);
+            newExtra.setNumberOfConsecutiveDay(0);
+            newExtra.setNumberOfLoginDay(0);
+            newExtra.setAccount(account);
+
+            accountRepository.save(account);
+        }
+        else {
+            Account temp = getAccountById(account.getAccountId());
+            temp.setEmail(account.getEmail());
+            temp.setName(account.getName());
+            temp.setBirthdate(account.getBirthdate());
+            temp.setGender(account.getGender());
+            temp.getExtraInformation().setBalance(account.getExtraInformation().getBalance());
+            temp.setType(account.getType());
+            temp.setEnabled(account.getEnabled());
+
+            accountRepository.save(temp);
+        }
+
+
     }
 
     @Override
@@ -99,5 +111,10 @@ public class AccountServiceImpl implements AccountService {
     public void changePassword(Account account, String newPassword) {
         account.setPassword(passwordEncoder.encode(newPassword));
         accountRepository.save(account);
+    }
+
+    @Override
+    public void updateProfile(String name, boolean gender, Date birthDate, String email) {
+
     }
 }

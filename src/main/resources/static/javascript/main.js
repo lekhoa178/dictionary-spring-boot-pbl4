@@ -1,6 +1,11 @@
 const menu = document.querySelector('.menu');
 const tabs = menu.querySelectorAll('.menu--tabs');
 const fragmentContainer = document.querySelector('.content-container');
+
+let nameValue;
+let genderValue;
+let birthDateValue;
+let emailValue;
 // const token = document.querySelector("#show-token").textContent;
 // document.cookie = "jwtToken=" + token + "; path=/";
 //

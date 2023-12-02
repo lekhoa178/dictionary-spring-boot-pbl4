@@ -73,10 +73,8 @@ public class AuthController {
         Cookie cookie = new Cookie("jwtToken",token);
         cookie.setPath("/");
         response.addCookie(cookie);
-        System.out.println("Token from controller: "+ token);
 
         Account temp = accountService.getAccountByUsername(account.getUsername());
-        extraInfoService.updateExtraInfo(temp);
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
 
         return "redirect:/learn";
@@ -86,14 +84,28 @@ public class AuthController {
         return "error";
     }
     @GetMapping("/logout")
-    public String signout(HttpServletResponse response){
+    public String signout(HttpServletResponse response, Principal principal){
+        if (principal != null) {
+            Account account = accountService.getAccountByUsername(principal.getName());
+            LocalDateTime loginTime = authenticationService.getLoginTimes().get(account.getAccountId());
+            LocalDateTime logoutTime = LocalDateTime.now();
+
+            float onlineTime = (float) (ChronoUnit.SECONDS.between(loginTime, logoutTime) / 3600.0);
+
+            DataPerDay dt = dataPerDayService.getAccountDPD(account.getAccountId());
+            dt.setOnlineHours(dt.getOnlineHours() + onlineTime);
+
+            authenticationService.getLoginTimes().remove(account.getAccountId());
+            System.out.println(authenticationService.getLoginTimes().size());
+            dataPerDayService.save(dt);
+        }
+
         Cookie cookie = new Cookie("jwtToken", null);
         cookie.setPath("/"); // Đảm bảo đường dẫn này phù hợp với đường dẫn khi cookie được tạo
         cookie.setHttpOnly(true); // Tùy chọn, nếu cookie ban đầu được đánh dấu là HttpOnly
         cookie.setMaxAge(0); // Đặt thời gian sống là 0 để xóa cookie
         // Thêm cookie vào response để trình duyệt xóa nó
         response.addCookie(cookie);
-        System.out.println("Into logout");
         return "redirect:/public/login";
     }
     @GetMapping("/forgot")
@@ -148,8 +160,6 @@ public class AuthController {
             LocalDateTime loginTime = authenticationService.getLoginTimes().get(account.getAccountId());
             LocalDateTime logoutTime = LocalDateTime.now();
 
-            System.out.println(authenticationService.getLoginTimes().size());
-            System.out.println(loginTime + " " + logoutTime);
             float onlineTime = (float) (ChronoUnit.SECONDS.between(loginTime, logoutTime) / 3600.0);
 
             System.out.println(onlineTime);

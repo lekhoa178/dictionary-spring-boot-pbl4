@@ -1,5 +1,6 @@
 package com.pbl4.monolingo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pbl4.monolingo.entity.embeddable.AccountLexiconId;
 import jakarta.persistence.*;
 
@@ -17,11 +18,13 @@ public class Notebook {
 
     @ManyToOne
     @MapsId("accountId")
+    @JsonIgnore
     @JoinColumn(name = "account_id")
     private Account account;
 
     @ManyToOne
     @MapsId("lexiconId")
+    @JsonIgnore
     @JoinColumns({
             @JoinColumn(name = "lexicon_num", referencedColumnName = "lexicon_num"),
             @JoinColumn(name = "synset_id", referencedColumnName = "synset_id")

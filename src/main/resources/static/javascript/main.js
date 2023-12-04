@@ -144,7 +144,7 @@ searchBar.addEventListener('input', async function (e) {
     }
 
     const word = e.target.value.replaceAll('/', '');
-    const data = await AJAX(`/dictionary/search/${word}/10`, true);
+    const data = await AJAX(`/dictionary/search-web/${word}/10`, true);
     searchData = data;
 
     let results = '';

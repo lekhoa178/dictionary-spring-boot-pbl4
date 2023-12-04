@@ -31,16 +31,21 @@ public class DictionaryRestController {
         this.synsetRepository = synsetRepository;
     }
 
+    @GetMapping("/search/{word}/{count}")
+    public List<Lexicon> searchLexicon(@PathVariable String word,@PathVariable int count) {
+        return dictionaryService.searchByWord(word, count);
+    }
+
     // expose "/search/{word}" return a list of Lexicon that have 'word' at the start
     @GetMapping("/search/{word}")
     public List<Lexicon> searchLexicon(@PathVariable String word) {
         return dictionaryService.searchByWord(word);
     }
 
-    @GetMapping("/search/{word}/{count}")
-    public List<String> searchLexiconLimit(@PathVariable String word, @PathVariable int count) {
-        return dictionaryService.searchDistinctByWord(word).stream().limit(count).toList();
-    }
+//    @GetMapping("/search/{word}/{count}")
+//    public List<String> searchLexiconLimit(@PathVariable String word, @PathVariable int count) {
+//        return dictionaryService.searchDistinctByWord(word).stream().limit(count).toList();
+//    }
 
     // expose "/synset/{word}" return a list of Synset
     @GetMapping("/synset/{word}")

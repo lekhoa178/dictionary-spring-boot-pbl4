@@ -13,6 +13,7 @@ public interface DictionaryService {
     List<Synset> getSynsetsByWord(String word);
 
     List<Lexicon> searchByWord(String word);
+    List<Lexicon> searchByWord(String word,int limit);
 
     List<String> searchDistinctByWord(String word);
     HashMap<String, List<DefinitionDetailView>> getDefinitionByWord(String word);

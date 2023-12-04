@@ -8,7 +8,7 @@ public class StageLevelState {
 
     private Integer stageId;
     private String title;
-    private String depiction;
+        private String depiction;
     private List<LevelState> levels;
 
     public StageLevelState() {}

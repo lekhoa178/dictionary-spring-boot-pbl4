@@ -1,5 +1,6 @@
 package com.pbl4.monolingo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pbl4.monolingo.entity.embeddable.LexiconId;
 import jakarta.persistence.*;
 
@@ -15,6 +16,7 @@ public class Lexicon {
     private LexiconId id;
 
     @ManyToOne
+    @JsonIgnore
     @MapsId("synsetId")
     @JoinColumn(name = "synset_id")
     private Synset synset;

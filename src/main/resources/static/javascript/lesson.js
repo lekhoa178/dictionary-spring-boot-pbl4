@@ -22,7 +22,7 @@ let answerResults = [];
 let orViSentence = '';
 let correctAns = 0;
 let progress = 0;
-let totalQuestion = 13;
+let totalQuestion = 2;
 let heart = document.querySelector('.resource--items-text-heart');
 let type = 0;
 
@@ -126,11 +126,10 @@ bottomContainer.addEventListener('click', async function (e) {
     nextQuestion();
   } else {
     if (parseInt(heart.textContent) > 0) {
-      console.log(heart.textContent);
       document.querySelector('.base-container').innerHTML = await AJAX(
-        `/lesson/finish/${stageId}/${levelId}/${fulfilled}/${correctAns} ${
-          (correctAns / totalQuestion) * 100
-        }`
+          `/lesson/finish/${stageId}/${levelId}/${fulfilled}/${correctAns} ${
+              (correctAns / totalQuestion) * 100
+          }/${type}`
       );
 
       const reviewBodyEl = document.querySelector('.review--body');
@@ -139,16 +138,16 @@ bottomContainer.addEventListener('click', async function (e) {
         if (enSentence.size > 40) enSentence = enSentence.slice(0, 40) + '...';
 
         reviewBodyEl.insertAdjacentHTML(
-          'beforeend',
-          `<div class="review--item" style="background-color: ${
-            answerResults[i] ? '#c6ffbb' : '#ffcdd3'
-          }"
-                        data-index="${i}">
-                    <p class="review--item--header">${
-                      questionTypes[i] >= 1 ? 'Dịch lại câu' : 'Luyện nghe câu'
-                    }</p>
-                    <p class="review--item--sentence">${enSentence}</p>
-                  </div>`
+            'beforeend',
+            `<div class="review--item" style="background-color: ${
+                answerResults[i] ? '#c6ffbb' : '#ffcdd3'
+            }"
+                      data-index="${i}">
+                  <p class="review--item--header">${
+                questionTypes[i] >= 1 ? 'Dịch lại câu' : 'Luyện nghe câu'
+            }</p>
+                  <p class="review--item--sentence">${enSentence}</p>
+                </div>`
         );
       }
     }
@@ -267,12 +266,12 @@ const nextQuestion = function () {
 
 async function setupRound() {
   stageType = document.getElementById('stage-metadata').dataset.type;
-  if (stageType === 'learn') {
+  if (stageType === 'learn' || stageType === 'listen') {
     questions = await AJAX(
       `/cfg/sentences/${stageId}/${levelId}/${totalQuestion}`,
       true
     );
-  } else {
+  } else if (stageType === 'practice') {
     const jsonQuestions = await AJAX(
       `/practice/sentences/${accountId}/${totalQuestion}`,
       true
@@ -292,8 +291,14 @@ async function setupRound() {
   }
 
   questionTypes = [];
-  for (let i = 0; i < totalQuestion; i++) {
-    questionTypes.push(Math.round(Math.random() * 2));
+  if (stageType === 'listen') {
+    for (let i = 0; i < totalQuestion; i++) {
+      questionTypes.push(0);
+    }
+  } else {
+    for (let i = 0; i < totalQuestion; i++) {
+      questionTypes.push(Math.round(Math.random() * 2));
+    }
   }
 
   $.ajax({

@@ -1,5 +1,6 @@
 package com.pbl4.monolingo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -50,15 +51,18 @@ public class Account implements UserDetails {
     private Boolean enabled;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "type_id")
     private AccountType type;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, optional = false)
+    @JsonIgnore
     @PrimaryKeyJoinColumn
     private ExtraInformation extraInformation;
 
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<DataPerDay> dataPerDay;
     public Account() {}
 

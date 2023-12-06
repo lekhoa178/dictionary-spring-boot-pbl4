@@ -16,7 +16,6 @@ public class Lexicon {
     private LexiconId id;
 
     @ManyToOne
-    @JsonIgnore
     @MapsId("synsetId")
     @JoinColumn(name = "synset_id")
     private Synset synset;

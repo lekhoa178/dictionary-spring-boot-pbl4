@@ -7,6 +7,7 @@ import com.pbl4.monolingo.entity.embeddable.AccountLexiconId;
 import com.pbl4.monolingo.entity.embeddable.LexiconId;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.NotebookService;
+import com.pbl4.monolingo.utility.dto.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,5 +66,15 @@ public class NotebookRestController {
 
         botController.updateSentences(account.getAccountId(), 13, false);
 
+    }
+
+    @GetMapping("/notebook/update/{word}/{isExist}/{accountId}")
+    public ResponseEntity<ResponseMessage> updateNotebookAcc(@PathVariable String word, @PathVariable boolean isExist, @PathVariable int accountId) {
+        if (isExist)
+            notebookService.deleteNotebook(accountId, word);
+        else
+            notebookService.addNotebook(accountId, word);
+
+        return ResponseEntity.ok(new ResponseMessage("Updated Successfully"));
     }
 }

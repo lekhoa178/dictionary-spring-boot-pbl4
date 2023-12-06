@@ -4,9 +4,11 @@ import com.pbl4.monolingo.dao.LexiconRepository;
 import com.pbl4.monolingo.dao.SynsetRepository;
 import com.pbl4.monolingo.entity.Lexicon;
 import com.pbl4.monolingo.entity.Synset;
+import com.pbl4.monolingo.entity.embeddable.LexiconId;
 import com.pbl4.monolingo.service.DictionaryService;
 import com.pbl4.monolingo.utility.dto.DefinitionDetailView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/dictionary")
@@ -61,6 +64,12 @@ public class DictionaryRestController {
     @GetMapping("/lexicon")
     public List<Lexicon> getLexicons() {
         return lexiconRepository.findAll();
+    }
+
+    @GetMapping("/lexicon/{synsetId}/{lexiconNum}")
+    public Lexicon getLexicon(@PathVariable BigDecimal synsetId, @PathVariable BigDecimal lexiconNum) {
+        Optional<Lexicon> result = lexiconRepository.findById(new LexiconId(synsetId, lexiconNum));
+        return result.orElse(null);
     }
 
     @GetMapping("/lexicon/{word}")

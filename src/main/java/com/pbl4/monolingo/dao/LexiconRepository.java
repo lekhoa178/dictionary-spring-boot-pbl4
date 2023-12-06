@@ -22,6 +22,5 @@ public interface LexiconRepository extends JpaRepository<Lexicon, LexiconId> {
     List<String> findDistinctByWordStartsWith(@Param("word") String word);
 
     List<Lexicon> findByIdSynsetId(BigDecimal synsetId);
-    Optional<Lexicon> findById(@NonNull LexiconId id);
 
 }

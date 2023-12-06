@@ -31,6 +31,8 @@ public class NotebookController {
             notebookService.deleteNotebook(account.getAccountId(), word);
         else
             notebookService.addNotebook(account.getAccountId(), word);
+
+
     }
 
 }

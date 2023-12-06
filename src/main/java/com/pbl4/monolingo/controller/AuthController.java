@@ -82,7 +82,7 @@ public class AuthController {
         Account temp = accountService.getAccountByUsername(account.getUsername());
         extraInfoService.updateExtraInfo(temp);
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
-        botController.getSentences(temp.getAccountId(), 13, null);
+        botController.updateSentences(temp.getAccountId(), 13, false);
         dailyMissionService.initMission(temp.getAccountId(), 3);
 
         return "redirect:/learn";

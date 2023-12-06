@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/practice")
@@ -46,10 +48,10 @@ public class BotController {
 
             if (inProcessing.get(accountId) == null || !inProcessing.get(accountId)) {
                 inProcessing.put(accountId, true);
-                System.out.println("I'm getting");
+                System.out.println("Bot querying");
 
                 List<Notebook> notebooks = notebookService.getAllNotebooksByAccountId(accountId);
-                ShuffleArray.shuffle(notebooks.toArray());
+                ShuffleArray.shuffle(notebooks);
 
                 String prompt = getPrompt(amount, notebooks);
 
@@ -62,11 +64,36 @@ public class BotController {
                 inProcessing.put(accountId, false);
                 System.out.println(answerCache.get(accountId));
             } else if (requestSource != null) {
-                while (answerCache.get(accountId) == null) { Thread.sleep(1000); System.out.println("I'm waiting");}
+                while (answerCache.get(accountId) == null) { Thread.sleep(1000); System.out.println("Wait for Bot response");}
             }
         }
 
         return answerCache.get(accountId);
+    }
+
+    public void updateSentences(int accountId, int amount, boolean force) {
+
+        if (inProcessing.get(accountId) == null || !inProcessing.get(accountId) || force) {
+
+            CompletableFuture.runAsync(() -> {
+                inProcessing.put(accountId, true);
+                System.out.println("Bot querying");
+
+                List<Notebook> notebooks = notebookService.getAllNotebooksByAccountId(accountId);
+                ShuffleArray.shuffle(notebooks);
+
+                String prompt = getPrompt(amount, notebooks);
+
+                System.out.println(prompt);
+                ChatGPTRequest request = new ChatGPTRequest(model, prompt);
+                ChatGPTResponse response = restTemplate.postForObject(apiURL, request, ChatGPTResponse.class);
+
+                answerCache.put(accountId, response.getChoices().get(0).getMessage().getContent());
+
+                inProcessing.put(accountId, false);
+                System.out.println(answerCache.get(accountId));
+            });
+        }
     }
 
     private String getPrompt(int amount, List<Notebook> notebooks) {

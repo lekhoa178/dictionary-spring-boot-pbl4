@@ -287,6 +287,8 @@ async function setupRound() {
       );
     }
 
+    sortRandomly(jsonQuestions);
+
     console.log(questions);
   }
 

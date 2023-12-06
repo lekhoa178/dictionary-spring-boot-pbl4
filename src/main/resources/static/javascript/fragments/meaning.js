@@ -35,7 +35,7 @@ fragmentContainer.addEventListener('click', async function(e) {
         $(document).ready(function(){
             $.ajax({
                 type: 'POST',
-                url: '/notebook/update',
+                url: '/dictionary/notebook/update',
                 data: { word: word, isExist: isExist },
                 error: function(error) {
                     // Handle errors

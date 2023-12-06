@@ -1,10 +1,10 @@
 package com.pbl4.monolingo.controller;
 
 import com.pbl4.monolingo.entity.Account;
-import com.pbl4.monolingo.service.AccountService;
-import com.pbl4.monolingo.service.DictionaryService;
-import com.pbl4.monolingo.service.NotebookService;
+import com.pbl4.monolingo.entity.DailyMission;
+import com.pbl4.monolingo.service.*;
 import com.pbl4.monolingo.utility.dto.DefinitionDetailView;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,26 +12,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import javax.xml.crypto.Data;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 public class DictionaryController {
 
     private final DictionaryService dictionaryService;
     private final AccountService accountService;
     private final NotebookService notebookService;
-
-    @Autowired
-    public DictionaryController(DictionaryService dictionaryService, AccountService accountService, NotebookService notebookService) {
-        this.dictionaryService = dictionaryService;
-        this.accountService = accountService;
-        this.notebookService = notebookService;
-    }
+    private final DataPerDayService dataPerDayService;
+    private final DailyMissionService dailyMissionService;
 
     @GetMapping("/meaning/{word}")
-
     public String showMeaning(Model model,
                               Principal principal,
                               @PathVariable String word,
@@ -39,6 +35,8 @@ public class DictionaryController {
 
         Account account = accountService.getAccountByUsername(principal.getName());
         boolean isExist = notebookService.checkIsExsitInNotebook(account.getAccountId(), word);
+        List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), account.getAccountId());
+        model.addAttribute("dailyMissions", dailyMissions);
 
         HashMap<String, List<DefinitionDetailView>> results = dictionaryService.getDefinitionByWord(word);
 

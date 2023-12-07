@@ -14,14 +14,17 @@ let loadedScript  = new Set();
 async function init() {
   const fragment = window.location.pathname.substring(1);
   const baseFragment = fragment.split('/')[0];
-  if (baseFragment !== 'meaning') {
+
+  try {
     const fragmentEl = document.getElementById(`fragment-${fragment}`).closest('.menu--tabs');
     for (let i = 0; i < tabs.length; ++i) {
       tabs[i].classList.remove('menu--tab-active');
     }
     fragmentEl.classList.add('menu--tab-active');
-
   }
+  catch (e) {}
+
+  console.log(baseFragment);
   [fragmentContainer.innerHTML] = await Promise.all([AJAX(`/${fragment}`)]);
 
   const path = `/javascript/fragments/${baseFragment}.js`;

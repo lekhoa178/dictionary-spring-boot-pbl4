@@ -28,4 +28,12 @@ public interface DataPerDayRepository extends JpaRepository<DataPerDay, DataPerD
             "GROUP BY a.accountId")
     List<Object[]> findAccountBySumStats(int accountId);
 
+    @Query ("SELECT a, SUM(d.experience) " +
+            "FROM Account a " +
+            "JOIN DataPerDay d ON a.accountId = d.id.accountId " +
+            "JOIN ExtraInformation e ON a.accountId = e.accountId " +
+            "WHERE a.accountId = :accountId " +
+            "GROUP BY a.accountId")
+    List<Object[]> findAccountBySumExp(int accountId);
+
 }

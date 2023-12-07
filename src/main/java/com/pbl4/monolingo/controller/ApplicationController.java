@@ -2,9 +2,11 @@ package com.pbl4.monolingo.controller;
 
 import com.pbl4.monolingo.entity.*;
 import com.pbl4.monolingo.service.*;
+import com.pbl4.monolingo.utility.Utility;
 import com.pbl4.monolingo.utility.dto.AccountDPDStat;
 import com.pbl4.monolingo.utility.dto.AccountExp;
 import com.pbl4.monolingo.utility.dto.AccountStats;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 @Controller
+@AllArgsConstructor
 public class ApplicationController {
 
     private LearnService learnService;
@@ -28,21 +31,7 @@ public class ApplicationController {
     private final DataPerDayService dataPerDayService;
     private final DailyMissionService dailyMissionService;
     private final ExtraInfoService extraInfoService;
-
-    @Autowired
-    public ApplicationController(LearnService learnService,
-                                 AccountService accountService,
-                                 NotebookService notebookService,
-                                 DataPerDayService dataPerDayService,
-                                 ExtraInfoService extraInfoService,
-                                 DailyMissionService dailyMissionService) {
-        this.learnService = learnService;
-        this.accountService = accountService;
-        this.notebookService = notebookService;
-        this.dataPerDayService = dataPerDayService;
-        this.extraInfoService = extraInfoService;
-        this.dailyMissionService = dailyMissionService;
-    }
+    private final FriendService friendService;
 
     // add default endpoint
 
@@ -62,7 +51,7 @@ public class ApplicationController {
             List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), accountId);
             model.addAttribute("dailyMissions", dailyMissions);
 
-            model.addAttribute("stageColors", StageColors);
+            model.addAttribute("stageColors", Utility.StageColors);
             model.addAttribute("stages", learnService.getAccountStages(accountId));
             model.addAttribute("accountId", accountId);
 
@@ -242,6 +231,7 @@ public class ApplicationController {
             AccountStats dataPerDay = dataPerDayService.getAccountStats(account.getAccountId());
             model.addAttribute("stats", dataPerDayService.getAccountStats(account.getAccountId()));
             model.addAttribute("dayStats", dataPerDayService.getAccountDPDStat(account.getAccountId()));
+            model.addAttribute("friendsExps", friendService.getFollowingExps(account.getAccountId()));
 
             List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), account.getAccountId());
             model.addAttribute("dailyMissions", dailyMissions);
@@ -260,14 +250,4 @@ public class ApplicationController {
     public String showLesson(Model model) {
         return "lesson";
     }
-
-    private List<String> StageColors = new ArrayList<>(Arrays.asList(
-            "#58cc02",
-            "#ce82ff",
-            "#00cd9c",
-            "#1cb0f6",
-            "#ff86d0",
-            "#ff9600",
-            "#cc348d"
-    ));
 }

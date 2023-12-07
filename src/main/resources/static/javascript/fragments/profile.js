@@ -69,3 +69,28 @@ $(function(){
         }
     });
 });
+
+fragmentContainer.addEventListener('click', async e => {
+    e.preventDefault();
+
+    const target = e.target.closest('.friend--add-item-search');
+    if (target == null) return;
+
+    let fragment = target.id.replace('fragment-', '');
+
+    history.pushState(history.state, document.title, `/${fragment}`);
+    fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
+
+    const path = `/javascript/fragments/${fragment}.js`;
+    if (loadedScript.has(path)) {
+
+        return;
+    }
+
+    const script = document.createElement('script');
+    const text = document.createTextNode(await AJAX(path));
+    script.appendChild(text);
+    fragmentContainer.append(script);
+
+    loadedScript.add(path);
+})

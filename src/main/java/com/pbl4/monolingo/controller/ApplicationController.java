@@ -11,14 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.SimpleFormatter;
 import java.util.stream.IntStream;
 
 @Controller
@@ -226,7 +227,6 @@ public class ApplicationController {
     public String showProfile(Model model, Principal principal,
                               @RequestHeader(value = "request-source", required = false) String requestSource) {
         if (principal != null) {
-            System.out.println(principal);
             Account account = accountService.getAccountByUsername(principal.getName());
             AccountStats dataPerDay = dataPerDayService.getAccountStats(account.getAccountId());
             model.addAttribute("stats", dataPerDayService.getAccountStats(account.getAccountId()));
@@ -243,6 +243,41 @@ public class ApplicationController {
         }
 
         return "fragments/profile";
+    }
+
+    @PostMapping("/profile/update")
+    public String updateProfile(Model model, Principal principal, @RequestParam("profile-name") String name,
+                                @RequestParam("gender-rd") String gender, @RequestParam("profile-birthDate") String birthDate,
+                                @RequestParam("profile-email") String email) throws ParseException {
+        if (principal != null) {
+            Account account = accountService.getAccountByUsername(principal.getName());
+
+            account.setName(name);
+            account.setGender(Boolean.parseBoolean(gender));
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            account.setBirthdate(formatter.parse(birthDate));
+            account.setEmail(email);
+
+            accountService.saveAccount(account);
+
+            AccountStats dataPerDay = dataPerDayService.getAccountStats(account.getAccountId());
+            model.addAttribute("stats", dataPerDayService.getAccountStats(account.getAccountId()));
+            model.addAttribute("dayStats", dataPerDayService.getAccountDPDStat(account.getAccountId()));
+        }
+        return "fragments/profile";
+    }
+
+    @GetMapping("/test-profile")
+
+    public String showTest(Model model, Principal principal,
+                              @RequestHeader(value = "request-source", required = false) String requestSource) {
+        Map<String, Integer> surveyMap = new LinkedHashMap<>();
+        surveyMap.put("Java", 40);
+        surveyMap.put("Python", 50);
+        surveyMap.put(".NET", 20);
+        model.addAttribute("surveyMap", surveyMap);
+        return "test";
     }
 
     @GetMapping("/lesson")

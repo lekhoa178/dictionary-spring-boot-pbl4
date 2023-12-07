@@ -107,8 +107,6 @@ public class LessonController {
         if (requestSource == null)
             return "redirect:/learn";
 
-        System.out.println(data);
-
 
         int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
 
@@ -117,6 +115,8 @@ public class LessonController {
 
         model.addAttribute("exp", exp);
         model.addAttribute("precise", precise);
+        model.addAttribute("streak", extraInfoService.updateExtraInfo(accountService.getAccountById(accountId)));
+        model.addAttribute("streakDays", accountService.getAccountInfoByUsername(principal.getName()).getNumberOfConsecutiveDay());
 
         if (!fulfilled && stageId != -1 && precise > 60)
             learnService.finishLevel(accountId, stageId, levelId);
@@ -130,7 +130,6 @@ public class LessonController {
                 dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), accountId));
 
         return "lessonFinish";
-
     }
 
     @PostMapping("/lostHeart")

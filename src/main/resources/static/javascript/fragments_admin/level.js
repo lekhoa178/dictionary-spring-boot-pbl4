@@ -121,7 +121,6 @@ function sendDataToController() {
 
         dataToSend.push(rowData);
     }
-    console.log(JSON.stringify(dataToSend))
     // Send data to the controller using AJAX
     $.ajax({
         type: 'POST',
@@ -156,7 +155,6 @@ fragmentContainer.addEventListener('click',async function(e){
                 vocabulary_form.addEventListener("input", function (e) {
                     const target = e.target;
 
-                    console.log("in")
                     // Check if the target is an input in the last cell of a row
                     if (target.tagName === "INPUT" && target.parentNode.cellIndex === 1) {
                         const currentRow = target.parentNode.parentNode;
@@ -186,6 +184,36 @@ fragmentContainer.addEventListener('click',async function(e){
             },
             error: function(error) {
                 alert(this.url)
+            }
+        });
+    }
+})
+
+fragmentContainer.addEventListener('click',async function(e){
+    if(e.target.closest('.delete-btn')) {
+
+        let stageId = document.querySelector('.stageId').value
+        let levelId = document.querySelector('.levelId').value
+        let vocabId = e.target.closest('.delete-btn').value
+        let rowData =  {
+            levelId: {
+                stageId: stageId,
+                levelId: levelId
+            },
+            vocabularyNum: vocabId
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/admin/vocabulary/delete',
+            contentType: 'application/json',
+            data: JSON.stringify(rowData),
+            success: function(response) {
+                vocabulary_container = document.querySelector('.vocabulary-field')
+                $(vocabulary_container).html(response)
+            },
+            error: function(error) {
+                // Handle errors
+                console.error('Error:', error);
             }
         });
     }

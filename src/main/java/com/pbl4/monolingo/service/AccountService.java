@@ -6,6 +6,7 @@ import com.pbl4.monolingo.utility.dto.SearchFriend;
 import gov.nih.nlm.nls.lvg.Util.Str;
 import org.springframework.data.domain.Page;
 
+import java.util.Date;
 import java.util.List;
 
 public interface AccountService {
@@ -23,4 +24,5 @@ public interface AccountService {
     List<SearchFriend> searchFriend(String keyword, int currentId);
     Account getAccountByEmail(String mail);
     void changePassword(Account account, String newPassword);
+    void updateProfile(String name, boolean gender, Date birthDate, String email);
  }

@@ -9,21 +9,25 @@ public class Mission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mission_id")
     private Integer id;
-
     @Column(name = "name")
     private String name;
-
     @Column(name = "description")
     private String description;
-
     @Column(name = "point")
     private Integer point;
-
     @Column(name = "target")
     private Double target;
-
     @Column(name = "type")
     private Integer type;
+
+
+
+    public Mission(String name, String description, Integer point, Double target) {
+        this.name = name;
+        this.description = description;
+        this.point = point;
+        this.target = target;
+    }
 
     public Mission() {}
 
@@ -32,6 +36,7 @@ public class Mission {
         this.name = name;
         this.description = description;
         this.point = point;
+        this.type = type;
         this.target = target;
         this.type = type;
     }
@@ -95,4 +100,6 @@ public class Mission {
                 ", type=" + type +
                 '}';
     }
+
+    
 }

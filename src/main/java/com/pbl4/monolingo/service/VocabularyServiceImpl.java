@@ -2,6 +2,7 @@ package com.pbl4.monolingo.service;
 
 import com.pbl4.monolingo.dao.VocabularyRepository;
 import com.pbl4.monolingo.entity.Vocabulary;
+import com.pbl4.monolingo.entity.embeddable.VocabularyId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,6 @@ public class VocabularyServiceImpl implements VocabularyService{
 
     @Override
     public Vocabulary save(Vocabulary vocabulary) {
-        System.out.println("Saving " + vocabulary.getId().getLevelId().getStageId() + " " + vocabulary.getId().getLevelId().getLevelId() + " " +
-                vocabulary.getId().getVocabularyNum() + " " + vocabulary.getWord() + " " + vocabulary.getMeaning());
         return vocabularyRepository.save(vocabulary);
     }
 
@@ -26,4 +25,11 @@ public class VocabularyServiceImpl implements VocabularyService{
     {
         return vocabularyRepository.findMaxId();
     }
+
+    @Override
+    public void deleteVocabularyById(VocabularyId id) {
+        vocabularyRepository.deleteById(id);
+    }
+
+
 }

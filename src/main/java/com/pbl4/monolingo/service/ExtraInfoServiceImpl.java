@@ -74,7 +74,7 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
     }
 
     @Override
-    public void updateExtraInfo(Account account) {
+    public int updateExtraInfo(Account account) {
         int yesterdayId = Integer.parseInt(LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         int currentDayId = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 
@@ -94,7 +94,15 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
             newDataPerDay.setAccount(account);
 
             dataPerDayRepository.save(newDataPerDay);
+
+            int point = extraInformation.getNumberOfConsecutiveDay() * 10;
+
+            if (point > 70)
+                point = 70;
+            extraInformation.setBalance(extraInformation.getBalance() + point);
+            return point;
         }
+        return 0;
     }
 
     @Override

@@ -6,12 +6,12 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class FriendExp {
+public class FriendDetail {
 
     private Friend friend;
     private int exp;
 
-    public FriendExp() {}
+    public FriendDetail() {}
 
     public Friend getFriend() {
         return friend;

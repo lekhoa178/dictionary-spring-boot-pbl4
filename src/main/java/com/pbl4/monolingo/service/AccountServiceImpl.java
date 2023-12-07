@@ -1,35 +1,34 @@
 package com.pbl4.monolingo.service;
 
+import com.pbl4.monolingo.controller.FriendController;
 import com.pbl4.monolingo.dao.AccountRepository;
 import com.pbl4.monolingo.dao.DataPerDayRepository;
 import com.pbl4.monolingo.dao.ExtraInformationRepository;
+import com.pbl4.monolingo.dao.FriendRepository;
 import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.ExtraInformation;
+import com.pbl4.monolingo.entity.embeddable.FriendId;
 import com.pbl4.monolingo.security.MD5PasswordEncoder;
+import com.pbl4.monolingo.utility.dto.SearchFriend;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class AccountServiceImpl implements AccountService {
-    @Autowired
 
-    private AccountRepository accountRepository;
-    @Autowired
-    private ExtraInformationRepository extraInformationRepository;
-    @Autowired
-    private  PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository, ExtraInformationRepository extraInformationRepository, DataPerDayRepository dataPerDayRepository) {
-        this.accountRepository = accountRepository;
-        this.extraInformationRepository = extraInformationRepository;
-    }
+    private final AccountRepository accountRepository;
+    private final ExtraInformationRepository extraInformationRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final FriendRepository friendRepository;
 
     @Override
     public ExtraInformation getAccountInfoByUsername(String username) {
@@ -88,6 +87,20 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<Account> searchAccount(String keyword) {
         return accountRepository.searchAccount(keyword);
+    }
+
+    @Override
+    public List<SearchFriend> searchFriend(String keyword, int currentId) {
+        List<SearchFriend> results = new ArrayList<>();
+        List<Account> accounts = accountRepository.searchAccountByName(keyword);
+
+        for (Account account : accounts) {
+            if (currentId == account.getAccountId()) continue;
+            boolean friended = friendRepository.existsById(new FriendId(currentId, account.getAccountId()));
+            results.add(new SearchFriend(account.getAccountId(), account.getUsername(), account.getName(), friended));
+        }
+
+        return results;
     }
 
     @Override

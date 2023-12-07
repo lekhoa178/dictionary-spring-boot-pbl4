@@ -8,8 +8,7 @@ import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.Friend;
 import com.pbl4.monolingo.entity.embeddable.FriendId;
 import com.pbl4.monolingo.utility.dto.AccountExp;
-import com.pbl4.monolingo.utility.dto.AccountStats;
-import com.pbl4.monolingo.utility.dto.FriendExp;
+import com.pbl4.monolingo.utility.dto.FriendDetail;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -53,12 +52,12 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public List<FriendExp> getFollowingExps(int followerId) {
-        List<FriendExp> result = new ArrayList<>();
+    public List<FriendDetail> getFollowingExps(int followerId) {
+        List<FriendDetail> result = new ArrayList<>();
         List<Friend> friends = getFollowings(followerId);
 
         for (Friend friend : friends) {
-            result.add(new FriendExp(friend, Math.toIntExact(getAccountExp(friend.getId().getFollowingId()).getExperience())));
+            result.add(new FriendDetail(friend, Math.toIntExact(getAccountExp(friend.getId().getFollowingId()).getExperience())));
         }
 
         return result;

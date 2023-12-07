@@ -4,14 +4,13 @@ import com.pbl4.monolingo.entity.DailyMission;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.DailyMissionService;
 import com.pbl4.monolingo.service.DataPerDayService;
+import com.pbl4.monolingo.service.FriendService;
 import com.pbl4.monolingo.utility.Utility;
+import gov.nih.nlm.nls.lvg.Util.Str;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -23,6 +22,7 @@ public class FriendController {
     private final AccountService accountService;
     private final DailyMissionService dailyMissionService;
     private final DataPerDayService dataPerDayService;
+    private final FriendService friendService;
 
     @GetMapping("/searchFriend")
     public String showSearch(Model model, Principal principal,
@@ -55,7 +55,7 @@ public class FriendController {
             List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), accountId);
             model.addAttribute("dailyMissions", dailyMissions);
 
-            model.addAttribute("searchResults", accountService.searchAccount(name));
+            model.addAttribute("searchResults", accountService.searchFriend(name, accountId));
 
             if (requestSource == null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
@@ -63,6 +63,44 @@ public class FriendController {
             } else {
                 return "fragments/searchFriend";
             }
+        }
+
+        return "main";
+
+    }
+
+    @PostMapping("/follow/{name}")
+    public String follow(Model model, Principal principal,
+                               @RequestBody int followingId,
+                               @PathVariable String name,
+                               @RequestHeader(value = "request-source", required = false) String requestSource) {
+
+        if (principal != null) {
+            int currentId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+            friendService.follow(currentId, followingId);
+
+            model.addAttribute("searchResults", accountService.searchFriend(name, currentId));
+
+            return "fragments/searchFriend";
+        }
+
+        return "main";
+
+    }
+
+    @PostMapping("/unfollow/{name}")
+    public String unfollow(Model model, Principal principal,
+                         @RequestBody int followingId,
+                         @PathVariable String name,
+                         @RequestHeader(value = "request-source", required = false) String requestSource) {
+
+        if (principal != null) {
+            int currentId = accountService.getAccountByUsername(principal.getName()).getAccountId();
+            friendService.unFollow(currentId, followingId);
+
+            model.addAttribute("searchResults", accountService.searchFriend(name, currentId));
+
+            return "fragments/searchFriend";
         }
 
         return "main";

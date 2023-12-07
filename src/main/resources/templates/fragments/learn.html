@@ -5,7 +5,6 @@
             <h2 th:text="${stage.title}"></h2>
             <p th:text="${stage.depiction}"></p>
         </a>
-
         <div class="level-container">
             <button th:each="level, itemStat : ${stage.levels}" th:text="__${itemStat.index + 1}__"
                     th:with="prevCompleted=${itemStat.index > 0

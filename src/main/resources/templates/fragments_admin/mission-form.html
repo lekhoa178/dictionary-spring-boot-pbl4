@@ -1,0 +1,20 @@
+<div class="form-container">
+    <form th:action="${'/admin/mission/save'}" th:object="${mission}" method="POST" class = "mission-form" id="form-mission" >
+        <div class="input-field">
+            <div class="row">
+                <input  type="text" th:field="*{name}" id="name-txt" placeholder="Tên nhiệm vụ"/>
+                <input type="text" th:field="*{description}" id="description-txt" placeholder="Mô tả"/>
+                <input type="text" th:field="*{point}" id="point-txt" placeholder="Point"/>
+            </div>
+            <div class="row">
+                <input type="hidden" name="" th:field="*{id}">
+                <section th:each="type : t"
+                <input type="text" th:field="*{target}" id="target-txt" placeholder="Mục tiêu"/>
+            </div>
+        </div>
+        <div class="button-field">
+            <button type="submit" class="form-btn"><b>Submit</b></button>
+            <button type="reset" class="form-btn"><b>Reset</b></button>
+        </div>
+    </form>
+</div>

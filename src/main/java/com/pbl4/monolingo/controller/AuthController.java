@@ -74,6 +74,9 @@ public class AuthController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
+        session.setAttribute("test", "test");
+        System.out.println(session.getAttribute("test"));
+
         Account temp = accountService.getAccountByUsername(account.getUsername());
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
 
@@ -85,21 +88,26 @@ public class AuthController {
     }
     @GetMapping("/logout")
     public String signout(HttpServletResponse response, Principal principal){
-        if (principal != null) {
-            Account account = accountService.getAccountByUsername(principal.getName());
-            LocalDateTime loginTime = authenticationService.getLoginTimes().get(account.getAccountId());
-            LocalDateTime logoutTime = LocalDateTime.now();
+        try {
+            if (principal != null) {
+                Account account = accountService.getAccountByUsername(principal.getName());
+                LocalDateTime loginTime = authenticationService.getLoginTimes().get(account.getAccountId());
+                LocalDateTime logoutTime = LocalDateTime.now();
 
-            float onlineTime = (float) (ChronoUnit.SECONDS.between(loginTime, logoutTime) / 3600.0);
+                float onlineTime = (float) (ChronoUnit.SECONDS.between(loginTime, logoutTime) / 3600.0);
 
-            DataPerDay dt = dataPerDayService.getAccountDPD(account.getAccountId());
-            dt.setOnlineHours(dt.getOnlineHours() + onlineTime);
+                DataPerDay dt = dataPerDayService.getAccountDPD(account.getAccountId());
+                dt.setOnlineHours(dt.getOnlineHours() + onlineTime);
 
-            authenticationService.getLoginTimes().remove(account.getAccountId());
-            System.out.println(authenticationService.getLoginTimes().size());
-            dataPerDayService.save(dt);
+                authenticationService.getLoginTimes().remove(account.getAccountId());
+                System.out.println(authenticationService.getLoginTimes().size());
+                dataPerDayService.save(dt);
+            }
+
         }
+        catch (Exception e) {
 
+        }
         Cookie cookie = new Cookie("jwtToken", null);
         cookie.setPath("/"); // Đảm bảo đường dẫn này phù hợp với đường dẫn khi cookie được tạo
         cookie.setHttpOnly(true); // Tùy chọn, nếu cookie ban đầu được đánh dấu là HttpOnly

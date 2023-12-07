@@ -1,25 +1,3 @@
-// document.getElementById("vocabulary-form").addEventListener("input", function (e) {
-//     const target = e.target;
-//
-//     console.log("in")
-//     // Check if the target is an input in the last cell of a row
-//     if (target.tagName === "INPUT" && target.parentNode.cellIndex === 1) {
-//         const currentRow = target.parentNode.parentNode;
-//         const lastRow = currentRow.parentNode.lastElementChild;
-//
-//         // Clone the last row if the current row is the last row
-//         if (currentRow === lastRow) {
-//             const newRow = currentRow.cloneNode(true);
-//
-//             // Clear input values in the new row
-//             Array.from(newRow.querySelectorAll('input')).forEach(input => input.value = '');
-//
-//             currentRow.parentNode.appendChild(newRow);
-//         }
-//     }
-// });
-
-
 fragmentContainer.addEventListener('click', async function (e) {
     if (e.target.id === 'add-vocab-btn') {
         let dataToSend = [];

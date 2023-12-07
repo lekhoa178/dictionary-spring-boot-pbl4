@@ -88,6 +88,8 @@ public class LessonController {
 
         model.addAttribute("exp", exp);
         model.addAttribute("precise", precise);
+        model.addAttribute("streak", extraInfoService.updateExtraInfo(accountService.getAccountById(accountId)));
+        model.addAttribute("streakDays", accountService.getAccountInfoByUsername(principal.getName()).getNumberOfConsecutiveDay());
 
         if (!fulfilled && stageId != -1)
             learnService.finishLevel(accountId, stageId, levelId);
@@ -95,7 +97,6 @@ public class LessonController {
             dataPerDayService.updateAccountDPD(accountId, exp, 0);
 
         return "lessonFinish";
-
     }
 
     @PostMapping("/lostHeart")

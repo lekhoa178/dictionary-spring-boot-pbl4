@@ -1,0 +1,13 @@
+<div class="search--friend-container">
+    <form action="" method="get">
+    <div class="search--friend--search-panel">
+        <p class="search--friend--title">Tìm bạn</p>
+        <input class="search--friend--search" placeholder="Tên người dùng" name="search"/>
+    </div>
+    </form>
+
+    <div class="search--friend--result-placeholder" th:if="${searchResults == null || searchResults.isEmpty()}">
+        <img alt="" th:src="@{/img/friend.png}" width="300px" style="padding-top: 50px;"/>
+        <p class="search--friend--text">Kết nối bạn bè giúp học vui hơn</p>
+    </div>
+</div>

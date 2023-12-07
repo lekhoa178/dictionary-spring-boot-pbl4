@@ -19,8 +19,6 @@
                 </div>
             </div>
         </dialog>
-        <img th:src="@{/img/firework.png}" alt="" class="finish-image"/>
-        <p class="finish-title">Hoàn thành bài học</p>
         <img th:src="@{/img/firework.png}" alt="" class="finish-image" th:if="${precise > 60.0}"/>
         <img th:src="@{/img/struggle.png}" alt="" class="finish-image" th:if="${precise <= 60.0}"/>
         <p class="finish-title" th:text="${precise > 60 ? 'Hoàn thành bài học' : 'Rất tiếc, hãy thử lại nhé'}"></p>

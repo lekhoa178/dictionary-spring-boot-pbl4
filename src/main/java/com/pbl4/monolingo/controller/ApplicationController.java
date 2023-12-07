@@ -232,6 +232,7 @@ public class ApplicationController {
             model.addAttribute("stats", dataPerDayService.getAccountStats(account.getAccountId()));
             model.addAttribute("dayStats", dataPerDayService.getAccountDPDStat(account.getAccountId()));
             model.addAttribute("friendsExps", friendService.getFollowingExps(account.getAccountId()));
+            model.addAttribute("current", true);
 
             List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), account.getAccountId());
             model.addAttribute("dailyMissions", dailyMissions);
@@ -264,6 +265,7 @@ public class ApplicationController {
             AccountStats dataPerDay = dataPerDayService.getAccountStats(account.getAccountId());
             model.addAttribute("stats", dataPerDayService.getAccountStats(account.getAccountId()));
             model.addAttribute("dayStats", dataPerDayService.getAccountDPDStat(account.getAccountId()));
+            model.addAttribute("friendsExps", friendService.getFollowingExps(account.getAccountId()));
         }
         return "fragments/profile";
     }

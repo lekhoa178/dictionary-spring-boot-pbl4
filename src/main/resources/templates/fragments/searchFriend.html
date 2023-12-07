@@ -12,7 +12,7 @@
     </div>
 
     <div class="search--friend--result" th:if="${searchResults != null && !searchResults.isEmpty()}">
-        <div class="search--friend--result-item" th:each="friend : ${searchResults}">
+        <div class="search--friend--result-item" th:data-id="${friend.getAccountId()}" th:each="friend : ${searchResults}">
             <div class="search--friend--result-index" th:text="${friend.getName().charAt(0)}"></div>
             <p class="search--friend--result-name" th:text="${friend.getName()}"></p>
             <p class="search--friend--result-username" th:text="${friend.getUsername()}"></p>

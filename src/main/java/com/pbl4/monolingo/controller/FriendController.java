@@ -1,11 +1,13 @@
 package com.pbl4.monolingo.controller;
 
+import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.DailyMission;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.DailyMissionService;
 import com.pbl4.monolingo.service.DataPerDayService;
 import com.pbl4.monolingo.service.FriendService;
 import com.pbl4.monolingo.utility.Utility;
+import com.pbl4.monolingo.utility.dto.AccountStats;
 import gov.nih.nlm.nls.lvg.Util.Str;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -105,6 +107,29 @@ public class FriendController {
 
         return "main";
 
+    }
+
+    @GetMapping("/profile/{accountId}")
+
+    public String showProfile(Model model, Principal principal,
+                              @PathVariable int accountId,
+                              @RequestHeader(value = "request-source", required = false) String requestSource) {
+        if (principal != null) {
+            Account account = accountService.getAccountByUsername(principal.getName());
+            model.addAttribute("stats", dataPerDayService.getAccountStats(accountId));
+            model.addAttribute("dayStats", dataPerDayService.getAccountDPDStat(accountId));
+            model.addAttribute("friendsExps", friendService.getFollowingExps(accountId));
+            model.addAttribute("current", false);
+            List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), account.getAccountId());
+            model.addAttribute("dailyMissions", dailyMissions);
+
+            if (requestSource == null) {
+                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+                return "main";
+            }
+        }
+
+        return "fragments/profile";
     }
 
 }

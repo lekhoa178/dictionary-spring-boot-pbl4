@@ -17,12 +17,13 @@
             color: black;
             margin-bottom: 10px;
             font-weight: bold;
+            width: 200px;
           "
           th:value="${stats.account.getName()}"
           oninput="editProfile()"
           readonly
         />
-        <span class="edit-btn" id="edit-btn">✒️</span>
+        <span class="edit-btn" id="edit-btn" th:if="${current}">✒️</span>
       </div>
 
       <!--        <p class="profile-text" th:text="${stats.account.getGender()  ? 'nữ' : 'nam'}"></p>-->
@@ -69,11 +70,12 @@
         />
       </div>
 
-      <div
-        class="profile-text--index"
-        th:text="${stats.getAccount().getName().charAt(0)}"
-      ></div>
     </form>
+
+    <div
+            class="profile-text--index"
+            th:text="${stats.getAccount().getName().charAt(0)}"
+    ></div>
     <div class="btn-container">
       <input
         type="button"
@@ -82,6 +84,11 @@
         value="Lưu thay đổi"
         disabled
       />
+    </div>
+
+    <div class="profile--outsider-container" th:if="${!current}">
+        <div class="profile--outsider-follow" th:text="${stats.isFollowed()?'THEO DÕI':'HỦY THEO DÕI'}"></div>
+        <div class="profile--outsider-more"> . . . </div>
     </div>
   </div>
 
@@ -122,14 +129,14 @@
     style="width: 600px; height: 600px; border-bottom: 2px solid #cccccc"
   ></div>
 
-  <div class="friend-container">
+  <div class="friend-container" th:if="${current}">
     <div class="friend--follower-panel">
       <p style="font-weight: bold; font-size: 20px; margin-bottom: 40px">
         Đang theo dõi
       </p>
 
       <div class="friend--followers" th:each="friendExp, stat : ${friendsExps}">
-        <div class="friend--follower">
+        <div class="friend--follower" th:data-id="${friendExp.getFriend().getId().getFollowingId()}">
           <div class="friend--follower-index" th:text="${stat.index + 1}"></div>
           <p
             class="friend--follower-name"

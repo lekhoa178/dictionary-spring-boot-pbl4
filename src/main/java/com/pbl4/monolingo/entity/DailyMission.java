@@ -1,54 +1,51 @@
 package com.pbl4.monolingo.entity;
 
+import com.pbl4.monolingo.entity.embeddable.DailyMissionId;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "daily_mission")
 public class DailyMission {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    @AttributeOverrides({
+            @AttributeOverride(name = "dayId", column = @Column(name = "day_id")),
+            @AttributeOverride(name = "accountId", column = @Column(name = "account_id")),
+            @AttributeOverride(name = "missionId", column = @Column(name = "mission_id"))
+    })
+    private DailyMissionId id;
+
     @ManyToOne
+    @MapsId("missionId")
     @JoinColumn(name = "mission_id")
     private Mission mission;
+
     @ManyToOne
+    @MapsId("accountId")
     @JoinColumn(name = "account_id")
     private Account account;
-    @Column
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
 
-    public DailyMission(Long id, Mission mission, Account account) {
+    @Column(name = "progress")
+    private Double progress;
+
+    public DailyMission() {}
+
+    public DailyMission(DailyMissionId id, Mission mission, Account account, Double progress) {
         this.id = id;
         this.mission = mission;
         this.account = account;
+        this.progress = progress;
     }
 
-    public DailyMission(Long id, Mission mission, Account account, Date date) {
+    public DailyMissionId getId() {
+        return id;
+    }
+
+    public void setId(DailyMissionId id) {
         this.id = id;
-        this.mission = mission;
-        this.account = account;
-        this.date = date;
-    }
-
-    public DailyMission(Mission mission, Account account, Date date) {
-        this.mission = mission;
-        this.account = account;
-        this.date = date;
-    }
-
-    public DailyMission() {
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public Mission getMission() {
@@ -67,11 +64,34 @@ public class DailyMission {
         this.account = account;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Double getProgress() {
+        return progress;
     }
 
-    public Long getId() {
-        return id;
+    public void setProgress(Double progress) {
+        this.progress = progress;
+    }
+
+    @Override
+    public String toString() {
+        return "DailyMission{" +
+                "id=" + id +
+                ", mission=" + mission +
+                ", account=" + account +
+                ", progress=" + progress +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DailyMission that = (DailyMission) o;
+        return Objects.equals(id, that.id) && Objects.equals(mission, that.mission) && Objects.equals(account, that.account) && Objects.equals(progress, that.progress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, mission, account, progress);
     }
 }

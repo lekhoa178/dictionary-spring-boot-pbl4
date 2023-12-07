@@ -40,6 +40,18 @@ public class DictionaryServiceImpl implements DictionaryService {
     public List<Lexicon> searchByWord(String word) {
         return lexiconRepository.findByWordStartsWith(word);
     }
+    @Override
+    public List<Lexicon> searchByWord(String word,int limit) {
+        List<String> listWord = lexiconRepository.findDistinctByWordStartsWith(word).stream().limit(limit).toList();
+        System.out.println(listWord);
+        List<Lexicon> rs = new ArrayList<>();
+        for (String vocab:
+                listWord) {
+            rs.addAll(lexiconRepository.findByWord(vocab).stream().limit(1).toList());
+        }
+        System.out.println(rs);
+        return rs;
+    }
 
     @Override
     public List<String> searchDistinctByWord(String word) {

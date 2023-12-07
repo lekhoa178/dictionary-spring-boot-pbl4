@@ -6,7 +6,9 @@ import com.pbl4.monolingo.auth.AuthenticationService;
 import com.pbl4.monolingo.auth.RegisterRequest;
 import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.DataPerDay;
+import com.pbl4.monolingo.rest.BotController;
 import com.pbl4.monolingo.service.AccountService;
+import com.pbl4.monolingo.service.DailyMissionService;
 import com.pbl4.monolingo.service.mailSender.MailService;
 import com.pbl4.monolingo.service.DataPerDayService;
 import com.pbl4.monolingo.service.ExtraInfoService;
@@ -38,6 +40,8 @@ public class AuthController {
     private Account currentAcount = null;
     private final ExtraInfoService extraInfoService;
     private final DataPerDayService dataPerDayService;
+    private final BotController botController;
+    private final DailyMissionService dailyMissionService;
     private String mailCurrent = null;
 
 
@@ -63,7 +67,7 @@ public class AuthController {
         return "loginPage";
     }
     @PostMapping("/login")
-    public String handleLogin(@ModelAttribute("account") Account account, HttpSession session, HttpServletResponse response){
+    public String handleLogin(@ModelAttribute("account") Account account, HttpSession session, HttpServletResponse response) throws InterruptedException {
         AuthenticationResponse authenticationResponse = authenticationService.
                 authenticate(AuthenticationRequest.builder()
                 .username(account.getUsername())
@@ -79,6 +83,8 @@ public class AuthController {
 
         Account temp = accountService.getAccountByUsername(account.getUsername());
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
+        botController.updateSentences(temp.getAccountId(), 13, false);
+        dailyMissionService.initMission(temp.getAccountId(), 3);
 
         return "redirect:/learn";
     }

@@ -34,6 +34,16 @@ public class ExtraInformation {
 
     public ExtraInformation() {}
 
+    public ExtraInformation(Integer accountId, Integer balance, Integer numberOfLoginDay, Integer numberOfConsecutiveDay, Integer hearts, LocalDateTime lostHeartTimes, Account account) {
+        this.accountId = accountId;
+        this.balance = balance;
+        this.numberOfLoginDay = numberOfLoginDay;
+        this.numberOfConsecutiveDay = numberOfConsecutiveDay;
+        this.hearts = hearts;
+        this.lostHeartTimes = lostHeartTimes;
+        this.account = account;
+    }
+
     public LocalDateTime getLostHeartTimes() {
         return lostHeartTimes;
     }

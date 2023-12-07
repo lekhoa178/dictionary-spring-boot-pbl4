@@ -9,13 +9,13 @@ import com.pbl4.monolingo.utility.dto.ChatGPTResponse;
 import gov.nih.nlm.nls.lvg.Util.Str;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/practice")
@@ -30,6 +30,9 @@ public class BotController {
     private final RestTemplate restTemplate;
     private final NotebookService notebookService;
 
+    HashMap<Integer, String> answerCache = new HashMap<>();
+    HashMap<Integer, Boolean> inProcessing = new HashMap<>();
+
     public BotController(RestTemplate restTemplate,
                          NotebookService notebookService) {
         this.restTemplate = restTemplate;
@@ -39,16 +42,58 @@ public class BotController {
     @GetMapping("/sentences/{accountId}/{amount}")
     public String getSentences(
             @PathVariable int accountId,
-            @PathVariable int amount) {
-        List<Notebook> notebooks = notebookService.getAllNotebooksByAccountId(accountId);
-        ShuffleArray.shuffle(notebooks.toArray());
+            @PathVariable int amount,
+            @RequestHeader(value = "request-source", required = false) String requestSource) throws InterruptedException {
+        if (answerCache.get(accountId) == null) {
 
-        String prompt = getPrompt(amount, notebooks);
+            if (inProcessing.get(accountId) == null || !inProcessing.get(accountId)) {
+                inProcessing.put(accountId, true);
+                System.out.println("Bot querying");
 
-        System.out.println(prompt);
-        ChatGPTRequest request = new ChatGPTRequest(model, prompt);
-        ChatGPTResponse response = restTemplate.postForObject(apiURL, request, ChatGPTResponse.class);
-        return response.getChoices().get(0).getMessage().getContent();
+                List<Notebook> notebooks = notebookService.getAllNotebooksByAccountId(accountId);
+                ShuffleArray.shuffle(notebooks);
+
+                String prompt = getPrompt(amount, notebooks);
+
+                System.out.println(prompt);
+                ChatGPTRequest request = new ChatGPTRequest(model, prompt);
+                ChatGPTResponse response = restTemplate.postForObject(apiURL, request, ChatGPTResponse.class);
+
+                answerCache.put(accountId, response.getChoices().get(0).getMessage().getContent());
+
+                inProcessing.put(accountId, false);
+                System.out.println(answerCache.get(accountId));
+            } else if (requestSource != null) {
+                while (answerCache.get(accountId) == null) { Thread.sleep(1000); System.out.println("Wait for Bot response");}
+            }
+        }
+
+        return answerCache.get(accountId);
+    }
+
+    public void updateSentences(int accountId, int amount, boolean force) {
+
+        if (inProcessing.get(accountId) == null || !inProcessing.get(accountId) || force) {
+
+            CompletableFuture.runAsync(() -> {
+                inProcessing.put(accountId, true);
+                System.out.println("Bot querying");
+
+                List<Notebook> notebooks = notebookService.getAllNotebooksByAccountId(accountId);
+                ShuffleArray.shuffle(notebooks);
+
+                String prompt = getPrompt(amount, notebooks);
+
+                System.out.println(prompt);
+                ChatGPTRequest request = new ChatGPTRequest(model, prompt);
+                ChatGPTResponse response = restTemplate.postForObject(apiURL, request, ChatGPTResponse.class);
+
+                answerCache.put(accountId, response.getChoices().get(0).getMessage().getContent());
+
+                inProcessing.put(accountId, false);
+                System.out.println(answerCache.get(accountId));
+            });
+        }
     }
 
     private String getPrompt(int amount, List<Notebook> notebooks) {

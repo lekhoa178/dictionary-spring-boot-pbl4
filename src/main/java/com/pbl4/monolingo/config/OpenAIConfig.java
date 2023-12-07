@@ -13,7 +13,6 @@ public class OpenAIConfig {
 
     @Bean
     public RestTemplate template() {
-        System.out.println(openAIKey);
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getInterceptors().add((request, body, execution) -> {
            request.getHeaders().add("Authorization", "Bearer " + openAIKey);

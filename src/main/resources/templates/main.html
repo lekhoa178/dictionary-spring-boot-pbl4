@@ -14,6 +14,8 @@
     <link rel="stylesheet" th:href="@{/css/fragments/practiceStyle.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/profileStyle.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/storeStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/util.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/mission.css}">
 
     <title>Monolingo - Học tiếng anh vui vẻ</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -182,18 +184,19 @@
                 </div>
 
                 <div class="mission">
-                    <div class="mission--items">
+                    <div class="mission--items" th:each="mission, stat : ${dailyMissions}" th:if="${stat.index < 2}">
                         <img alt=""
                              th:src="@{/img/dart.png}"
                              class="mission--items-icon">
-                        <h3>
-                            Kiếm 10 KN
+                        <h3 th:text="${mission.getMission().getName()}">
                         </h3>
+                        <h4 class="mission--sub-header" th:text="${mission.getMission().getDescription()}">
+                        </h4>
 
                         <div class="mission--progress-bound">
                             <div class="mission--progress-bar">
-                                <div class="mission--progress"></div>
-                                <h3 class="mission--progress-text">5/10</h3>
+                                <div class="mission--progress" th:style="|width: ${mission.getProgress() / mission.getMission().getTarget() * 100}%|"></div>
+                                <h3 class="mission--progress-text" th:text="${mission.getProgress()} + '/' + ${#strings.toString(mission.getMission().getTarget())}"></h3>
                             </div>
 
                             <img alt=""
@@ -202,25 +205,6 @@
                         </div>
                     </div>
 
-                    <div class="mission--items">
-                        <img alt=""
-                             th:src="@{/img/dart.png}"
-                             class="mission--items-icon">
-                        <h3>
-                            Hoàn thành 3 màn chơi có độ chính xác hơn 80%
-                        </h3>
-
-                        <div class="mission--progress-bound">
-                            <div class="mission--progress-bar">
-                                <div class="mission--progress"></div>
-                                <h3 class="mission--progress-text">1/3</h3>
-                            </div>
-
-                            <img alt=""
-                                 th:src="@{/img/treasure-chest.png}"
-                                 class="mission--progress-icon">
-                        </div>
-                    </div>
                 </div>
 
             </div>

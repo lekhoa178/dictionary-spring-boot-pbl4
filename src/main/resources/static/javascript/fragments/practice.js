@@ -10,7 +10,9 @@ fragmentContainer.addEventListener('click', async function(e){
 })
 
 fragmentContainer.addEventListener('click', e => {
-    if (!e.target.closest('.practice-btn--learn')) return;
-
-    window.location = `/lesson/${accountId}`;
+    if (e.target.closest('.practice-btn--learn')) {
+        window.location = `/lesson/practice`;
+    } else if (e.target.closest('.practice-btn--listen')) {
+        window.location = '/lesson/listen'
+    }
 })

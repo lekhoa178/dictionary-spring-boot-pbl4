@@ -29,15 +29,24 @@ public class Mission {
         this.target = target;
     }
 
-    public Mission() {
-    }
+    public Mission() {}
 
-    public Mission(Integer id, String name, String description, Integer point, Integer type) {
+    public Mission(Integer id, String name, String description, Integer point, Double target, Integer type) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.point = point;
         this.type = type;
+        this.target = target;
+        this.type = type;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -64,18 +73,6 @@ public class Mission {
         this.point = point;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
     public Double getTarget() {
         return target;
     }
@@ -84,7 +81,25 @@ public class Mission {
         this.target = target;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
     public void setType(Integer type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Mission{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", point=" + point +
+                ", target=" + target +
+                ", type=" + type +
+                '}';
+    }
+
+    
 }

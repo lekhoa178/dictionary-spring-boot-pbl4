@@ -11,11 +11,11 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Point</th>
-                        <th>Type</th>
-                        <th>Target</th>
+                        <th>Tên</th>
+                        <th>Mô tả</th>
+                        <th>Điểm</th>
+                        <th>Loại</th>
+                        <th>Mục tiêu</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -25,15 +25,15 @@
                         <td th:text="*{mission.name}"></td>
                         <td th:text="*{mission.description}"></td>
                         <td th:text="*{mission.point}"></td>
-                        <td th:text="*{mission.type}"></td>
+
+                        <td th:if="${mission.type == 1}" >Kinh nghiệm</td>
+                        <td th:if="${mission.type == 2}" >Học tập</td>
+                        <td th:if="${mission.type == 3}" >Luyện tập</td>
+
                         <td th:text="*{mission.target}"></td>
                         <td>
-                            <button type="button" th:attr="value=${mission.id}" class="action-btn update-stage">
+                            <button type="button" th:attr="value=${mission.id}" class="action-btn update-mission">
                                 <i class="fa-solid fa-pen"></i>
-                            </button>
-                            <button type="button" class="action-btn open-stage" th:attr="value=${mission.id}"
-                                    id="delete-btn">
-                                <i class="fa-solid fa-plus"></i>
                             </button>
                         </td>
                     </tr>

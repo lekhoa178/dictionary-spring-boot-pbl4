@@ -1,0 +1,20 @@
+#mission-form .input-field .field{
+    display: flex;
+    justify-content: space-between;
+
+    width: 250px;
+    height: 40px;
+    /*margin: 15px 30px;*/
+    /*padding: 0 10px;*/
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+}
+
+#mission-form .input-field .field input[type=text]{
+    border: none;
+    outline:none;
+
+    width: 80%;
+}
+

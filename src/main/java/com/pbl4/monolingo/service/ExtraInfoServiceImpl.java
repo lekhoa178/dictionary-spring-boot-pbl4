@@ -55,7 +55,8 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
 
         long minutesSinceLost = ChronoUnit.MINUTES.between(lostHeartTime, currentTime);
         // TO-DO
-        int restoreHeart = (int) (minutesSinceLost / 100);
+        int restoreHeart = (int) (minutesSinceLost / 15);
+        long minute = minutesSinceLost % 15;
 
         if (restoreHeart < 1)
             return;
@@ -63,7 +64,7 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
         if (restoreHeart < (5 - userInfo.getHearts()))
         {
             userInfo.setHearts(userInfo.getHearts() + restoreHeart);
-            userInfo.setLostHeartTimes(currentTime);
+            userInfo.setLostHeartTimes(currentTime.minusMinutes(minute));
         }
         else {
             userInfo.setHearts(5);

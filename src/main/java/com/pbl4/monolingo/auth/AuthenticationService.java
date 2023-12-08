@@ -39,6 +39,7 @@ public class    AuthenticationService {
         newExtra.setNumberOfLoginDay(0);
         newExtra.setNumberOfConsecutiveDay(0);
         newExtra.setAccount(user);
+
         repository.save(user);
         extraInformationRepository.save(newExtra);
         var jwtToken = jwtService.generateToken(user);
@@ -54,6 +55,8 @@ public class    AuthenticationService {
         );
 
         var user = repository.findByUsername(request.getUsername()).orElseThrow();
+        user.setOnline(true);
+        repository.save(user);
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder().token(jwtToken).build();

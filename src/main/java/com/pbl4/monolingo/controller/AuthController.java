@@ -62,29 +62,26 @@ public class AuthController {
     }
     @GetMapping("/login")
     public String showLogin(Model model){
-        System.out.println("?????");
         model.addAttribute("account",new Account());
         return "loginPage";
     }
     @PostMapping("/login")
-    public String handleLogin(@ModelAttribute("account") Account account, HttpSession session, HttpServletResponse response) throws InterruptedException {
+    public String handleLogin(@ModelAttribute("account") Account account, HttpServletResponse response) throws InterruptedException {
         AuthenticationResponse authenticationResponse = authenticationService.
                 authenticate(AuthenticationRequest.builder()
                 .username(account.getUsername())
                 .password(account.getPassword()).build());
-
         String token = authenticationResponse.getToken();
         Cookie cookie = new Cookie("jwtToken",token);
         cookie.setPath("/");
         response.addCookie(cookie);
-        System.out.println("Token from controller: "+ token);
-
         Account temp = accountService.getAccountByUsername(account.getUsername());
         extraInfoService.updateExtraInfo(temp);
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
         botController.updateSentences(temp.getAccountId(), 13, false);
         dailyMissionService.initMission(temp.getAccountId(), 3);
 
+//        return "messagePage";
         return "redirect:/learn";
     }
     @GetMapping("/error")
@@ -92,13 +89,18 @@ public class AuthController {
         return "error";
     }
     @GetMapping("/logout")
-    public String signout(HttpServletResponse response){
+    public String signout(HttpServletResponse response,Principal principal){
         Cookie cookie = new Cookie("jwtToken", null);
         cookie.setPath("/"); // Đảm bảo đường dẫn này phù hợp với đường dẫn khi cookie được tạo
         cookie.setHttpOnly(true); // Tùy chọn, nếu cookie ban đầu được đánh dấu là HttpOnly
         cookie.setMaxAge(0); // Đặt thời gian sống là 0 để xóa cookie
         // Thêm cookie vào response để trình duyệt xóa nó
         response.addCookie(cookie);
+        if (principal != null) {
+            Account account = accountService.getAccountByUsername(principal.getName());
+            account.setOnline(false);
+            accountService.saveAccount(account);
+        }
         System.out.println("Into logout");
         return "redirect:/public/login";
     }
@@ -172,11 +174,13 @@ public class AuthController {
     @PostMapping("/sendOTP")
     public String sendOTP(@RequestParam("email") String mail,
                           HttpServletRequest request,
-                          HttpServletResponse response){
+                          HttpServletResponse response,Model model){
         boolean rs = mailSender.sendOTPRegister(mail,response);
         if(rs){
             mailCurrent = mail;
-//            model.addAttribute("email",mail);
+            Account account = new Account();
+            account.setEmail(mail);
+            model.addAttribute("email",mail);
             return "non_function/VerifyOTPRegister";
         }
         else {
@@ -187,6 +191,7 @@ public class AuthController {
     public String verifyRegister(@RequestParam("pr1") int num1, @RequestParam("pr2") int num2,
                                  @RequestParam("pr3") int num3, @RequestParam("pr4") int num4,
                                  @RequestParam("pr5") int num5, @RequestParam("pr6") int num6,
+                                 @RequestParam("email")String mail,
                                  Model model, HttpServletRequest request){
         String otp = num1+""+num2+num3+num4+num5+num6;
         boolean check = mailSender.verifyOtpMail(otp,request);
@@ -194,8 +199,11 @@ public class AuthController {
             model.addAttribute("msg","Nhập sai otp");
             return "non_function/VerifyOTPRegister";
         }
+        Account account = new Account();
+        account.setEmail(mail);
+        model.addAttribute("account",account);
         System.out.println(otp);
-        return "redirect:/public/signup";
+        return "signUp";
     }
 
 }

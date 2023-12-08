@@ -6,7 +6,6 @@ $(function () {
   const onlineHours = JSON.parse(statEl.dataset.onlineHours);
 
   const max = Math.max(...exps) + 5;
-  console.log(max);
 
   Highcharts.chart('chart', {
     chart: {
@@ -77,6 +76,7 @@ $(function () {
 });
 
 $('#edit-btn').on('click', function (e) {
+  console.log("??");
   let nameTxt = document.querySelector('.profile-text--title');
   let maleBtn = document.getElementById('male-btn');
   let femaleBtn = document.getElementById('female-btn');
@@ -156,23 +156,27 @@ function submitForm() {
 fragmentContainer.addEventListener('click', async (e) => {
 
 
-  const target = e.target.closest('.friend--add-item-search');
-  if (target == null) return;
+  if (e.target.closest('.friend--add-item-search') != null) {
+    const target = e.target.closest('.friend--add-item-search');
+    let fragment = target.id.replace('fragment-', '');
 
-  let fragment = target.id.replace('fragment-', '');
+    history.pushState(history.state, document.title, `/${fragment}`);
+    fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
 
-  history.pushState(history.state, document.title, `/${fragment}`);
-  fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
+    const path = `/javascript/fragments/${fragment}.js`;
+    if (loadedScript.has(path)) {
+      return;
+    }
 
-  const path = `/javascript/fragments/${fragment}.js`;
-  if (loadedScript.has(path)) {
-    return;
+    const script = document.createElement('script');
+    const text = document.createTextNode(await AJAX(path));
+    script.appendChild(text);
+    fragmentContainer.append(script);
+
+    loadedScript.add(path);
+  } else if (e.target.closest('.friend--follower')) {
+    const target = e.target.closest('.friend--follower');
+
+    window.location = `/profile/${target.dataset.id}`;
   }
-
-  const script = document.createElement('script');
-  const text = document.createTextNode(await AJAX(path));
-  script.appendChild(text);
-  fragmentContainer.append(script);
-
-  loadedScript.add(path);
 });

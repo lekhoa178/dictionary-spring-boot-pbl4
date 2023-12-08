@@ -1,148 +1,161 @@
 .profile-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .personal-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 10px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #e4e4e4;
-    height: 150px;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  justify-content: space-between;
+  gap: 5px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e4e4e4;
+}
+
+.profile-text--index {
+  display: flex;
+  width: 120px;
+  height: 120px;
+  color: white;
+  background-color: #8d75ff;
+  justify-content: center;
+  align-items: center;
+  grid-column: 2/3;
+  grid-row: 1/10;
+  font-size: 40px;
+  border-radius: 60px;
 }
 
 .stats-container {
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-    justify-content: space-between;
-    padding-bottom: 60px;
-    border-bottom: 2px solid #e4e4e4;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: space-between;
+  padding-bottom: 60px;
+  border-bottom: 2px solid #e4e4e4;
 }
 
 .stats-item {
-    display: grid;
-    grid-row-gap: 5px;
-    grid-template-columns: 1fr 2fr;
-    width: 170px;
-    height: 100px;
-    border-radius: 15px;
-    border: 1px solid #e4e4e4;
-    justify-content: center;
-    align-content: center;
-    padding: 10px;
-    box-shadow: rgba(0.5, 0.7, 0, 0.24) 0px 1px 2px;
+  display: grid;
+  grid-row-gap: 5px;
+  grid-template-columns: 1fr 2fr;
+  width: 170px;
+  height: 100px;
+  border-radius: 15px;
+  border: 1px solid #e4e4e4;
+  justify-content: center;
+  align-content: center;
+  padding: 10px;
+  box-shadow: rgba(0.5, 0.7, 0, 0.24) 0px 1px 2px;
 }
 
 .stats--title {
-    font-weight: bold;
-    font-size: 22px;
+  font-weight: bold;
+  font-size: 22px;
 }
 
 .stats--title--streak {
-    color: #FF4B4B;
+  color: #ff4b4b;
 }
 
 .stats--title--exp {
-    color: #ff33d7;
+  color: #ff33d7;
 }
 
 .stats--title--hour {
-    color: #3374ff;
+  color: #3374ff;
 }
 
 .stats--amount {
-    font-weight: bold;
-    font-size: 18px;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .stats--exp:after {
-    content: " XP";
+  content: ' XP';
 }
 
 .stats--hour:after {
-    content: " Giờ";
+  content: ' Giờ';
 }
 
 .stats--img {
-    width: 40px;
-    grid-row: 1/3;
+  width: 40px;
+  grid-row: 1/3;
 }
 
 .profile-text {
-    font-weight: 400;
-    outline: none;
-    border: none;
-    display: inline-block;
-    color: #888888;
+  font-weight: 400;
+  outline: none;
+  border: none;
+  display: inline-block;
+  color: #888888;
 }
 
 .profile-text:first-letter {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .profile-text--title {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .profile-text--email:first-letter {
-    text-transform: none;
+  text-transform: none;
 }
 
 .edit-btn:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .profile-text {
-    width: 250px;
+  width: 250px;
 }
 
 .profile-text--title {
-    width: 100px;
+  width: 100px;
 }
 
 .btn-container {
-    text-align: center;
+  text-align: center;
 }
 
 .save-btn {
-    gap: 5px;
-    border: 2px solid #cecece;
-    box-shadow: 0 2px 0 0 #cecece;
-    background-color: white;
-    padding: 10px;
-    border-radius: 15px;
-    grid-column: 3/4;
-    grid-row: 1/2;
-    text-align: center;
-    justify-content: center;
-    cursor: pointer;
+  gap: 5px;
+  border: 2px solid #cecece;
+  box-shadow: 0 2px 0 0 #cecece;
+  background-color: white;
+  padding: 10px;
+  border-radius: 15px;
+  grid-column: 3/4;
+  grid-row: 1/2;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
 
-    color: darkgray;
-    text-transform: uppercase;
-    font-size: 17px;
-    font-weight: bold;
+  color: darkgray;
+  text-transform: uppercase;
+  font-size: 17px;
+  font-weight: bold;
 }
 
 .save-btn:disabled {
-    box-shadow: none;
-    color: lightgrey;
+  box-shadow: none;
+  color: lightgrey;
 }
 
 .save-btn.hidden {
-    display: none;
+  display: none;
 }
 
 .save-btn:not(:disabled):active {
-    transform: translateY(2px);
-    box-shadow: none;
+  transform: translateY(2px);
+  box-shadow: none;
 }
 
 .profile-text-container {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 /*.profile-text-container:hover .profile-text {*/
@@ -171,68 +184,99 @@
 /*}*/
 
 .friend-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
 }
 
 .friend--add-item-image {
-    width: 30px;
+  width: 30px;
 }
 
 .friend--add-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 20px
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .friend--add-item {
-    cursor: pointer;
-    display: grid;
-    grid-template-columns: 1fr 3fr 5fr;
-    gap: 20px
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr 3fr 5fr;
+  gap: 20px;
 }
 
 .friend--follower {
-    display: grid;
-    grid-template-columns: 1fr 5fr;
-    grid-template-rows: 1fr 1fr;
-    row-gap: 10px;
-    column-gap: 10px;
-    margin-bottom: 10px;
-    align-items: center;
-    cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 1fr 1fr;
+  row-gap: 10px;
+  column-gap: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+  cursor: pointer;
 }
 
 .friend--follower-index {
-    grid-row: 1/3;
-    font-weight: bold;
-    color: white;
-    background-color: #00ADFF;
-    border-radius: 20px;
-    padding: 5px;
-    text-align: center;
-    width: 30px;
-    height: 30px;
+  grid-row: 1/3;
+  font-weight: bold;
+  color: white;
+  background-color: #00adff;
+  border-radius: 20px;
+  padding: 5px;
+  text-align: center;
+  width: 30px;
+  height: 30px;
 }
 
 .friend--follower-name {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .friend--follower-exp {
-    color: #888888;
+  color: #888888;
 }
 
 .friend--follower-exp:after {
-    content: " XP";
+  content: ' XP';
 }
 
 .friend--add-item-arrow {
-    justify-self: end;
+  justify-self: end;
 }
 
 .friend--add-item-text {
-    color: #888;
-    font-weight: bold;
+  color: #888;
+  font-weight: bold;
+}
+
+.profile--outsider-container {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  justify-content: center;
+  grid-column: 1/3;
+  column-gap: 20px;
+}
+
+.profile--outsider-follow, .profile--outsider-more {
+  border-radius: 15px;
+  border: 2px solid #CCC;
+  box-shadow: 0 5px 0 #CCC;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: #00ADFF;
+  font-weight: bold;
+}
+
+.profile--outsider-follow {
+  content: "✔️";
+}
+
+.profile--outsider-follow:active, .profile--outsider-more:active {
+  box-shadow: 0 0 0;
+  transform: translateY(5px);
 }

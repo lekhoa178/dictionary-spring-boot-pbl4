@@ -23,6 +23,8 @@ public interface DataPerDayService {
 
     AccountStats getAccountStats(int accountId);
 
+    AccountStats getAccountStats(int accountId, int currentId);
+
     List<AccountExp> getAllAccountOrderBySumExp();
 
     AccountExp getAccountSumExpById(Integer accountId);

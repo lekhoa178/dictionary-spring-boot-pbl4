@@ -63,5 +63,37 @@
     </div>
 
     <p style="font-weight: bold; font-size: 20px">Biểu đồ</p>
-    <div th:id="chart" style="width:600px; height:600px"></div>
+    <div th:id="chart" style="width:600px; height:600px; border-bottom: 2px solid #CCCCCC"></div>
+
+    <div class="friend-container">
+        <div class="friend--follower-panel">
+            <p style="font-weight: bold; font-size: 20px; margin-bottom: 40px;">Đang theo dõi</p>
+
+            <div class="friend--followers" th:each="friendExp, stat : ${friendsExps}">
+                <div class="friend--follower">
+                    <div class="friend--follower-index" th:text="${stat.index + 1}"></div>
+                    <p class="friend--follower-name" th:text="${friendExp.getFriend().getFollowing().getName()}"></p>
+                    <p class="friend--follower-exp" th:text="${friendExp.getExp()}"></p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="friend--add-panel">
+            <p style="font-weight: bold; font-size: 20px;margin-bottom: 30px;">Thêm bạn bè</p>
+
+            <a class="friend--add-item friend--add-item-search" id="fragment-searchFriend">
+                <img th:src="@{/img/look-up.png}" alt="" class="friend--add-item-image"/>
+                <p class="friend--add-item-text">Tìm bạn bè</p>
+                <img th:src="@{/img/arrow-right.png}" alt="" class="friend--add-item-image friend--add-item-arrow"/>
+            </a>
+
+            <div class="friend--add-item">
+                <img th:src="@{/img/envelope.png}" alt="" class="friend--add-item-image"/>
+                <p class="friend--add-item-text">Mời bạn bè</p>
+                <img th:src="@{/img/arrow-right.png}" alt="" class="friend--add-item-image friend--add-item-arrow"/>
+            </div>
+        </div>
+    </div>
+
 </div>

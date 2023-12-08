@@ -1,0 +1,34 @@
+.search--friend-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.search--friend--result-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border-top: 2px solid #CCC;
+}
+
+.search--friend--title {
+    font-weight: bold;
+    font-size: 25px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.search--friend--search {
+    box-sizing: border-box;
+    border-radius: 20px;
+    background-color: #ececec;
+    border: 1px solid #ccc;
+    width: 100%;
+    padding: 10px 30px
+}
+
+.search--friend--text {
+    color: #888;
+}

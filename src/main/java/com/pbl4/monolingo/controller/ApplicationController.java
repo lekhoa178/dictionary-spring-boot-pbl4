@@ -261,13 +261,8 @@ public class ApplicationController {
             account.setEmail(email);
 
             accountService.saveAccount(account);
-
-            AccountStats dataPerDay = dataPerDayService.getAccountStats(account.getAccountId());
-            model.addAttribute("stats", dataPerDayService.getAccountStats(account.getAccountId()));
-            model.addAttribute("dayStats", dataPerDayService.getAccountDPDStat(account.getAccountId()));
-            model.addAttribute("friendsExps", friendService.getFollowingExps(account.getAccountId()));
         }
-        return "fragments/profile";
+        return showProfile(model, principal, "request-source");
     }
 
     @GetMapping("/test-profile")

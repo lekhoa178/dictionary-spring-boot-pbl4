@@ -53,7 +53,6 @@ menu.addEventListener('click', async function (e) {
     if (target == null) return;
 
     let fragment = target.id.replace('fragment-', '');
-    const baseFragment = fragment.split('/')[0];
     if (fragment === 'more') {
         const subTarget = e.target.closest('.menu--option--item');
         if (subTarget == null)
@@ -66,6 +65,8 @@ menu.addEventListener('click', async function (e) {
             return;
         }
     }
+    const baseFragment = fragment.split('/')[0];
+
     if (target.classList.contains('.menu--tab-active')) return;
 
     for (let i = 0; i < tabs.length; ++i) {
@@ -231,6 +232,16 @@ searchResults.addEventListener('click', async function (e) {
 
     history.pushState(history.state, document.title, `/meaning/${word}`);
     fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
+
+    const path = `/javascript/fragments/meaning.js`;
+    if (loadedScript.has(path)) {
+        return;
+    }
+
+    const script = document.createElement('script');
+    const text = document.createTextNode(await AJAX(path));
+    script.appendChild(text);
+    fragmentContainer.append(script);
 
     searchBar.blur();
     searchResults.classList.add('hidden');

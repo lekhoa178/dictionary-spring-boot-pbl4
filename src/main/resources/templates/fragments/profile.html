@@ -17,12 +17,13 @@
             color: black;
             margin-bottom: 10px;
             font-weight: bold;
+            width: 250px;
           "
           th:value="${stats.account.getName()}"
           oninput="editProfile()"
           readonly
         />
-        <span class="edit-btn" id="edit-btn">✒️</span>
+        <span class="edit-btn" id="edit-btn" th:if="${current}">✒️</span>
       </div>
 
       <div class="profile-text-container">

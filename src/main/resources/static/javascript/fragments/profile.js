@@ -154,7 +154,7 @@ function submitForm() {
   });
 }
 fragmentContainer.addEventListener('click', async (e) => {
-  e.preventDefault();
+
 
   const target = e.target.closest('.friend--add-item-search');
   if (target == null) return;

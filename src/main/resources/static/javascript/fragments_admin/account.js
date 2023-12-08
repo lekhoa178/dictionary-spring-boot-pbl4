@@ -19,8 +19,6 @@ fragmentContainer.addEventListener('click', async function (e) {
             alert('fail')
         }
     });
-
-
 })
 
 fragmentContainer.addEventListener('click', async function (e) {

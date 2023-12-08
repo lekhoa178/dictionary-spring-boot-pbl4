@@ -604,3 +604,55 @@ span {
 
     height: 10%;
 }
+
+.streak-container {
+    display: flex;
+    top: 20px;
+    left: 20px;
+
+    width: 300px;
+    height: 250px;
+    border: 1px solid lightgrey;
+    border-radius: 15px;
+}
+
+.streak-dialog-body {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    border: none;
+}
+
+
+.streak-dialog-body .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    height: 50%;
+}
+
+.streak-dialog-body .title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 50%;
+}
+
+.streak-dialog-body .title .streak-num{
+    font-size: 50px;
+    /*background-size: cover;*/
+    /*background: url("static/img/cry-girl.jpg");*/
+}
+
+.streak-container .content p {
+    text-align: center;
+}
+
+
+.streak-dialog-body .title .title-text {
+    font-weight: bold;
+    font-size: 30px;
+}

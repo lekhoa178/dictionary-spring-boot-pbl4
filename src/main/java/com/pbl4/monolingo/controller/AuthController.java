@@ -76,7 +76,6 @@ public class AuthController {
         cookie.setPath("/");
         response.addCookie(cookie);
         Account temp = accountService.getAccountByUsername(account.getUsername());
-        extraInfoService.updateExtraInfo(temp);
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
         botController.updateSentences(temp.getAccountId(), 13, false);
         dailyMissionService.initMission(temp.getAccountId(), 3);
@@ -89,7 +88,26 @@ public class AuthController {
         return "error";
     }
     @GetMapping("/logout")
-    public String signout(HttpServletResponse response,Principal principal){
+    public String signout(HttpServletResponse response, Principal principal){
+        try {
+            if (principal != null) {
+                Account account = accountService.getAccountByUsername(principal.getName());
+                LocalDateTime loginTime = authenticationService.getLoginTimes().get(account.getAccountId());
+                LocalDateTime logoutTime = LocalDateTime.now();
+
+                float onlineTime = (float) (ChronoUnit.SECONDS.between(loginTime, logoutTime) / 3600.0);
+
+                DataPerDay dt = dataPerDayService.getAccountDPD(account.getAccountId());
+                dt.setOnlineHours(dt.getOnlineHours() + onlineTime);
+
+                authenticationService.getLoginTimes().remove(account.getAccountId());
+                System.out.println(authenticationService.getLoginTimes().size());
+                dataPerDayService.save(dt);
+            }
+        }
+        catch (Exception e) {
+
+        }
         Cookie cookie = new Cookie("jwtToken", null);
         cookie.setPath("/"); // Đảm bảo đường dẫn này phù hợp với đường dẫn khi cookie được tạo
         cookie.setHttpOnly(true); // Tùy chọn, nếu cookie ban đầu được đánh dấu là HttpOnly
@@ -156,8 +174,6 @@ public class AuthController {
             LocalDateTime loginTime = authenticationService.getLoginTimes().get(account.getAccountId());
             LocalDateTime logoutTime = LocalDateTime.now();
 
-            System.out.println(authenticationService.getLoginTimes().size());
-            System.out.println(loginTime + " " + logoutTime);
             float onlineTime = (float) (ChronoUnit.SECONDS.between(loginTime, logoutTime) / 3600.0);
 
             System.out.println(onlineTime);

@@ -7,6 +7,18 @@
     </div>
 
     <div class="info-container">
+        <dialog th:if="${streak != 0}" class="streak-container">
+            <div class="streak-dialog-body">
+                <div class="title">
+                    <span class="streak-num" th:text="${streakDays}"></span>
+                    <span class="title-text">Ngày streak!</span>
+                </div>
+                <div class="content">
+                    <p>Bạn nhận được <span th:text="${streak}"></span> kim cương</p>
+                    <p>Streak tăng khi bạn luyện tập hàng ngày, chỉ một ngày không tập luyện bạn sẽ mất hết streak</p>
+                </div>
+            </div>
+        </dialog>
         <img th:src="@{/img/firework.png}" alt="" class="finish-image" th:if="${precise > 60.0}"/>
         <img th:src="@{/img/struggle.png}" alt="" class="finish-image" th:if="${precise <= 60.0}"/>
         <p class="finish-title" th:text="${precise > 60 ? 'Hoàn thành bài học' : 'Rất tiếc, hãy thử lại nhé'}"></p>

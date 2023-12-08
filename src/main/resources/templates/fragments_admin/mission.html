@@ -1,0 +1,45 @@
+<div class="mission-container">
+    <div class="data-field">
+        <div class="sub-field">
+            <div class="action-field">
+                <button id="add-btn" class="action-btn add-mission">Add</button>
+            </div>
+        </div>
+        <div class="table-container">
+            <form id="data-form" method="post">
+                <table class="stage-list">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên</th>
+                        <th>Mô tả</th>
+                        <th>Điểm</th>
+                        <th>Loại</th>
+                        <th>Mục tiêu</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="mission : ${missions}">
+                        <td th:text="*{mission.id}"></td>
+                        <td th:text="*{mission.name}"></td>
+                        <td th:text="*{mission.description}"></td>
+                        <td th:text="*{mission.point}"></td>
+
+                        <td th:if="${mission.type == 1}" >Kinh nghiệm</td>
+                        <td th:if="${mission.type == 2}" >Học tập</td>
+                        <td th:if="${mission.type == 3}" >Luyện tập</td>
+
+                        <td th:text="*{mission.target}"></td>
+                        <td>
+                            <button type="button" th:attr="value=${mission.id}" class="action-btn update-mission">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>

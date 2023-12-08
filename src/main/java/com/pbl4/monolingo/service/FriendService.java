@@ -1,8 +1,7 @@
 package com.pbl4.monolingo.service;
 
 import com.pbl4.monolingo.entity.Friend;
-import com.pbl4.monolingo.entity.embeddable.FriendId;
-import com.pbl4.monolingo.utility.dto.FriendExp;
+import com.pbl4.monolingo.utility.dto.FriendDetail;
 
 import java.util.List;
 
@@ -16,6 +15,6 @@ public interface FriendService {
 
     void unFollow(int followerId, int followingId);
 
-    List<FriendExp> getFollowingExps(int followerId);
+    List<FriendDetail> getFollowingExps(int followerId);
 
 }

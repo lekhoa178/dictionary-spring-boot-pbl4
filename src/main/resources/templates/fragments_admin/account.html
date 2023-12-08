@@ -1,63 +1,65 @@
- <div class="account-container">
-        <div class="data-field">
-            <div class="sub-field">
-                <div class="search-field">
-                    <form id="form1" class="search-form">
-                        <input type="text" id="txt-search" th:name="text" class="search-txt" placeholder="Tìm kiếm">
-                        <button class="action-btn search-btn" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    </form>
-                </div>
-                <div class="action-field">
-<!--                    <a id="add-btn" th:href ="${'/admin/account/add'}">Add</a>-->
-                    <button id="add-btn" class="action-btn action-add">Add</button>
-                    <button type="button" id="delete-many-btn" class="action-btn action-delete-many">Delete All</button>
-                </div>
-            </div>
-            <div class="table-container">
-                <form id="data-form" method="post">
-                    <table class="account-list">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>UID</th>
-                            <th>Tài khoản</th>
-                            <th>Email</th>
-                            <th>Tên</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="account : ${accounts}" >
-                            <th><input id="delete-checkbox" class="checkboxes" type="checkbox" name="selected-rows" th:value="*{account.accountId}"></th>
-                            <td th:text="*{account.accountId}"></td>
-                            <td th:text="*{account.username}"></td>
-                            <td th:text="*{account.email}"></td>
-                            <td th:text="*{account.name}"></td>
-                            <td>
-                                <button type="button" th:attr="value=${account.accountId}" class="action-btn action-update">
-                                    <i class="fa-solid fa-pen"></i>
-                                </button>
-                                <button type="button" class = "action-btn action-delete" th:attr="value=${account.accountId}" id="delete-btn">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-            <div class="page-num">
-                <button type="button" class="nav-btn back-btn">Back</button>
+<div class="account-container">
+    <div class="data-field">
+        <div class="sub-field">
+            <div class="search-field">
+                <input type="text" id="txt-search" th:name="text" class="search-txt" placeholder="Tìm kiếm">
+                <button class="action-btn search-btn" type="button"><i class="fa-solid fa-magnifying-glass"></i>
+                </button>
 
-                <span id="page-num" th:text="${currentPage + 1}"> / </span>
-                <span id="total-page" th:text="${totalPage}"></span>
-                <button type="button" class="nav-btn next-btn">Next</button>
-
-<!--                <a th:if="${currentPage > 0}"  th:href="@{'/admin/account/page/' + ${currentPage  - 1}}">Back</a>-->
-<!--                <span th:unless="${currentPage > 0}">Back</span>-->
-<!--                -->
-<!--                <a th:if="${currentPage < totalPage - 1}"  th:href="@{'/admin/account/page/' + ${currentPage  + 1}}">Next</a>-->
-<!--                <span th:unless="${currentPage < totalPage - 1}">Next</span>-->
+            </div>
+            <div class="action-field">
+                <!--                    <a id="add-btn" th:href ="${'/admin/account/add'}">Add</a>-->
+                <button id="add-btn" class="action-btn action-add">Add</button>
+                <button type="button" id="delete-many-btn" class="action-btn action-delete-many">Delete All</button>
             </div>
         </div>
+        <div class="table-container">
+            <form id="data-form" method="post">
+                <table class="account-list">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>UID</th>
+                        <th>Tài khoản</th>
+                        <th>Email</th>
+                        <th>Tên</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="account : ${accounts}">
+                        <th><input id="delete-checkbox" class="checkboxes" type="checkbox" name="selected-rows"
+                                   th:value="*{account.accountId}"></th>
+                        <td th:text="*{account.accountId}"></td>
+                        <td th:text="*{account.username}"></td>
+                        <td th:text="*{account.email}"></td>
+                        <td th:text="*{account.name}"></td>
+                        <td>
+                            <button type="button" th:attr="value=${account.accountId}" class="action-btn action-update">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button type="button" class="action-btn action-delete" th:attr="value=${account.accountId}"
+                                    id="delete-btn">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <div class="page-num">
+            <button type="button" class="nav-btn back-btn">Back</button>
+
+            <span id="page-num" th:text="${currentPage + 1}"> / </span>
+            <span id="total-page" th:text="${totalPage}"></span>
+            <button type="button" class="nav-btn next-btn">Next</button>
+
+            <!--                <a th:if="${currentPage > 0}"  th:href="@{'/admin/account/page/' + ${currentPage  - 1}}">Back</a>-->
+            <!--                <span th:unless="${currentPage > 0}">Back</span>-->
+            <!--                -->
+            <!--                <a th:if="${currentPage < totalPage - 1}"  th:href="@{'/admin/account/page/' + ${currentPage  + 1}}">Next</a>-->
+            <!--                <span th:unless="${currentPage < totalPage - 1}">Next</span>-->
+        </div>
     </div>
+</div>

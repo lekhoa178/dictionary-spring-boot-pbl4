@@ -1,6 +1,8 @@
 package com.pbl4.monolingo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "mission")
@@ -11,19 +13,29 @@ public class Mission {
     private Integer id;
 
     @Column(name = "name")
+    @NotNull(message = "Không được để trống mục này")
+    @Size(min=1, message = "Không được để trống mục này")
     private String name;
-
     @Column(name = "description")
+    @NotNull(message = "Không được để trống mục này")
+    @Size(min = 1, message = "Không được để trống mục này")
     private String description;
-
     @Column(name = "point")
+    @NotNull(message = "Không được để trống mục này")
     private Integer point;
-
     @Column(name = "target")
+    @NotNull(message = "Không được để trống mục này")
     private Double target;
-
     @Column(name = "type")
+    @NotNull(message = "Không được để trống mục này")
     private Integer type;
+
+    public Mission(String name, String description, Integer point, Double target) {
+        this.name = name;
+        this.description = description;
+        this.point = point;
+        this.target = target;
+    }
 
     public Mission() {}
 
@@ -95,4 +107,6 @@ public class Mission {
                 ", type=" + type +
                 '}';
     }
+
+    
 }

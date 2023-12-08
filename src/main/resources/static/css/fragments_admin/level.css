@@ -138,3 +138,14 @@
     height: 40px;
     width: 100px;
 }
+
+.word-input, .meaning-input {
+    width: 150px;
+}
+
+.delete-btn {
+    background-color: transparent;
+    border: none;
+    color: red;
+    cursor: pointer;
+}

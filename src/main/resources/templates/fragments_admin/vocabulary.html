@@ -27,6 +27,11 @@
                         <option value="O" th:selected="${vocabulary.type == 'O'}">O</option>
                     </select>
                 </td>
+                <td class="delete">
+                    <button type="button" class="delete-btn" th:value="${vocabulary.id.vocabularyNum}">
+                        <i class="fa-solid fa-x"></i>
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>

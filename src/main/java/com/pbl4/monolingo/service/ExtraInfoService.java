@@ -7,7 +7,7 @@ public interface ExtraInfoService {
 
     void restoreHeart(int accountId);
 
-    void updateExtraInfo(Account account);
+    public int updateExtraInfo(Account account);
 
     void buyHearts(int accountId);
 

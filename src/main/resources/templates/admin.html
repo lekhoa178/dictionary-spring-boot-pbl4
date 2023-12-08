@@ -13,6 +13,7 @@
     <link rel="stylesheet" th:href="@{/css/fragments_admin/account-form.css}">
     <link rel="stylesheet" th:href="@{/css/fragments_admin/stage.css}">
     <link rel="stylesheet" th:href="@{/css/fragments_admin/level.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments_admin/mission-form.css}">
     <title>Monolingo - Học tiếng anh vui vẻ</title>
     <link rel="shortcut icon" type="x-icon" th:href="@{img/dart.png}">
     <script defer th:src="@{/javascript/admin.js}"></script>
@@ -43,6 +44,13 @@
                  th:src="@{/img/dumbbell.png}"
                  class="menu--tabs-icon">
             <span class="menu--tabs-text">GAME</span>
+        </a>
+
+        <a id="fragment-mission" th:href="@{/fragments_admin/mission.html}" class="menu--tabs">
+            <img alt=""
+                 th:src="@{/img/treasure-chest.png}"
+                 class="menu--tabs-icon">
+            <span class="menu--tabs-text">NHIỆM VỤ</span>
         </a>
 
     </div>

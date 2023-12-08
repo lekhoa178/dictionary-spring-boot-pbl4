@@ -1,19 +1,20 @@
 package com.pbl4.monolingo.controller;
 
-import com.pbl4.monolingo.entity.Account;
-import com.pbl4.monolingo.entity.Level;
-import com.pbl4.monolingo.entity.Stage;
-import com.pbl4.monolingo.entity.Vocabulary;
+import com.pbl4.monolingo.entity.*;
 import com.pbl4.monolingo.entity.embeddable.LevelId;
 import com.pbl4.monolingo.entity.embeddable.VocabularyId;
 import com.pbl4.monolingo.service.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -29,18 +30,27 @@ public class AdminController {
     private StageService stageService;
     private LevelService levelService;
     private VocabularyService vocabularyService;
+    private MissionService missionService;
 
 
     @Autowired
     public AdminController(DictionaryService dictionaryController,
-                           AccountService accountService, StageService stageService, LevelService levelService, VocabularyService vocabularyService) {
+                           AccountService accountService, StageService stageService, LevelService levelService,
+                           VocabularyService vocabularyService, MissionService missionService) {
         this.dictionaryService = dictionaryController;
         this.accountService = accountService;
         this.stageService = stageService;
         this.levelService = levelService;
         this.vocabularyService = vocabularyService;
+        this.missionService = missionService;
     }
 
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        dataBinder.registerCustomEditor(String.class ,stringTrimmerEditor);
+    }
 
     @GetMapping("/account")
 
@@ -202,7 +212,7 @@ public class AdminController {
 
     @PostMapping("/account/save")
     public String saveAccount(@ModelAttribute("account") Account account) {
-        if(account.getAccountId() != 0)
+        if (account.getAccountId() != 0)
             account.setPassword(accountService.getAccountById(account.getAccountId()).getPassword());
 
         accountService.saveAccount(account);
@@ -266,7 +276,7 @@ public class AdminController {
         int levelId = vocabularies.get(0).getId().getLevelId().getLevelId();
 
         for (Vocabulary vocabulary : vocabularies) {
-            if(vocabulary.getId().getVocabularyNum() == 0)
+            if (vocabulary.getId().getVocabularyNum() == 0)
                 vocabulary.setId(new VocabularyId(new LevelId(stageId, levelId), vocabularyService.findMaxId() + 1));
 
             Vocabulary rs = vocabularyService.save(vocabulary);
@@ -279,4 +289,72 @@ public class AdminController {
 
         return "fragments_admin/vocabulary";
     }
+
+    @PostMapping("/vocabulary/delete")
+    public String deleteVocabulary(Model model, @RequestBody VocabularyId id) {
+        int stageId = id.getLevelId().getStageId();
+        int levelId = id.getLevelId().getLevelId();
+
+        vocabularyService.deleteVocabularyById(new VocabularyId(new LevelId(stageId, levelId), id.getVocabularyNum()));
+
+        List<Vocabulary> temp_vocabularies = levelService.getVocabularyByLevelId(new LevelId(stageId, levelId));
+
+        model.addAttribute("stageId", stageId);
+        model.addAttribute("levelId", levelId);
+        model.addAttribute("vocabularies", temp_vocabularies);
+
+        return "fragments_admin/vocabulary";
+    }
+
+    @GetMapping("/mission")
+    public String showAdminMission(Model model, Principal principal,
+                                   @RequestHeader(value = "request-source", required = false) String requestSource) {
+        List<Mission> missions = missionService.getAllMissions();
+
+        model.addAttribute("missions", missions);
+
+        if (requestSource == null) {
+            if (principal != null) {
+                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+            }
+            return "admin";
+        } else
+            return "fragments_admin/mission";
+    }
+
+    @GetMapping("/mission/add")
+    public String showMissionForm(Model model, Principal principal,
+                                  @RequestHeader(value = "request-source", required = false) String requestSource) {
+        Mission mission = new Mission();
+        mission.setId(0);
+
+        model.addAttribute("mission", mission);
+
+        return "fragments_admin/mission-form";
+    }
+
+    @GetMapping("/mission/update/{missionId}")
+    public String showMissionForm(Model model, Principal principal,
+                                  @RequestHeader(value = "request-source", required = false) String requestSource,
+                                  @PathVariable int missionId) {
+        Mission mission = missionService.getMissionById(missionId);
+
+        model.addAttribute("mission", mission);
+
+        return "fragments_admin/mission-form";
+    }
+
+    @PostMapping("/mission/save")
+    public String saveMission(Model model, Principal principal, @Valid @ModelAttribute("mission") Mission mission, BindingResult bindingResult) {
+        System.out.println(mission);
+        if (bindingResult.hasErrors()){
+            return "fragments_admin/mission-form";
+        }
+        else {
+            missionService.saveMission(mission);
+            return showAdminMission(model, principal, "request-source");
+        }
+    }
+
 }
+

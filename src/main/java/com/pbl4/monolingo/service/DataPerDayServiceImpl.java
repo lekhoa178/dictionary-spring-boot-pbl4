@@ -1,11 +1,14 @@
 package com.pbl4.monolingo.service;
 
 import com.pbl4.monolingo.dao.DataPerDayRepository;
+import com.pbl4.monolingo.dao.FriendRepository;
 import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.entity.embeddable.DataPerDayId;
+import com.pbl4.monolingo.entity.embeddable.FriendId;
 import com.pbl4.monolingo.utility.dto.AccountDPDStat;
 import com.pbl4.monolingo.utility.dto.AccountExp;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import com.pbl4.monolingo.utility.dto.AccountStats;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +21,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
+@AllArgsConstructor
 public class DataPerDayServiceImpl implements DataPerDayService {
 
 
     private final DataPerDayRepository dataPerDayRepository;
-
-    @Autowired
-    public DataPerDayServiceImpl(DataPerDayRepository dataPerDayRepository) {
-        this.dataPerDayRepository = dataPerDayRepository;
-    }
+    private final FriendRepository friendRepository;
 
     @Override
     public List<DataPerDay> getAccountDPDs(Integer accountId) {
@@ -91,11 +91,26 @@ public class DataPerDayServiceImpl implements DataPerDayService {
     @Override
     public AccountStats getAccountStats(int accountId) {
         List<Object[]> results = dataPerDayRepository.findAccountBySumStats(accountId);
+
         return new AccountStats(
                 (Account)results.get(0)[0],
                 (Long)results.get(0)[1],
                 (Double)results.get(0)[2],
-                (int)results.get(0)[3]);
+                (int)results.get(0)[3],
+                false);
+    }
+
+    @Override
+    public AccountStats getAccountStats(int accountId, int currentId) {
+        List<Object[]> results = dataPerDayRepository.findAccountBySumStats(accountId);
+        boolean friended = friendRepository.existsById(new FriendId(accountId, currentId));
+
+        return new AccountStats(
+                (Account)results.get(0)[0],
+                (Long)results.get(0)[1],
+                (Double)results.get(0)[2],
+                (int)results.get(0)[3],
+                friended);
     }
 
     @Override

@@ -1,0 +1,52 @@
+<div class="form-container" id="mission-form">
+    <form th:object="${mission}" method="POST" class="mission-form" id="form-mission">
+        <div class="input-field">
+            <div class="row">
+                <div class="field" style="display: flex; flex-direction: row;">
+                    <input type="text" th:field="*{name}" id="name-txt" placeholder="Tên nhiệm vụ"/>
+                    <div class="error" th:if="${#fields.hasErrors('name')}">
+                        <!--                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red"></span>-->
+                        <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <input type="text" th:field="*{description}" id="description-txt" placeholder="Mô tả"/>
+                    <div class="error" th:if="${#fields.hasErrors('description')}">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <input type="text" th:field="*{point}" id="point-txt" placeholder="Point"/>
+                    <div class="error" th:if="${#fields.hasErrors('point')}">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <input type="hidden" name="" id="id-txt" th:field="*{id}">
+
+                <div class="field">
+                    <input type="text" th:field="*{target}" id="target-txt" placeholder="Mục tiêu"/>
+                    <div class="error" th:if="${#fields.hasErrors('target')}">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                    </div>
+                </div>
+
+                <div class="field" style="border: none; justify-content: left; gap:20px">
+                    <label for="type-select" style="align-self: flex-end">Kiểu</label>
+                    <select th:value="*{type}" id="type-select" style="height: 40px; width: 150px">
+                        <option value="1" th:selected="${mission.type == 1}"> Kinh nghiệm</option>
+                        <option value="2" th:selected="${mission.type == 2}"> Học tập</option>
+                        <option value="2" th:selected="${mission.type == 3}"> Luyện tập</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="button-field">
+            <button type="button" class="form-btn submit-mission"><b>Submit</b></button>
+            <button type="reset" class="form-btn"><b>Reset</b></button>
+        </div>
+    </form>
+</div>

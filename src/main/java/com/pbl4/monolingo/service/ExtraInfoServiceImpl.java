@@ -55,7 +55,8 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
 
         long minutesSinceLost = ChronoUnit.MINUTES.between(lostHeartTime, currentTime);
         // TO-DO
-        int restoreHeart = (int) (minutesSinceLost / 100);
+        int restoreHeart = (int) (minutesSinceLost / 15);
+        long minute = minutesSinceLost % 15;
 
         if (restoreHeart < 1)
             return;
@@ -63,7 +64,7 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
         if (restoreHeart < (5 - userInfo.getHearts()))
         {
             userInfo.setHearts(userInfo.getHearts() + restoreHeart);
-            userInfo.setLostHeartTimes(currentTime);
+            userInfo.setLostHeartTimes(currentTime.minusMinutes(minute));
         }
         else {
             userInfo.setHearts(5);
@@ -74,7 +75,7 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
     }
 
     @Override
-    public void updateExtraInfo(Account account) {
+    public int updateExtraInfo(Account account) {
         int yesterdayId = Integer.parseInt(LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         int currentDayId = Integer.parseInt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 
@@ -94,7 +95,15 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
             newDataPerDay.setAccount(account);
 
             dataPerDayRepository.save(newDataPerDay);
+
+            int point = extraInformation.getNumberOfConsecutiveDay() * 10;
+
+            if (point > 70)
+                point = 70;
+            extraInformation.setBalance(extraInformation.getBalance() + point);
+            return point;
         }
+        return 0;
     }
 
     @Override

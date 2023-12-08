@@ -22,13 +22,93 @@
 
 .search--friend--search {
     box-sizing: border-box;
-    border-radius: 20px;
+    border-radius: 15px;
     background-color: #ececec;
     border: 1px solid #ccc;
     width: 100%;
-    padding: 10px 30px
+    padding: 20px 30px
 }
 
 .search--friend--text {
     color: #888;
+}
+
+.search--friend--result {
+    border-radius: 15px;
+    border: 2px solid #CCC;
+    display: flex;
+    flex-direction: column;
+}
+
+.search--friend--result-item {
+    border-bottom: 2px solid #CCC;
+    display: grid;
+    grid-template-columns: 1fr 6fr 3fr;
+    grid-template-rows: 1fr 1fr;
+    padding: 20px;
+    column-gap: 10px;
+    cursor: pointer;
+}
+
+.search--friend--result-index {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 40px;
+    padding: 10px;
+    width: 60px;
+    height: 60px;
+    font-size: 25px;
+    text-transform: uppercase;
+    color: white;
+    background-color: #64D014;
+    grid-row: 1/3;
+}
+
+.search--friend--result-name {
+    font-weight: bold;
+    grid-row: 1/2;
+    grid-column: 2/3;
+    color: #222;
+}
+
+.search--friend--result-username {
+    color: #888;
+    grid-row: 2/3;
+    grid-column: 2/3;
+}
+
+.search--friend--result-username:before {
+    content: "@";
+}
+
+.search--friend--result-item:last-child {
+    border-bottom: 0;
+}
+
+.search--friend--result-follow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-row: 1/3;
+    grid-column: 3/4;
+    color: white;
+    background: #8D75FF;
+    box-shadow: 0 5px 0 #553fc9;
+    padding: 10px 30px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.search--friend--result-follow:before {
+    content: "🖐️+  ";
+}
+
+.search--friend--result-follow:active {
+    box-shadow: 0 0 0;
+    transform: translateY(5px);
 }

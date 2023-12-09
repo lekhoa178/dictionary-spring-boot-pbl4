@@ -38,6 +38,8 @@ public class ChatRestController {
     @SendTo("/topic/messages/{receiverUserId}")
     public MessageDTO sendMessage(@Payload MessageDTO messageDTO,
                             Principal principal,@DestinationVariable String receiverUserId) {
+        System.out.println("Message: " + messageDTO);
+        System.out.println("ReceiverUserID"+ receiverUserId);
         Account accountCurrent = accountRepository.findByUsername(principal.getName()).get();
         chatService.sendMessage(accountCurrent.getAccountId(), messageDTO.getReceiverUserId(), messageDTO.getContent());
         messageDTO.setTimestamp(LocalDateTime.now());

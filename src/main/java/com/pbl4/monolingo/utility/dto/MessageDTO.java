@@ -8,6 +8,9 @@ public class MessageDTO {
     private Integer receiverUserId;
     private LocalDateTime timestamp;
 
+    public MessageDTO() {
+    }
+
     public MessageDTO(String content, Integer senderUserId, Integer receiverUserId, LocalDateTime timestamp) {
         this.content = content;
         this.senderUserId = senderUserId;

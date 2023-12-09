@@ -1,9 +1,8 @@
 // chat.js
-
 const socket = new SockJS('/ws');
 const stompClient = Stomp.over(socket);
 
-const userId = document.getElementById("metadata").dataset.accountId;
+
 function getCookie(name) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -14,119 +13,120 @@ function getCookie(name) {
     }
     return null;
 }
-
-function startChat() {
-    // Get the selected username
-    username = document.getElementById('usernameInput').value;
-
-    // Hide user selection container
-    document.getElementById('userSelectionContainer').style.display = 'none';
-
-    // Show chat container
-    document.getElementById('chatContainer').style.display = 'block';
-
-
-    // Connect to WebSocket server
-    stompClient.connect({}, function (frame) {
-        stompClient.subscribe(`'/topic/messages/${userId}`, function (message) {
-            // Handle incoming messages and update the UI
-            const messageData = JSON.parse(message.body);
-
-            // Assuming you have an element with id "chatMessages" to display messages
-            const chatMessagesElement = document.querySelector('.view-container');
-
-            var chatContainer = `
-                     <div className="chat-container" id="chat-container">
-                <div className="chat-header">
-                    <span>John Doe</span>
-                    <div>
-                        <button onClick="toggleChat()">_</button>
-                        <button onClick="closeChat()">x</button>
-        
-                    </div>
-                </div>
-                <div className="chat-messages" id="chat-messages">
-                    <div className="friend-message">
-                        <div className="avatar-message">N</div>
-                        <p className="text-message">
-                            Hello from friend
-                        </p>
-                    </div>
-                    <div className="my-message">
-                        <p className="my-text-message">
-                            Hello from friend asf UOPf a ifug AO Auflah
-                        </p>
-                    </div>
-                </div>
-                <div className="chat-input">
-                    <input type="text" id="message-input" placeholder="Type your message..." onKeyPress="clickPress(event)">
-                        <button className="send-message-button" onClick="sendMyMessage()"><i className="fa-solid fa-paper-plane"
-                                                                                         style="font-size: 20px;"></i></button>
-                </div>
-            </div>
-            `;
-
-            // Create a new message element
-            const newMessageElement = document.createElement('div');
-            newMessageElement.className = 'message';
-            newMessageElement.innerHTML = `<strong>${messageData.sender.username}</strong>: ${messageData.content}`;
-
-            // Append the new message to the chatMessagesElement
-            chatMessagesElement.appendChild(newMessageElement);
-
-            // Scroll to the bottom to show the latest message
-            chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
-        });
-    });
-}
-function sendMessage() {
-    const messageInput = document.getElementById('messageInput').value;
-
-    // Assuming you have a receiver username (replace 'receiverUsername' with the actual username)
-    const receiverUsername = 'receiverUsername';
-
-    const chatMessage = {
-        sender: username,
-        receiver: receiverUsername,
-        content: messageInput
-    };
-    // Send the message to the server
-    stompClient.send("/app/sendMessage", {}, JSON.stringify(chatMessage));
-    // Clear the input field after sending the message
-    document.getElementById('messageInput').value = '';
-}
-// Your JavaScript code for sending messages and updating the UI goes here
-
-function displayMessage(messageData) {
-    // Assuming you have an element with id "chatMessages" to display messages
-    const chatMessagesElement = document.getElementById('chatMessages');
-
-    // Create a new message element
-    const newMessageElement = document.createElement('div');
-    newMessageElement.className = 'message';
-    newMessageElement.innerHTML = `<strong>${messageData.sender}</strong>: ${messageData.content}`;
-
-    // Append the new message to the chatMessagesElement
-    chatMessagesElement.appendChild(newMessageElement);
-
-    // Scroll to the bottom to show the latest message
-    chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
-}
-
 stompClient.connect({}, function (frame) {
     const accountId = document.getElementById("metadata").dataset.accountId;
-    console.log("Account id current: ",accountId);
-    stompClient.subscribe(`/chat.sendMessage/${accountId}`, function (message) {
+    stompClient.subscribe(`/topic/messages/${accountId}`, function (message) {
+        console.log("Into receiver: ",message);
         // Handle incoming messages and update the UI
         const messageData = JSON.parse(message.body);
-        displayMessage(messageData);
+        showNotify(messageData);
     });
 });
+
+// function startChat() {
+//     // Get the selected username
+//     username = document.getElementById('usernameInput').value;
+//
+//     // Hide user selection container
+//     document.getElementById('userSelectionContainer').style.display = 'none';
+//
+//     // Show chat container
+//     document.getElementById('chatContainer').style.display = 'block';
+
+
+//     // Connect to WebSocket server
+//     stompClient.connect({}, function (frame) {
+//         stompClient.subscribe(`'/topic/messages/${userId}`, function (message) {
+//             // Handle incoming messages and update the UI
+//             const messageData = JSON.parse(message.body);
+//
+//             // Assuming you have an element with id "chatMessages" to display messages
+//             const chatMessagesElement = document.querySelector('.view-container');
+//
+//             var chatContainer = `
+//                      <div className="chat-container" id="chat-container">
+//                 <div className="chat-header">
+//                     <span>John Doe</span>
+//                     <div>
+//                         <button onClick="toggleChat()">_</button>
+//                         <button onClick="closeChat()">x</button>
+//
+//                     </div>
+//                 </div>
+//                 <div className="chat-messages" id="chat-messages">
+//                     <div className="friend-message">
+//                         <div className="avatar-message">N</div>
+//                         <p className="text-message">
+//                             Hello from friend
+//                         </p>
+//                     </div>
+//                     <div className="my-message">
+//                         <p className="my-text-message">
+//                             Hello from friend asf UOPf a ifug AO Auflah
+//                         </p>
+//                     </div>
+//                 </div>
+//                 <div className="chat-input">
+//                     <input type="text" id="message-input" placeholder="Type your message..." onKeyPress="clickPress(event)">
+//                         <button className="send-message-button" onClick="sendMyMessage()"><i className="fa-solid fa-paper-plane"
+//                                                                                          style="font-size: 20px;"></i></button>
+//                 </div>
+//             </div>
+//             `;
+//
+//             // Create a new message element
+//             const newMessageElement = document.createElement('div');
+//             newMessageElement.className = 'message';
+//             newMessageElement.innerHTML = `<strong>${messageData.sender.username}</strong>: ${messageData.content}`;
+//
+//             // Append the new message to the chatMessagesElement
+//             chatMessagesElement.appendChild(newMessageElement);
+//
+//             // Scroll to the bottom to show the latest message
+//             chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+//         });
+//     });
+// }
+
+// function sendMessage() {
+//     const messageInput = document.getElementById('messageInput').value;
+//
+//     // Assuming you have a receiver username (replace 'receiverUsername' with the actual username)
+//     const receiverUsername = 'receiverUsername';
+//
+//     const chatMessage = {
+//         sender: username,
+//         receiver: receiverUsername,
+//         content: messageInput
+//     };
+//     // Send the message to the server
+//     stompClient.send("/app/sendMessage", {}, JSON.stringify(chatMessage));
+//     // Clear the input field after sending the message
+//     document.getElementById('messageInput').value = '';
+// }
+// Your JavaScript code for sending messages and updating the UI goes here
+
+// function displayMessage(messageData) {
+//     // Assuming you have an element with id "chatMessages" to display messages
+//     const chatMessagesElement = document.getElementById('chatMessages');
+//
+//     // Create a new message element
+//     const newMessageElement = document.createElement('div');
+//     newMessageElement.className = 'message';
+//     newMessageElement.innerHTML = `<strong>${messageData.sender}</strong>: ${messageData.content}`;
+//
+//     // Append the new message to the chatMessagesElement
+//     chatMessagesElement.appendChild(newMessageElement);
+//
+//     // Scroll to the bottom to show the latest message
+//     chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+// }
+
+
 function sendMyMessage(friendId) {
+    const accountId = document.getElementById("metadata").dataset.accountId;
     var messageInput = document.querySelector('.message-input-'+friendId);
-    console.log("Message input: ", messageInput);
     var messageText = messageInput.value.trim();
-    console.log("Message text: ",messageText);
     if (messageText !== '') {
         var chatMessages = document.getElementById('chat-messages-'+friendId);
         var myMess = document.createElement("div");
@@ -140,20 +140,14 @@ function sendMyMessage(friendId) {
         messageInput.value = '';
         // Scroll to the bottom of the chat container
         chatMessages.scrollTop = chatMessages.scrollHeight;
-        $.ajax({
-            type: 'GET',
-            url: `/dictionary/accountById/${friendId}`,
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            success: function (response) {
-            },
-            error: function (error) {
-                alert(error);
-            }
-        })
+        var chatMessage = {
+            content: messageText,
+            senderUserId: accountId,
+            receiverUserId: friendId,
+
+        };
+        stompClient.send(`/app/chat.sendMessage/${friendId}`, {}, JSON.stringify(chatMessage));
+
     }
 }
 
@@ -170,9 +164,9 @@ function toggleChat() {
         chatToggleButton.innerHTML = '&#x27A1;';
     }
 }
-function clickPress(event) {
+function clickPress(friendId) {
     if (event.keyCode == 13) {
-        sendMessage();
+        sendMyMessage(friendId);
     }
 }
 function closeChat(friendId) {
@@ -226,7 +220,7 @@ function handleOnclickChatFriend(e){
             'Content-Type': 'application/json'
         },
         success: function (response) {
-            console.log("Response find friend: ",response);
+            console.log("response find friend: ",response)
             friend = response;
             $.ajax({
                 type: 'GET',
@@ -269,7 +263,7 @@ function handleOnclickChatFriend(e){
                                                             :focus {
                                                             outline: 1px solid rgba(86, 129, 238, 0.6);
                                                             };
-                                                        " placeholder="Type your message..." onkeypress="clickPress(event)">
+                                                        " placeholder="Type your message..." onkeypress="clickPress(${friendId})">
                                                         <button class="send-message-button" onclick="sendMyMessage(${friendId})">
                                                             <i class="fa-solid fa-paper-plane" style="font-size: 20px;"></i>
                                                         </button>
@@ -278,7 +272,9 @@ function handleOnclickChatFriend(e){
                                             `;
                         listChat.innerHTML = chatContainer;
                         refreshStyleSheet();
-                        // refreshStyles();
+                        // Scroll to the bottom to show the latest message
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+
                     }
 
 
@@ -293,5 +289,54 @@ function handleOnclickChatFriend(e){
         },
     });
     closePanelFollow();
+}
+function showNotify(message) {
+    const token = getCookie("jwtToken");
+    $.ajax({
+        type: 'GET',
+        url: `/dictionary/accountById/${message.senderUserId}`,
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        success: function (response) {
+            const name = response.name;
+            const letterFirst = name[0].toUpperCase();
+            let containerElement = document.querySelector('.main-container');
+            let notify = document.createElement("div");
+            notify.classList.add("notification");
+            let content = `
+                                <div class="notification-header">
+                                    <h3 class="notification-title">New notification</h3>
+                                    <i class="fa fa-times notification-close" onclick="closeNotify()"></i>
+                                </div>
+                                <div class="notification-container">
+                                    <div class="notification-media">
+                                        <div class="notification-user-avatar">${letterFirst}</div>
+                                        <i class="fa-solid fa-bell notification-reaction"></i>
+                                    </div>
+                                    <div class="notification-content">
+                                        <p class="notification-text">
+                                            <strong>${name}</strong> send you a message: ${message.content}
+                                           
+                                        </p>
+                                        <span class="notification-timer">a few seconds ago</span>
+                                    </div>
+                                    <span class="notification-status"></span>
+                                </div>
+                            `;
+            notify.innerHTML = content;
+            containerElement.appendChild(notify);
+            refreshStyleSheet()
+        },
+        error: function (error) {
+            alert(error);
+        }
+    })
 
+}
+function closeNotify(){
+    var notify = document.querySelector('.notification');
+    notify.remove();
 }

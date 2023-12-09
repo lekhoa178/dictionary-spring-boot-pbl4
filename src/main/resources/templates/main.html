@@ -17,7 +17,7 @@
     <link rel="stylesheet" th:href="@{/css/fragments/searchFriend.css}">
     <link rel="stylesheet" th:href="@{/css/util.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/mission.css}">
-    <link rel="stylesheet" th:href="@{/css/chatWindow.css}">
+    <link id="ChatStyleSheet" rel="stylesheet" th:href="@{/css/chatWindow.css}">
     <title>Monolingo - Học tiếng anh vui vẻ</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -181,7 +181,7 @@
         </div>
 
         <aside class="aside-container">
-            <div class="mission-container">
+            <div class="mission-container" id="mission-container-side">
                 <div class="mission--header">
                     <h2>Nhiệm Vụ Hằng Ngày</h2>
                     <a href="#" class="mission--header-detail">Xem tất cả</a>
@@ -214,38 +214,77 @@
             </div>
 
         </aside>
-        <div class="friend-icon-toggle">
+        <div class="friend-icon-toggle" id="show-follow-button" onclick="openPanelFollow()">
             <img th:src="@{/img/group.png}">
         </div>
-        <div class="chat-container" id="chat-container">
-            <div class="chat-header">
-                <span>John Doe</span>
-                <div>
-                    <button onclick="toggleChat()">_</button>
-                    <button onclick="closeChat()">x</button>
+        <div class="chat-container-message">
+<!--            <div class="chat-container" id="chat-container">-->
+<!--                <div class="chat-header">-->
+<!--                    <h3>John Doe</h3>-->
+<!--                    <div>-->
+<!--                        <button onclick="toggleChat()">_</button>-->
+<!--                        <button onclick="closeChat()">x</button>-->
 
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="chat-messages" id="chat-messages">-->
+<!--                    <div class="friend-message">-->
+<!--                        <div class="avatar-message">N</div>-->
+<!--                        <p class="text-message">-->
+<!--                            Hello from friend-->
+<!--                        </p>-->
+<!--                    </div>-->
+<!--                    <div class="my-message">-->
+<!--                        <p class="my-text-message">-->
+<!--                            Hello from friend asf UOPf a ifug AO Auflah-->
+<!--                        </p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="chat-input">-->
+<!--                    <input type="text" class="message-input" placeholder="Type your message..." onkeypress="clickPress(event)">-->
+<!--                    <button class="send-message-button" onclick="sendMyMessage()"><i class="fa-solid fa-paper-plane"-->
+<!--                                                                                     style="font-size: 20px;"></i></button>-->
+<!--                </div>-->
+<!--            </div>-->
+
+        </div>
+
+        <div class="following-container" id="follow-panel" hidden>
+            <div class="friend-follow" th:if="${current}">
+                <div class="friend-follower">
+                    <div class="header-follow" style="display: flex;align-items: center;padding-top: 15px;margin-bottom: 15px;justify-content: space-between">
+                        <div style="display: flex;align-items: center">
+                            <p style="font-weight: bold; font-size: 20px;padding-left: 30px" >
+                                Đang theo dõi
+                            </p>
+                            <img th:src="@{/img/interview.png}" style="width: 30px;object-fit: contain;margin-left: 10px">
+                        </div>
+                        <img th:src="@{/img/close.png}" style="width: 20px;margin-right: 30px;cursor: pointer" onclick="closePanelFollow()">
+
+                    </div>
+
+
+                    <div class="friend--followers" th:each="friendExp, stat : ${friendsExps}" style="padding-left: 15px">
+                        <div
+                                class="friend--follower"
+                                th:data-id="${friendExp.getFriend().getId().getFollowingId()}"
+                        >
+                            <div class="friend--follower-index" th:text="${stat.index + 1}"></div>
+                            <p
+                                    class="friend--follower-name"
+                                    th:text="${friendExp.getFriend().getFollowing().getName()}"
+                            ></p>
+<!--                            <p class="friend&#45;&#45;follower-exp" th:text="${friendExp.getExp()}"></p>-->
+                            <img class ="chat-friend" th:src="@{/img/chat.png}" style="width: 30px;object-fit: contain" th:data-friend-id="${friendExp.getFriend().getId().getFollowingId()}" onclick="handleOnclickChatFriend(event)">
+                        </div>
+                    </div>
                 </div>
+
             </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="friend-message">
-                    <div class="avatar-message">N</div>
-                    <p class="text-message">
-                        Hello from friend
-                    </p>
-                </div>
-                <div class="my-message">
-                    <p class="my-text-message">
-                        Hello from friend asf UOPf a ifug AO Auflah
-                    </p>
-                </div>
-            </div>
-            <div class="chat-input">
-                <input type="text" id="message-input" placeholder="Type your message..." onkeypress="clickPress(event)">
-                <button class="send-message-button" onclick="sendMyMessage()"><i class="fa-solid fa-paper-plane"
-                                                                                 style="font-size: 20px;"></i></button>
-            </div>
+
         </div>
     </div>
+
 
 </main>
 

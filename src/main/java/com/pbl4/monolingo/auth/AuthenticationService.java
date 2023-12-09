@@ -6,8 +6,10 @@ import com.pbl4.monolingo.dao.AccountTypeRepository;
 import com.pbl4.monolingo.dao.ExtraInformationRepository;
 import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.AccountType;
+import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.entity.ExtraInformation;
 import com.pbl4.monolingo.security.JwtService;
+import com.pbl4.monolingo.service.DataPerDayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +30,7 @@ public class    AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final AccountTypeRepository accountTypeRepository;
     private final ExtraInformationRepository extraInformationRepository;
+    private final DataPerDayService dataPerDayService;
     private final Map<Integer, LocalDateTime> loginTimes = new HashMap<>();
 
     public AuthenticationResponse register(RegisterRequest request) {
@@ -39,9 +42,9 @@ public class    AuthenticationService {
         newExtra.setNumberOfLoginDay(0);
         newExtra.setNumberOfConsecutiveDay(0);
         newExtra.setAccount(user);
-
         repository.save(user);
         extraInformationRepository.save(newExtra);
+        dataPerDayService.updateAccountDPD(user.getAccountId(),0,0);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }

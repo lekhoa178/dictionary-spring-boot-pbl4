@@ -29,15 +29,15 @@ public class ChatService {
         this.messageRepository = messageRepository;
     }
 
-    public void sendMessage(String senderUsername, String receiverUsername, String content) {
+    public void sendMessage(Integer senderUserId, Integer receiverUserId, String content) {
         // Save the message to the database
-        Account sender = userRepository.findByUsername(senderUsername).orElseThrow();
-        Account receiver = userRepository.findByUsername(receiverUsername).orElseThrow();
+        Account sender = userRepository.findById(senderUserId).orElseThrow();
+        Account receiver = userRepository.findById(receiverUserId).orElseThrow();
         Message message = new Message(content, sender, receiver, LocalDateTime.now());
         messageRepository.save(message);
 
         // Send the message to the recipient
-        messagingTemplate.convertAndSendToUser(receiverUsername, "/topic/messages", message);
+//        messagingTemplate.convertAndSendToUser(receiverUsername, "/topic/messages", message);
     }
 
     public void setOnlineStatus(String username, boolean online) {

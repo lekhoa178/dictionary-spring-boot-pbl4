@@ -5,13 +5,11 @@ import com.pbl4.monolingo.auth.AuthenticationResponse;
 import com.pbl4.monolingo.auth.AuthenticationService;
 import com.pbl4.monolingo.auth.RegisterRequest;
 import com.pbl4.monolingo.entity.Account;
+import com.pbl4.monolingo.entity.DailyMission;
 import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.rest.BotController;
-import com.pbl4.monolingo.service.AccountService;
-import com.pbl4.monolingo.service.DailyMissionService;
+import com.pbl4.monolingo.service.*;
 import com.pbl4.monolingo.service.mailSender.MailService;
-import com.pbl4.monolingo.service.DataPerDayService;
-import com.pbl4.monolingo.service.ExtraInfoService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Controller
 @RequestMapping("public")
@@ -42,6 +41,7 @@ public class AuthController {
     private final DataPerDayService dataPerDayService;
     private final BotController botController;
     private final DailyMissionService dailyMissionService;
+    private final FriendService friendService;
     private String mailCurrent = null;
 
 
@@ -66,7 +66,7 @@ public class AuthController {
         return "loginPage";
     }
     @PostMapping("/login")
-    public String handleLogin(@ModelAttribute("account") Account account, HttpServletResponse response) throws InterruptedException {
+    public String handleLogin(@ModelAttribute("account") Account account, HttpServletResponse response,Model model) throws InterruptedException {
         AuthenticationResponse authenticationResponse = authenticationService.
                 authenticate(AuthenticationRequest.builder()
                 .username(account.getUsername())
@@ -76,11 +76,33 @@ public class AuthController {
         cookie.setPath("/");
         response.addCookie(cookie);
         Account temp = accountService.getAccountByUsername(account.getUsername());
+        if(temp.getType().getType().equals("ROLE_ADMIN")){
+            authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
+            botController.updateSentences(temp.getAccountId(), 13, false);
+            dailyMissionService.initMission(temp.getAccountId(), 3);
+            return "redirect:/admin/account";
+        }
+//        if (principal != null) {
+//            Account account = accountService.getAccountByUsername(principal.getName());
+//            model.addAttribute("stats", dataPerDayService.getAccountStats(accountId));
+//            model.addAttribute("dayStats", dataPerDayService.getAccountDPDStat(accountId));
+//            model.addAttribute("friendsExps", friendService.getFollowingExps(accountId));
+//            model.addAttribute("current", false);
+//            List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), account.getAccountId());
+//            model.addAttribute("dailyMissions", dailyMissions);
+//
+//            if (requestSource == null) {
+//                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+//                return "main";
+//            }
+//        }
+//        model.addAttribute("friendsExps", friendService.getFollowingExps(temp.getAccountId()));
+//        model.addAttribute("current", true);
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
         botController.updateSentences(temp.getAccountId(), 13, false);
         dailyMissionService.initMission(temp.getAccountId(), 3);
 
-//        return "messagePage";
+
         return "redirect:/learn";
     }
     @GetMapping("/error")

@@ -2,7 +2,12 @@ body {
     margin: 0;
     font-family: 'Arial', sans-serif;
 }
-
+.chat-container-message {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
 .chat-container {
     width: 300px;
     height: 400px;
@@ -10,9 +15,6 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    position: fixed;
-    bottom: 0;
-    right: 0;
     transform: translateX(-50%);
     transition: transform 0.3s ease;
 }
@@ -26,6 +28,9 @@ body {
     justify-content: space-between;
     font-weight: bold;
     font-size: 25px;
+}
+.chat-header h3 {
+    margin-left: 20px;
 }
 
 .chat-messages {
@@ -72,7 +77,7 @@ button.close-button {
     background-color: #f44336;
 }
 
-#message-input {
+.message-input {
     outline: 1px ridge rgba(86, 129, 238, 0.6);
     border-radius: 2rem;
     padding: 5px 15px;
@@ -80,10 +85,10 @@ button.close-button {
     flex: 1;
     border: none;
 }
-#message-input::placeholder {
+.message-input::placeholder {
     font-size: 14px;
 }
-#message-input:focus {
+.message-input:focus {
     outline: 1px solid rgba(86, 129, 238, 0.6);
 
 }
@@ -93,6 +98,8 @@ button.close-button {
     margin-left: 5px;
     background-color: transparent;
     color: #4CAF50;
+    border: none;
+    cursor: pointer;
 }
 
 .friend-message {
@@ -165,4 +172,16 @@ button.close-button {
     object-fit: contain;
     width: 30px;
 
+}
+.following-container {
+    position: fixed;
+    width: 350px;
+    background-color: #f6f6f6;
+    border-radius: 15px;
+    right: 110px;
+    top: 110px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+.friend-follow {
+    width: 100%;
 }

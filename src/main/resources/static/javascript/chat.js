@@ -137,8 +137,8 @@ function handleOnclickChatFriend(e){
                                                     <div class="chat-header">
                                                         <h3>${friend.name}</h3>
                                                         <div>
-                                                            <button onclick="toggleChat()">_</button>
-                                                            <button onclick="closeChat(${friendId})">x</button>
+                                                            <button class="button-chat" onclick="toggleChat()">_</button>
+                                                            <button class="button-chat" onclick="closeChat(${friendId})">x</button>
                                     
                                                         </div>
                                                     </div>
@@ -168,7 +168,7 @@ function handleOnclickChatFriend(e){
                                                             outline: 1px solid rgba(86, 129, 238, 0.6);
                                                             };
                                                         " placeholder="Type your message..." onkeypress="clickPress(${friendId})">
-                                                        <button class="send-message-button" onclick="sendMyMessage(${friendId})">
+                                                        <button class="button-chat send-message-button " onclick="sendMyMessage(${friendId})">
                                                             <i class="fa-solid fa-paper-plane" style="font-size: 20px;"></i>
                                                         </button>
                                                     </div>
@@ -178,6 +178,9 @@ function handleOnclickChatFriend(e){
                         // Scroll to the bottom to show the latest message
                         chatContainer.scrollTop = chatContainer.scrollHeight;
                         refreshStyleSheet();
+                        let chatMessages = document.getElementById("chat-messages-"+friendId);
+                        console.log("Message height : ",chatMessages.scrollHeight);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
 
 
                     }
@@ -224,8 +227,8 @@ function loadChatbox(friendId) {
                                                         <div class="chat-header">
                                                             <h3>${friend.name}</h3>
                                                             <div>
-                                                                <button onclick="toggleChat()">_</button>
-                                                                <button onclick="closeChat(${friendId})">x</button>
+                                                                <button class="button-chat" onclick="toggleChat()">_</button>
+                                                                <button class="button-chat" onclick="closeChat(${friendId})">x</button>
                                         
                                                             </div>
                                                         </div>
@@ -244,7 +247,7 @@ function loadChatbox(friendId) {
                                                                 outline: 1px solid rgba(86, 129, 238, 0.6);
                                                                 };
                                                             " placeholder="Type your message..." onkeypress="clickPress(${friendId})">
-                                                            <button class="send-message-button" onclick="sendMyMessage(${friendId})">
+                                                            <button class="button-chat send-message-button" onclick="sendMyMessage(${friendId})">
                                                                 <i class="fa-solid fa-paper-plane" style="font-size: 20px;"></i>
                                                             </button>
                                                         </div>

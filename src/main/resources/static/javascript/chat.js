@@ -20,7 +20,8 @@ stompClient.connect({}, function (frame) {
         // Handle incoming messages and update the UI
         const messageData = JSON.parse(message.body);
         showNotify(messageData);
-        loadChatbox(messageData.senderUserId);
+        refreshStyleSheet();
+        // loadChatbox(messageData.senderUserId);
     });
 });
 
@@ -344,7 +345,27 @@ function showNotify(message) {
                             `;
             notify.innerHTML = content;
             containerElement.appendChild(notify);
-            refreshStyleSheet()
+            setTimeout(() => {
+                notify.remove();
+            }, 10000);
+
+            let friendChat = document.getElementById('chat-messages-'+message.senderUserId);
+            if(friendChat != null){
+
+                let friendElement = document.createElement("div");
+                friendElement.classList.add("friend-message");
+                let contentMess = `
+                     <div class="avatar-message">${letterFirst}</div>
+                    <p class="text-message">
+                        ${message.content}
+                    </p>
+                `;
+                friendElement.innerHTML = contentMess;
+                friendChat.appendChild(friendElement);
+                friendChat.scrollTop = friendChat.scrollHeight;
+                refreshStyleSheet();
+            }
+            refreshStyleSheet();
         },
         error: function (error) {
             alert(error);

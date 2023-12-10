@@ -235,9 +235,42 @@ strong {
     left: 15px;
     transform: translateY(200%);
     -webkit-animation: noti 2s forwards alternate ease-in;
-    animation: noti 2s forwards alternate ease-in;
+    animation: noti 8s forwards alternate ease-in;
+    /*animation: disappearAnimation 5s forwards;*/
+}
+@-webkit-keyframes noti {
+    20% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }
 
+@keyframes noti {
+    20% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(0);
+        display: none;
+    }
+}
+
+@keyframes disappearAnimation {
+
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
 .notification-header {
     display: flex;
     align-items: center;
@@ -331,22 +364,3 @@ strong {
     border-radius: 50%;
 }
 
-@-webkit-keyframes noti {
-    50% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(0);
-    }
-}
-
-@keyframes noti {
-    50% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(0);
-    }
-}

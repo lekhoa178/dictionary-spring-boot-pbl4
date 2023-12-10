@@ -7,8 +7,10 @@ import com.pbl4.monolingo.auth.RegisterRequest;
 import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.DailyMission;
 import com.pbl4.monolingo.entity.DataPerDay;
+import com.pbl4.monolingo.rest.BotRestController;
+import com.pbl4.monolingo.service.AccountService;
+import com.pbl4.monolingo.service.DailyMissionService;
 import com.pbl4.monolingo.entity.embeddable.DataPerDayId;
-import com.pbl4.monolingo.rest.BotController;
 import com.pbl4.monolingo.service.*;
 import com.pbl4.monolingo.service.mailSender.MailService;
 import jakarta.servlet.http.Cookie;
@@ -40,7 +42,7 @@ public class AuthController {
     private Account currentAcount = null;
     private final ExtraInfoService extraInfoService;
     private final DataPerDayService dataPerDayService;
-    private final BotController botController;
+    private final BotRestController botRestController;
     private final DailyMissionService dailyMissionService;
     private final FriendService friendService;
     private String mailCurrent = null;
@@ -79,7 +81,6 @@ public class AuthController {
         Account temp = accountService.getAccountByUsername(account.getUsername());
         if(temp.getType().getType().equals("ROLE_ADMIN")){
             authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
-            botController.updateSentences(temp.getAccountId(), 13, false);
             dailyMissionService.initMission(temp.getAccountId(), 3);
             return "redirect:/admin/account";
         }
@@ -100,9 +101,11 @@ public class AuthController {
 //        model.addAttribute("friendsExps", friendService.getFollowingExps(temp.getAccountId()));
 //        model.addAttribute("current", true);
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
-        botController.updateSentences(temp.getAccountId(), 13, false);
+        botRestController.updateSentences(temp.getAccountId(), 13, false);
         dailyMissionService.initMission(temp.getAccountId(), 3);
         dataPerDayService.updateAccountDPD(temp.getAccountId(),0,0);
+
+        System.out.println(token);
 
         return "redirect:/learn";
     }

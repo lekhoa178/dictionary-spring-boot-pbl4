@@ -1,25 +1,21 @@
 package com.pbl4.monolingo.rest;
 
 import com.pbl4.monolingo.entity.Notebook;
-import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.NotebookService;
 import com.pbl4.monolingo.utility.ShuffleArray;
 import com.pbl4.monolingo.utility.dto.ChatGPTRequest;
 import com.pbl4.monolingo.utility.dto.ChatGPTResponse;
-import gov.nih.nlm.nls.lvg.Util.Str;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/practice")
-public class BotController {
+public class BotRestController {
 
     @Value("${openai.model}")
     private String model;
@@ -33,8 +29,8 @@ public class BotController {
     HashMap<Integer, String> answerCache = new HashMap<>();
     HashMap<Integer, Boolean> inProcessing = new HashMap<>();
 
-    public BotController(RestTemplate restTemplate,
-                         NotebookService notebookService) {
+    public BotRestController(RestTemplate restTemplate,
+                             NotebookService notebookService) {
         this.restTemplate = restTemplate;
         this.notebookService = notebookService;
     }

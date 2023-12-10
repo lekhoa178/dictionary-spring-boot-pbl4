@@ -6,7 +6,7 @@ import com.pbl4.monolingo.auth.AuthenticationService;
 import com.pbl4.monolingo.auth.RegisterRequest;
 import com.pbl4.monolingo.entity.Account;
 import com.pbl4.monolingo.entity.DataPerDay;
-import com.pbl4.monolingo.rest.BotController;
+import com.pbl4.monolingo.rest.BotRestController;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.DailyMissionService;
 import com.pbl4.monolingo.service.mailSender.MailService;
@@ -40,7 +40,7 @@ public class AuthController {
     private Account currentAcount = null;
     private final ExtraInfoService extraInfoService;
     private final DataPerDayService dataPerDayService;
-    private final BotController botController;
+    private final BotRestController botRestController;
     private final DailyMissionService dailyMissionService;
     private String mailCurrent = null;
 
@@ -62,7 +62,6 @@ public class AuthController {
     }
     @GetMapping("/login")
     public String showLogin(Model model){
-        System.out.println("?????");
         model.addAttribute("account",new Account());
         return "loginPage";
     }
@@ -83,8 +82,10 @@ public class AuthController {
 
         Account temp = accountService.getAccountByUsername(account.getUsername());
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
-        botController.updateSentences(temp.getAccountId(), 13, false);
+        botRestController.updateSentences(temp.getAccountId(), 13, false);
         dailyMissionService.initMission(temp.getAccountId(), 3);
+
+        System.out.println(token);
 
         return "redirect:/learn";
     }

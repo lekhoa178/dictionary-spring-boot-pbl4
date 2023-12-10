@@ -20,107 +20,9 @@ stompClient.connect({}, function (frame) {
         // Handle incoming messages and update the UI
         const messageData = JSON.parse(message.body);
         showNotify(messageData);
+        loadChatbox(messageData.senderUserId);
     });
 });
-
-// function startChat() {
-//     // Get the selected username
-//     username = document.getElementById('usernameInput').value;
-//
-//     // Hide user selection container
-//     document.getElementById('userSelectionContainer').style.display = 'none';
-//
-//     // Show chat container
-//     document.getElementById('chatContainer').style.display = 'block';
-
-
-//     // Connect to WebSocket server
-//     stompClient.connect({}, function (frame) {
-//         stompClient.subscribe(`'/topic/messages/${userId}`, function (message) {
-//             // Handle incoming messages and update the UI
-//             const messageData = JSON.parse(message.body);
-//
-//             // Assuming you have an element with id "chatMessages" to display messages
-//             const chatMessagesElement = document.querySelector('.view-container');
-//
-//             var chatContainer = `
-//                      <div className="chat-container" id="chat-container">
-//                 <div className="chat-header">
-//                     <span>John Doe</span>
-//                     <div>
-//                         <button onClick="toggleChat()">_</button>
-//                         <button onClick="closeChat()">x</button>
-//
-//                     </div>
-//                 </div>
-//                 <div className="chat-messages" id="chat-messages">
-//                     <div className="friend-message">
-//                         <div className="avatar-message">N</div>
-//                         <p className="text-message">
-//                             Hello from friend
-//                         </p>
-//                     </div>
-//                     <div className="my-message">
-//                         <p className="my-text-message">
-//                             Hello from friend asf UOPf a ifug AO Auflah
-//                         </p>
-//                     </div>
-//                 </div>
-//                 <div className="chat-input">
-//                     <input type="text" id="message-input" placeholder="Type your message..." onKeyPress="clickPress(event)">
-//                         <button className="send-message-button" onClick="sendMyMessage()"><i className="fa-solid fa-paper-plane"
-//                                                                                          style="font-size: 20px;"></i></button>
-//                 </div>
-//             </div>
-//             `;
-//
-//             // Create a new message element
-//             const newMessageElement = document.createElement('div');
-//             newMessageElement.className = 'message';
-//             newMessageElement.innerHTML = `<strong>${messageData.sender.username}</strong>: ${messageData.content}`;
-//
-//             // Append the new message to the chatMessagesElement
-//             chatMessagesElement.appendChild(newMessageElement);
-//
-//             // Scroll to the bottom to show the latest message
-//             chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
-//         });
-//     });
-// }
-
-// function sendMessage() {
-//     const messageInput = document.getElementById('messageInput').value;
-//
-//     // Assuming you have a receiver username (replace 'receiverUsername' with the actual username)
-//     const receiverUsername = 'receiverUsername';
-//
-//     const chatMessage = {
-//         sender: username,
-//         receiver: receiverUsername,
-//         content: messageInput
-//     };
-//     // Send the message to the server
-//     stompClient.send("/app/sendMessage", {}, JSON.stringify(chatMessage));
-//     // Clear the input field after sending the message
-//     document.getElementById('messageInput').value = '';
-// }
-// Your JavaScript code for sending messages and updating the UI goes here
-
-// function displayMessage(messageData) {
-//     // Assuming you have an element with id "chatMessages" to display messages
-//     const chatMessagesElement = document.getElementById('chatMessages');
-//
-//     // Create a new message element
-//     const newMessageElement = document.createElement('div');
-//     newMessageElement.className = 'message';
-//     newMessageElement.innerHTML = `<strong>${messageData.sender}</strong>: ${messageData.content}`;
-//
-//     // Append the new message to the chatMessagesElement
-//     chatMessagesElement.appendChild(newMessageElement);
-//
-//     // Scroll to the bottom to show the latest message
-//     chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
-// }
 
 
 function sendMyMessage(friendId) {
@@ -226,6 +128,7 @@ function handleOnclickChatFriend(e){
                 type: 'GET',
                 url: `/api/messageList/${accountId}/${friendId}`,
                 success: function (response) {
+                    let messages = showMessage(response);
                     var container = document.getElementById(`message-${friendId}`);
                     if (container == null){
                         var listChat = document.querySelector(".chat-container-message");
@@ -240,17 +143,18 @@ function handleOnclickChatFriend(e){
                                                         </div>
                                                     </div>
                                                     <div class="chat-messages" id="chat-messages-${friendId}">
-                                                        <div class="friend-message">
-                                                            <div class="avatar-message">N</div>
-                                                            <p class="text-message">
-                                                                Hello from friend
-                                                            </p>
-                                                        </div>
-                                                        <div class="my-message">
-                                                            <p class="my-text-message">
-                                                                Hello from friend asf UOPf a ifug AO Au
-                                                            </p>
-                                                        </div>
+                                                    ${messages}
+<!--                                                        <div class="friend-message">-->
+<!--                                                            <div class="avatar-message">N</div>-->
+<!--                                                            <p class="text-message">-->
+<!--                                                                Hello from friend-->
+<!--                                                            </p>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="my-message">-->
+<!--                                                            <p class="my-text-message">-->
+<!--                                                                Hello from friend asf UOPf a ifug AO Au-->
+<!--                                                            </p>-->
+<!--                                                        </div>-->
                                                     </div>
                                                     <div class="chat-input" >
                                                         <input type="text" class="message-input-${friendId}" style=" 
@@ -271,9 +175,10 @@ function handleOnclickChatFriend(e){
                                                 </div>
                                             `;
                         listChat.innerHTML = chatContainer;
-                        refreshStyleSheet();
                         // Scroll to the bottom to show the latest message
                         chatContainer.scrollTop = chatContainer.scrollHeight;
+                        refreshStyleSheet();
+
 
                     }
 
@@ -289,6 +194,114 @@ function handleOnclickChatFriend(e){
         },
     });
     closePanelFollow();
+}
+function loadChatbox(friendId) {
+    const token = getCookie("jwtToken");
+    const accountId = document.getElementById("metadata").dataset.accountId;
+    closeChat(friendId);
+    let friend = {};
+    $.ajax({
+        type: 'GET',
+        url: `/dictionary/accountById/${friendId}`,
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        success: function (response) {
+            console.log("response find friend: ", response)
+            friend = response;
+            $.ajax({
+                type: 'GET',
+                url: `/api/messageList/${accountId}/${friendId}`,
+                success: function (response) {
+                    let messages = showMessage(response);
+                    let container = document.getElementById(`message-${friendId}`);
+                    if (container == null) {
+                        let listChat = document.querySelector(".chat-container-message");
+                        let chatContainer = `
+                                                   <div class="chat-container" id="chat-container-${friendId}">
+                                                        <div class="chat-header">
+                                                            <h3>${friend.name}</h3>
+                                                            <div>
+                                                                <button onclick="toggleChat()">_</button>
+                                                                <button onclick="closeChat(${friendId})">x</button>
+                                        
+                                                            </div>
+                                                        </div>
+                                                        <div class="chat-messages" id="chat-messages-${friendId}">
+                                                        ${messages}
+                                                        </div>
+                                                        <div class="chat-input" >
+                                                            <input type="text" class="message-input-${friendId}" style=" 
+                                                                outline: 1px ridge rgba(86, 129, 238, 0.6);
+                                                                border-radius: 2rem;
+                                                                padding: 5px 15px;
+                                                                font-size: 14px;
+                                                                flex: 1;
+                                                                border: none;
+                                                                :focus {
+                                                                outline: 1px solid rgba(86, 129, 238, 0.6);
+                                                                };
+                                                            " placeholder="Type your message..." onkeypress="clickPress(${friendId})">
+                                                            <button class="send-message-button" onclick="sendMyMessage(${friendId})">
+                                                                <i class="fa-solid fa-paper-plane" style="font-size: 20px;"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                `;
+                        listChat.innerHTML = chatContainer;
+                        refreshStyleSheet();
+                        // Scroll to the bottom to show the latest message
+                        chatContainer.scrollTop = chatContainer.scrollHeight;
+                        let chatMessages = document.getElementById("chat-messages-"+friendId);
+                        console.log("Message height : ",chatMessages.scrollHeight);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    }
+
+
+                },
+                error: function (error) {
+                    alert(this.url);
+                },
+            })
+        },
+        error: function (error) {
+            alert(this.url)
+        }
+    });
+
+}
+
+function showMessage (messageList) {
+    const accountId = document.getElementById("metadata").dataset.accountId;
+    console.log("Account id current: ",accountId);
+    let messages = ``;
+    messageList.forEach(message => {
+        if(accountId == message.sender.accountId){
+            messages += `
+                 <div class="my-message">
+                    <p class="my-text-message"> 
+                        ${message.content}
+                    </p>
+                </div>
+            `
+        }
+        else {
+            messages += `
+                 <div class="friend-message">
+                    <div class="avatar-message">${message.sender.username[0].toUpperCase()}</div>
+                    <p class="text-message">
+                        ${message.content}
+                    </p>
+                </div>
+            `
+        }
+    })
+
+    return messages;
+
 }
 function showNotify(message) {
     const token = getCookie("jwtToken");

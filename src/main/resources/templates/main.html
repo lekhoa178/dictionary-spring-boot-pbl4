@@ -16,8 +16,9 @@
     <link rel="stylesheet" th:href="@{/css/fragments/storeStyle.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/searchFriend.css}">
     <link rel="stylesheet" th:href="@{/css/util.css}">
-    <link rel="stylesheet" th:href="@{/css/fragments/mission.css}">
     <link id="ChatStyleSheet" rel="stylesheet" th:href="@{/css/chatWindow.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/missionStyle.css}">
+
     <title>Monolingo - Học tiếng anh vui vẻ</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -84,7 +85,7 @@
             <span class="menu--tabs-text ">XEM THÊM</span>
             <div class="menu-content">
                 <a id="fragment-profile" class="menu--option--item">
-                    <h3 class="menu--tabs-text">Tạo hồ sơ</h3>
+                    <h3 class="menu--tabs-text">Hồ sơ</h3>
                     <img th:src="@{/img/boy.png}" class="icon--option" alt="">
                 </a>
                 <a class="menu--option--item">
@@ -119,7 +120,7 @@
                            name="word"
                            class="search--bar"
                            placeholder="Tìm kiếm từ vựng"
-                           autocomplete="false"
+                           autocomplete="off"
                            maxlength="50">
 
                     <div class="search--results-panel">

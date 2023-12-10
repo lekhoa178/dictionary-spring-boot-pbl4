@@ -65,6 +65,8 @@ menu.addEventListener('click', async function (e) {
             return;
         }
     }
+    const baseFragment = fragment.split('/')[0];
+
     if (target.classList.contains('.menu--tab-active')) return;
 
     for (let i = 0; i < tabs.length; ++i) {
@@ -75,7 +77,7 @@ menu.addEventListener('click', async function (e) {
     history.pushState(history.state, document.title, `/${fragment}`);
     fragmentContainer.innerHTML = await AJAX(`/${fragment}`);
 
-    const path = `/javascript/fragments/${fragment}.js`;
+    const path = `/javascript/fragments/${baseFragment}.js`;
     if (loadedScript.has(path)) {
         if (fragment === 'profile') {
             const script = document.createElement('script');
@@ -203,6 +205,18 @@ searchForm.addEventListener('submit', async function (e) {
     history.pushState(history.state, document.title, `/meaning/${word}`);
     fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
 
+    const path = `/javascript/fragments/meaning.js`;
+    if (loadedScript.has(path)) {
+        return;
+    }
+
+    const script = document.createElement('script');
+    const text = document.createTextNode(await AJAX(path));
+    script.appendChild(text);
+    fragmentContainer.append(script);
+
+    loadedScript.add(path);
+
     searchBar.blur();
 
     searchResults.classList.add('hidden');
@@ -218,6 +232,16 @@ searchResults.addEventListener('click', async function (e) {
 
     history.pushState(history.state, document.title, `/meaning/${word}`);
     fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
+
+    const path = `/javascript/fragments/meaning.js`;
+    if (loadedScript.has(path)) {
+        return;
+    }
+
+    const script = document.createElement('script');
+    const text = document.createTextNode(await AJAX(path));
+    script.appendChild(text);
+    fragmentContainer.append(script);
 
     searchBar.blur();
     searchResults.classList.add('hidden');

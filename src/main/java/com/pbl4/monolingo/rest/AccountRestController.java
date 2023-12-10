@@ -18,4 +18,9 @@ public class AccountRestController {
     public Account getAccountByUsername(@PathVariable String username) {
         return accountService.getAccountByUsername(username);
     }
+    @GetMapping("/accountById/{accountId}")
+    public Account getAccountByAccountId(@PathVariable Integer accountId){
+        Account account = accountService.getAccountById(accountId);
+        return account;
+    }
 }

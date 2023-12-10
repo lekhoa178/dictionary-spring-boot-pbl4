@@ -6,6 +6,7 @@ import com.pbl4.monolingo.utility.Utility;
 import com.pbl4.monolingo.utility.dto.AccountDPDStat;
 import com.pbl4.monolingo.utility.dto.AccountExp;
 import com.pbl4.monolingo.utility.dto.AccountStats;
+import com.pbl4.monolingo.utility.dto.FriendDetail;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -51,10 +52,12 @@ public class ApplicationController {
             int accountId = accountService.getAccountByUsername(principal.getName()).getAccountId();
             List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), accountId);
             model.addAttribute("dailyMissions", dailyMissions);
-
             model.addAttribute("stageColors", Utility.StageColors);
             model.addAttribute("stages", learnService.getAccountStages(accountId));
             model.addAttribute("accountId", accountId);
+            List<FriendDetail> rs =friendService.getFollowingExps(accountId);
+            model.addAttribute("friendsExps", rs);
+            model.addAttribute("current", true);
 
             if (requestSource == null) {
                 model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));

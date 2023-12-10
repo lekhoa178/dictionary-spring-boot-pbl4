@@ -33,6 +33,13 @@ public class DataPerDay {
         this.onlineHours = onlineHours;
     }
 
+    public DataPerDay(DataPerDayId id, Account account, Integer experience, Float onlineHours) {
+        this.id = id;
+        this.account = account;
+        this.experience = experience;
+        this.onlineHours = onlineHours;
+    }
+
     public DataPerDayId getId() {
         return id;
     }

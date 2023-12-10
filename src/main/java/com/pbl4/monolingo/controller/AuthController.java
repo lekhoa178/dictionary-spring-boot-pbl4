@@ -5,13 +5,15 @@ import com.pbl4.monolingo.auth.AuthenticationResponse;
 import com.pbl4.monolingo.auth.AuthenticationService;
 import com.pbl4.monolingo.auth.RegisterRequest;
 import com.pbl4.monolingo.entity.Account;
+import com.pbl4.monolingo.entity.DailyMission;
 import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.rest.BotRestController;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.DailyMissionService;
+import com.pbl4.monolingo.entity.embeddable.DataPerDayId;
+import com.pbl4.monolingo.rest.BotController;
+import com.pbl4.monolingo.service.*;
 import com.pbl4.monolingo.service.mailSender.MailService;
-import com.pbl4.monolingo.service.DataPerDayService;
-import com.pbl4.monolingo.service.ExtraInfoService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Controller
 @RequestMapping("public")
@@ -42,6 +45,7 @@ public class AuthController {
     private final DataPerDayService dataPerDayService;
     private final BotRestController botRestController;
     private final DailyMissionService dailyMissionService;
+    private final FriendService friendService;
     private String mailCurrent = null;
 
 
@@ -66,24 +70,42 @@ public class AuthController {
         return "loginPage";
     }
     @PostMapping("/login")
-    public String handleLogin(@ModelAttribute("account") Account account, HttpSession session, HttpServletResponse response) throws InterruptedException {
+    public String handleLogin(@ModelAttribute("account") Account account, HttpServletResponse response,Model model) throws InterruptedException {
         AuthenticationResponse authenticationResponse = authenticationService.
                 authenticate(AuthenticationRequest.builder()
                 .username(account.getUsername())
                 .password(account.getPassword()).build());
-
         String token = authenticationResponse.getToken();
         Cookie cookie = new Cookie("jwtToken",token);
         cookie.setPath("/");
         response.addCookie(cookie);
-
-        session.setAttribute("test", "test");
-        System.out.println(session.getAttribute("test"));
-
         Account temp = accountService.getAccountByUsername(account.getUsername());
+        if(temp.getType().getType().equals("ROLE_ADMIN")){
+            authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
+            botController.updateSentences(temp.getAccountId(), 13, false);
+            dailyMissionService.initMission(temp.getAccountId(), 3);
+            return "redirect:/admin/account";
+        }
+//        if (principal != null) {
+//            Account account = accountService.getAccountByUsername(principal.getName());
+//            model.addAttribute("stats", dataPerDayService.getAccountStats(accountId));
+//            model.addAttribute("dayStats", dataPerDayService.getAccountDPDStat(accountId));
+//            model.addAttribute("friendsExps", friendService.getFollowingExps(accountId));
+//            model.addAttribute("current", false);
+//            List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), account.getAccountId());
+//            model.addAttribute("dailyMissions", dailyMissions);
+//
+//            if (requestSource == null) {
+//                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
+//                return "main";
+//            }
+//        }
+//        model.addAttribute("friendsExps", friendService.getFollowingExps(temp.getAccountId()));
+//        model.addAttribute("current", true);
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
         botRestController.updateSentences(temp.getAccountId(), 13, false);
         dailyMissionService.initMission(temp.getAccountId(), 3);
+        dataPerDayService.updateAccountDPD(temp.getAccountId(),0,0);
 
         System.out.println(token);
 
@@ -110,7 +132,6 @@ public class AuthController {
                 System.out.println(authenticationService.getLoginTimes().size());
                 dataPerDayService.save(dt);
             }
-
         }
         catch (Exception e) {
 
@@ -121,6 +142,12 @@ public class AuthController {
         cookie.setMaxAge(0); // Đặt thời gian sống là 0 để xóa cookie
         // Thêm cookie vào response để trình duyệt xóa nó
         response.addCookie(cookie);
+        if (principal != null) {
+            Account account = accountService.getAccountByUsername(principal.getName());
+            account.setOnline(false);
+            accountService.saveAccount(account);
+        }
+        System.out.println("Into logout");
         return "redirect:/public/login";
     }
     @GetMapping("/forgot")
@@ -191,11 +218,13 @@ public class AuthController {
     @PostMapping("/sendOTP")
     public String sendOTP(@RequestParam("email") String mail,
                           HttpServletRequest request,
-                          HttpServletResponse response){
+                          HttpServletResponse response,Model model){
         boolean rs = mailSender.sendOTPRegister(mail,response);
         if(rs){
             mailCurrent = mail;
-//            model.addAttribute("email",mail);
+            Account account = new Account();
+            account.setEmail(mail);
+            model.addAttribute("email",mail);
             return "non_function/VerifyOTPRegister";
         }
         else {
@@ -206,6 +235,7 @@ public class AuthController {
     public String verifyRegister(@RequestParam("pr1") int num1, @RequestParam("pr2") int num2,
                                  @RequestParam("pr3") int num3, @RequestParam("pr4") int num4,
                                  @RequestParam("pr5") int num5, @RequestParam("pr6") int num6,
+                                 @RequestParam("email")String mail,
                                  Model model, HttpServletRequest request){
         String otp = num1+""+num2+num3+num4+num5+num6;
         boolean check = mailSender.verifyOtpMail(otp,request);
@@ -213,8 +243,11 @@ public class AuthController {
             model.addAttribute("msg","Nhập sai otp");
             return "non_function/VerifyOTPRegister";
         }
+        Account account = new Account();
+        account.setEmail(mail);
+        model.addAttribute("account",account);
         System.out.println(otp);
-        return "redirect:/public/signup";
+        return "signUp";
     }
 
 }

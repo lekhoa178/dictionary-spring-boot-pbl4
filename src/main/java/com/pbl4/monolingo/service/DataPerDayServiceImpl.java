@@ -1,5 +1,6 @@
 package com.pbl4.monolingo.service;
 
+import com.pbl4.monolingo.dao.AccountRepository;
 import com.pbl4.monolingo.dao.DataPerDayRepository;
 import com.pbl4.monolingo.dao.FriendRepository;
 import com.pbl4.monolingo.entity.Account;
@@ -27,6 +28,7 @@ public class DataPerDayServiceImpl implements DataPerDayService {
 
     private final DataPerDayRepository dataPerDayRepository;
     private final FriendRepository friendRepository;
+    private final AccountRepository accountRepository;
 
     @Override
     public List<DataPerDay> getAccountDPDs(Integer accountId) {
@@ -82,6 +84,13 @@ public class DataPerDayServiceImpl implements DataPerDayService {
     @Override
     public DataPerDay updateAccountDPD(Integer accountId, int exp, float onlHours) {
         DataPerDay dpd = getAccountDPD(accountId);
+
+        if (dpd == null) {
+            dpd = new DataPerDay(new DataPerDayId(getDayId(), accountId), 0, 0f);
+            dpd.setAccount(accountRepository.findById(accountId).get());
+            dataPerDayRepository.save(dpd);
+        }
+
         dpd.setExperience(dpd.getExperience() + exp);
         dpd.setOnlineHours(dpd.getOnlineHours() + onlHours);
 

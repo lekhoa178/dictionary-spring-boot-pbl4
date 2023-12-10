@@ -81,7 +81,7 @@ public class AuthController {
         Account temp = accountService.getAccountByUsername(account.getUsername());
         if(temp.getType().getType().equals("ROLE_ADMIN")){
             authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
-            botController.updateSentences(temp.getAccountId(), 13, false);
+            botRestController.updateSentences(temp.getAccountId(), 13, false);
             dailyMissionService.initMission(temp.getAccountId(), 3);
             return "redirect:/admin/account";
         }

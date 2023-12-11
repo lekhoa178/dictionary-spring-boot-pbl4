@@ -42,6 +42,8 @@ public class    AuthenticationService {
         newExtra.setNumberOfLoginDay(0);
         newExtra.setNumberOfConsecutiveDay(0);
         newExtra.setAccount(user);
+        user.setName(request.getUsername());
+        user.setGender(true);
         repository.save(user);
         extraInformationRepository.save(newExtra);
         dataPerDayService.updateAccountDPD(user.getAccountId(),0,0);

@@ -236,7 +236,6 @@
 
                     </div>
 
-
                     <div class="friend--followers" th:each="friendExp, stat : ${friendsExps}" style="padding-left: 15px">
                         <div
                                 class="friend--follower"
@@ -244,10 +243,9 @@
                         >
                             <div class="friend--follower-index" th:text="${stat.index + 1}"></div>
                             <p
-                                    class="friend--follower-name"
-                                    th:text="${friendExp.getFriend().getFollowing().getName()}"
+                                class="friend--follower-name"
+                                th:text="${friendExp.getFriend().getFollowing().getName()}"
                             ></p>
-<!--                            <p class="friend&#45;&#45;follower-exp" th:text="${friendExp.getExp()}"></p>-->
                             <img class ="chat-friend" th:src="@{/img/chat.png}" style="width: 30px;object-fit: contain" th:data-friend-id="${friendExp.getFriend().getId().getFollowingId()}" onclick="handleOnclickChatFriend(event)">
                         </div>
                     </div>

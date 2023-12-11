@@ -172,6 +172,7 @@ button.close-button {
 
 }
 .friend-icon-toggle {
+    z-index: 5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -234,9 +235,8 @@ strong {
     bottom: 15px;
     left: 15px;
     transform: translateY(200%);
-    -webkit-animation: noti 2s forwards alternate ease-in;
-    animation: noti 8s forwards alternate ease-in;
-    /*animation: disappearAnimation 5s forwards;*/
+    -webkit-animation: noti 1.5s forwards alternate ease-in;
+    animation: noti 10s forwards alternate ease-in;
 }
 @-webkit-keyframes noti {
     20% {

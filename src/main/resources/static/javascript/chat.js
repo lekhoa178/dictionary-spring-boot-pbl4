@@ -21,7 +21,6 @@ stompClient.connect({}, function (frame) {
         const messageData = JSON.parse(message.body);
         showNotify(messageData);
         refreshStyleSheet();
-        // loadChatbox(messageData.senderUserId);
     });
 });
 
@@ -82,7 +81,7 @@ function closePanelFollow() {
     var missonContainer = document.getElementById("mission-container-side");
     missonContainer.style.display = "grid";
     var showFollowbtn = document.getElementById("show-follow-button");
-    showFollowbtn.hidden = false;
+    showFollowbtn.style.display = "flex";
 }
 function openPanelFollow() {
     var panelFollow = document.getElementById("follow-panel");
@@ -90,16 +89,10 @@ function openPanelFollow() {
     var missonContainer = document.getElementById("mission-container-side");
     missonContainer.style.display = "none";
     var showFollowbtn = document.getElementById("show-follow-button");
-    showFollowbtn.hidden = true;
-}
-function refreshStyles() {
-    var links = document.getElementsByTagName("link");
-    for (var i = 0; i < links.length; i++) {
-        var href = links[i].href;
-        links[i].href = href + "?refresh=" + (new Date()).getMilliseconds();
-    }
+    showFollowbtn.style.display = "none";
 
 }
+
 function refreshStyleSheet() {
     var styleSheet = document.getElementById("ChatStyleSheet");
     if (styleSheet) {
@@ -145,17 +138,6 @@ function handleOnclickChatFriend(e){
                                                     </div>
                                                     <div class="chat-messages" id="chat-messages-${friendId}">
                                                     ${messages}
-<!--                                                        <div class="friend-message">-->
-<!--                                                            <div class="avatar-message">N</div>-->
-<!--                                                            <p class="text-message">-->
-<!--                                                                Hello from friend-->
-<!--                                                            </p>-->
-<!--                                                        </div>-->
-<!--                                                        <div class="my-message">-->
-<!--                                                            <p class="my-text-message">-->
-<!--                                                                Hello from friend asf UOPf a ifug AO Au-->
-<!--                                                            </p>-->
-<!--                                                        </div>-->
                                                     </div>
                                                     <div class="chat-input" >
                                                         <input type="text" class="message-input-${friendId}" style=" 
@@ -199,84 +181,7 @@ function handleOnclickChatFriend(e){
     });
     closePanelFollow();
 }
-function loadChatbox(friendId) {
-    const token = getCookie("jwtToken");
-    const accountId = document.getElementById("metadata").dataset.accountId;
-    closeChat(friendId);
-    let friend = {};
-    $.ajax({
-        type: 'GET',
-        url: `/dictionary/accountById/${friendId}`,
-        headers: {
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        success: function (response) {
-            console.log("response find friend: ", response)
-            friend = response;
-            $.ajax({
-                type: 'GET',
-                url: `/api/messageList/${accountId}/${friendId}`,
-                success: function (response) {
-                    let messages = showMessage(response);
-                    let container = document.getElementById(`message-${friendId}`);
-                    if (container == null) {
-                        let listChat = document.querySelector(".chat-container-message");
-                        let chatContainer = `
-                                                   <div class="chat-container" id="chat-container-${friendId}">
-                                                        <div class="chat-header">
-                                                            <h3>${friend.name}</h3>
-                                                            <div>
-                                                                <button class="button-chat" onclick="toggleChat()">_</button>
-                                                                <button class="button-chat" onclick="closeChat(${friendId})">x</button>
-                                        
-                                                            </div>
-                                                        </div>
-                                                        <div class="chat-messages" id="chat-messages-${friendId}">
-                                                        ${messages}
-                                                        </div>
-                                                        <div class="chat-input" >
-                                                            <input type="text" class="message-input-${friendId}" style=" 
-                                                                outline: 1px ridge rgba(86, 129, 238, 0.6);
-                                                                border-radius: 2rem;
-                                                                padding: 5px 15px;
-                                                                font-size: 14px;
-                                                                flex: 1;
-                                                                border: none;
-                                                                :focus {
-                                                                outline: 1px solid rgba(86, 129, 238, 0.6);
-                                                                };
-                                                            " placeholder="Type your message..." onkeypress="clickPress(${friendId})">
-                                                            <button class="button-chat send-message-button" onclick="sendMyMessage(${friendId})">
-                                                                <i class="fa-solid fa-paper-plane" style="font-size: 20px;"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                `;
-                        listChat.innerHTML = chatContainer;
-                        refreshStyleSheet();
-                        // Scroll to the bottom to show the latest message
-                        chatContainer.scrollTop = chatContainer.scrollHeight;
-                        let chatMessages = document.getElementById("chat-messages-"+friendId);
-                        console.log("Message height : ",chatMessages.scrollHeight);
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
 
-                    }
-
-
-                },
-                error: function (error) {
-                    alert(this.url);
-                },
-            })
-        },
-        error: function (error) {
-            alert(this.url)
-        }
-    });
-
-}
 
 function showMessage (messageList) {
     const accountId = document.getElementById("metadata").dataset.accountId;
@@ -303,9 +208,7 @@ function showMessage (messageList) {
             `
         }
     })
-
     return messages;
-
 }
 function showNotify(message) {
     const token = getCookie("jwtToken");
@@ -347,8 +250,7 @@ function showNotify(message) {
             containerElement.appendChild(notify);
             setTimeout(() => {
                 notify.remove();
-            }, 10000);
-
+            }, 13000);
             let friendChat = document.getElementById('chat-messages-'+message.senderUserId);
             if(friendChat != null){
 

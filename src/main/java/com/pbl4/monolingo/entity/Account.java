@@ -130,6 +130,25 @@ public class Account implements UserDetails {
         this.type = type;
     }
 
+    public Account(Integer accountId, String username, String name, Date birthdate, String email, Boolean gender) {
+        this.accountId = accountId;
+        this.username = username;
+        this.name = name;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.gender = gender;
+    }
+
+    public Account(Integer accountId, String username, String name, Date birthdate, String email, Boolean gender, AccountType type) {
+        this.accountId = accountId;
+        this.username = username;
+        this.name = name;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.gender = gender;
+        this.type = type;
+    }
+
     public Integer getAccountId() {
         return accountId;
     }

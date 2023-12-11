@@ -17,7 +17,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +36,7 @@ public class    AuthenticationService {
     private final DataPerDayService dataPerDayService;
     private final Map<Integer, LocalDateTime> loginTimes = new HashMap<>();
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterRequest request)  {
         AccountType accountType = accountTypeRepository.findAccountTypeByType("ROLE_LEARNER").orElseThrow();
         var user = new Account(request.getUsername(),passwordEncoder.encode(request.getPassword()),request.getEmail(),true,accountType);
         ExtraInformation newExtra = new ExtraInformation();
@@ -44,6 +47,13 @@ public class    AuthenticationService {
         newExtra.setAccount(user);
         user.setName(request.getUsername());
         user.setGender(true);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date parsedDate = dateFormat.parse("01/01/2000");
+            user.setBirthdate(parsedDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         repository.save(user);
         extraInformationRepository.save(newExtra);
         dataPerDayService.updateAccountDPD(user.getAccountId(),0,0);

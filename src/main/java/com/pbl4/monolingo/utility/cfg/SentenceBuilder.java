@@ -248,7 +248,7 @@ public class SentenceBuilder {
                 "Lạc,Lạc",
                 "Khoa,Khoa",
                 "Nghĩa,Nghĩa",
-                "Nhận, Nhận")));
+                "Nhận,Nhận")));
 
         wordMap.put("Nom", new ArrayList<>(List.of(
                 "house,ngôi nhà", "spoon,cái muỗng", "knife,cái dao",

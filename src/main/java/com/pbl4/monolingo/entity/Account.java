@@ -1,7 +1,9 @@
 package com.pbl4.monolingo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,7 +43,7 @@ public class Account implements UserDetails {
     private String email;
 
     @Column(name = "gender")
-    private Boolean gender;
+    private Boolean gender = false;
 
     @Lob
     @Column(name = "profile_picture")
@@ -49,6 +51,9 @@ public class Account implements UserDetails {
 
     @Column(name = "enabled")
     private Boolean enabled;
+
+    @Column
+    private Boolean online= false;
 
     @ManyToOne
     @JsonIgnore
@@ -65,6 +70,21 @@ public class Account implements UserDetails {
     @JsonIgnore
     private Set<DataPerDay> dataPerDay;
     public Account() {}
+
+    public Account(String username, String password, String name, boolean online) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.online = online;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
 
     public Account(Integer accountId, String username, String password, String name, Date birthdate, String email, Boolean gender, byte[] profilePicture, Boolean enabled, AccountType type) {
         this.accountId = accountId;
@@ -97,6 +117,35 @@ public class Account implements UserDetails {
         this.password = password;
         this.email = email;
         this.enabled = enabled;
+        this.type = type;
+    }
+
+    public Account(String username, String password, String name, String email, Boolean gender, Boolean enabled, AccountType type) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.gender = gender;
+        this.enabled = enabled;
+        this.type = type;
+    }
+
+    public Account(Integer accountId, String username, String name, Date birthdate, String email, Boolean gender) {
+        this.accountId = accountId;
+        this.username = username;
+        this.name = name;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.gender = gender;
+    }
+
+    public Account(Integer accountId, String username, String name, Date birthdate, String email, Boolean gender, AccountType type) {
+        this.accountId = accountId;
+        this.username = username;
+        this.name = name;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.gender = gender;
         this.type = type;
     }
 

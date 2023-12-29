@@ -24,17 +24,17 @@ public class NotebookRestController {
     private final NotebookService notebookService;
     private final AccountService accountService;
     private final NotebookRepository notebookRepository;
-    private final BotController botController;
+    private final BotRestController botRestController;
 
     @Autowired
     public NotebookRestController(NotebookRepository notebookRepository,
                                   NotebookService notebookService,
                                   AccountService accountService,
-                                  BotController botController) {
+                                  BotRestController botRestController) {
         this.notebookRepository = notebookRepository;
         this.notebookService = notebookService;
         this.accountService = accountService;
-        this.botController = botController;
+        this.botRestController = botRestController;
     }
 
     @GetMapping("/notebook/{accountId}")
@@ -64,7 +64,7 @@ public class NotebookRestController {
         else
             notebookService.addNotebook(account.getAccountId(), word);
 
-        botController.updateSentences(account.getAccountId(), 13, false);
+        botRestController.updateSentences(account.getAccountId(), 13, false);
 
     }
 

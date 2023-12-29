@@ -18,6 +18,7 @@ public interface AccountService {
     List<Account> getAllAccount();
     Page<Account> getAccountWithPage(int offset, int size);
     void saveAccount(Account account);
+    void updateAccount(Account account);
     Account getAccountById(int id);
     void deleteAccountById(int id);
     List<Account> searchAccount(String keyword);

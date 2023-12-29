@@ -7,6 +7,16 @@ fragmentContainer.addEventListener('click', async function(e){
 
     history.pushState(history.state, document.title, `/meaning/${word}`);
     fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
+
+    const path = `/javascript/fragments/meaning.js`;
+    if (loadedScript.has(path)) {
+        return;
+    }
+
+    const script = document.createElement('script');
+    const text = document.createTextNode(await AJAX(path));
+    script.appendChild(text);
+    fragmentContainer.append(script);
 })
 
 fragmentContainer.addEventListener('click', e => {

@@ -24,6 +24,23 @@ public class Friend {
     @MapsId("followingId")
     @JoinColumn(name = "following_id")
     private Account following;
+    @Column
+    private Boolean hasMessage = false;
+
+    public Friend(FriendId id, Account follower, Account following, Boolean hasMessage) {
+        this.id = id;
+        this.follower = follower;
+        this.following = following;
+        this.hasMessage = hasMessage;
+    }
+
+    public Boolean getHasMessage() {
+        return hasMessage;
+    }
+
+    public void setHasMessage(Boolean hasMessage) {
+        this.hasMessage = hasMessage;
+    }
 
     public Friend(FriendId id, Account follower, Account following) {
         this.id = id;

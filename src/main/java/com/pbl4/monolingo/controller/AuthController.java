@@ -78,9 +78,6 @@ public class AuthController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        session.setAttribute("test", "test");
-        System.out.println(session.getAttribute("test"));
-
         Account temp = accountService.getAccountByUsername(account.getUsername());
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
         botController.updateSentences(temp.getAccountId(), 13, false);

@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -50,6 +51,11 @@ public class AdminController {
     public void initBinder(WebDataBinder dataBinder) {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         dataBinder.registerCustomEditor(String.class ,stringTrimmerEditor);
+    }
+
+    @GetMapping("")
+    public String showAdmin(RedirectAttributes redirectAttributes) {
+        return "redirect:/admin/account";
     }
 
     @GetMapping("/account")
@@ -346,7 +352,7 @@ public class AdminController {
 
     @PostMapping("/mission/save")
     public String saveMission(Model model, Principal principal, @Valid @ModelAttribute("mission") Mission mission, BindingResult bindingResult) {
-        System.out.println(mission);
+
         if (bindingResult.hasErrors()){
             return "fragments_admin/mission-form";
         }

@@ -5,6 +5,7 @@ import com.pbl4.monolingo.auth.AuthenticationResponse;
 import com.pbl4.monolingo.auth.AuthenticationService;
 import com.pbl4.monolingo.auth.RegisterRequest;
 import com.pbl4.monolingo.entity.Account;
+import com.pbl4.monolingo.security.JwtService;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.utility.dto.Message;
 import com.pbl4.monolingo.utility.dto.ResponseMessage;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthRestController {
     private final AuthenticationService service;
     private final AccountService accountService;
+    private final JwtService jwtService;
+
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
@@ -37,5 +40,12 @@ public class AuthRestController {
     public ResponseEntity<ResponseMessage> updateAccount(@RequestBody Account account){
         accountService.updateAccount(account);
         return ResponseEntity.ok(new ResponseMessage("Update success!!!"));
+    }
+
+    @PostMapping("/checkTokenExpired")
+    public  ResponseEntity<ResponseMessage> checkTokenExpired (@RequestBody AuthenticationResponse token) {
+        boolean rs = jwtService.isTokenExpired(token.getToken());
+        System.out.println("RS: "+ rs);
+        return ResponseEntity.ok(new ResponseMessage("false"));
     }
 }

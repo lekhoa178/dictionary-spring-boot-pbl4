@@ -17,12 +17,12 @@ public class Friend {
 
     @ManyToOne
     @MapsId("followerId")
-    @JoinColumn(name = "follower_id")
+    @JoinColumn(name = "follower_id",insertable = false, updatable = false)
     private Account follower;
 
-    @ManyToOne
+    @ManyToOne()
     @MapsId("followingId")
-    @JoinColumn(name = "following_id")
+    @JoinColumn(name = "following_id",insertable = false, updatable = false)
     private Account following;
     @Column
     private Boolean hasMessage = false;

@@ -55,3 +55,7 @@
     
 
 })(jQuery);
+function closeAleart(){
+    var containerAlert = document.getElementById("container-alert");
+    containerAlert.remove();
+}

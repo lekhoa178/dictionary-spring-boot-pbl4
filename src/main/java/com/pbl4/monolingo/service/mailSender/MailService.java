@@ -31,7 +31,7 @@ public class MailService {
 
     private String password;
     public boolean sendOTP(String email, HttpServletResponse response){
-        Account account = accountRepository.findByEmail(email);
+        Account account = accountRepository.searchAccountByEmail(email).get(0);
         if (account != null){
             String otp = OtpGenerator.generateOtp();
             SimpleMailMessage message = new SimpleMailMessage();

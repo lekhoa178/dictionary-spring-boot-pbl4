@@ -69,11 +69,6 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<DataPerDay> dataPerDay;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<DailyMission> dailyMissions;
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Friend> friends;
     public Account() {}
 
     public Account(String username, String password, String name, boolean online) {
@@ -289,21 +284,5 @@ public class Account implements UserDetails {
                 ", enabled=" + enabled +
                 ", type=" + type +
                 '}';
-    }
-
-    public Set<DailyMission> getDailyMissions() {
-        return dailyMissions;
-    }
-
-    public void setDailyMissions(Set<DailyMission> dailyMissions) {
-        this.dailyMissions = dailyMissions;
-    }
-
-    public Set<Friend> getFriends() {
-        return friends;
-    }
-
-    public void setFriends(Set<Friend> friends) {
-        this.friends = friends;
     }
 }

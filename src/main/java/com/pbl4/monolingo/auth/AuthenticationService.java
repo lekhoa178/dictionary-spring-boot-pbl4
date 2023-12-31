@@ -26,7 +26,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class    AuthenticationService {
+public class AuthenticationService {
     private final AccountRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;

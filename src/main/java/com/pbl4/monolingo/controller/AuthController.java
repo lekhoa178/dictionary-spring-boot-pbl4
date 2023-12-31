@@ -5,18 +5,15 @@ import com.pbl4.monolingo.auth.AuthenticationResponse;
 import com.pbl4.monolingo.auth.AuthenticationService;
 import com.pbl4.monolingo.auth.RegisterRequest;
 import com.pbl4.monolingo.entity.Account;
-import com.pbl4.monolingo.entity.DailyMission;
 import com.pbl4.monolingo.entity.DataPerDay;
 import com.pbl4.monolingo.rest.BotRestController;
 import com.pbl4.monolingo.service.AccountService;
 import com.pbl4.monolingo.service.DailyMissionService;
-import com.pbl4.monolingo.entity.embeddable.DataPerDayId;
 import com.pbl4.monolingo.service.*;
 import com.pbl4.monolingo.service.mailSender.MailService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -30,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -39,7 +37,7 @@ public class AuthController {
     private final AccountService accountService;
     private final AuthenticationService authenticationService;
     private final MailService mailSender;
-    private Account currentAcount = null;
+    private HashMap<Integer,Account> currentMapAccount = new HashMap<>();
     private final ExtraInfoService extraInfoService;
     private final DataPerDayService dataPerDayService;
     private final BotRestController botRestController;
@@ -54,14 +52,21 @@ public class AuthController {
         return "signUp";
     }
     @PostMapping("/signup")
-    public String handleSignUp(@Valid @ModelAttribute("account") Account account){
-        String email = account.getEmail() != null ? account.getEmail() : mailCurrent;
-        authenticationService.register(RegisterRequest.builder()
-                .username(account.getUsername())
-                .password(account.getPassword())
-                .email(email)
-                .build());
-        return "redirect:/public/login";
+    public String handleSignUp(@Valid @ModelAttribute("account") Account account,Model model){
+        List<Account> checkAccount = accountService.searchAccountByUsername(account.getUsername());
+        if(checkAccount.size() == 0){
+            authenticationService.register(RegisterRequest.builder()
+                    .username(account.getUsername())
+                    .password(account.getPassword())
+                    .email(account.getEmail())
+                    .build());
+            return "redirect:/public/login";
+        }
+        else {
+            model.addAttribute("msg","trùng username, hãy chọn username khác");
+            return "signUp";
+        }
+
     }
     @GetMapping("/login")
     public String showLogin(Model model){
@@ -70,42 +75,34 @@ public class AuthController {
     }
     @PostMapping("/login")
     public String handleLogin(@ModelAttribute("account") Account account, HttpServletResponse response,Model model) throws InterruptedException {
-        AuthenticationResponse authenticationResponse = authenticationService.
-                authenticate(AuthenticationRequest.builder()
-                .username(account.getUsername())
-                .password(account.getPassword()).build());
-        String token = authenticationResponse.getToken();
-        Cookie cookie = new Cookie("jwtToken",token);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        try {
+            AuthenticationResponse authenticationResponse = authenticationService.
+                    authenticate(AuthenticationRequest.builder()
+                            .username(account.getUsername())
+                            .password(account.getPassword()).build());
+            String token = authenticationResponse.getToken();
+            Cookie cookie = new Cookie("jwtToken",token);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+        catch (Exception e){
+            model.addAttribute("msg","Tài khoản hoặc mật khẩu sai");
+            return "loginPage";
+        }
+
+
         Account temp = accountService.getAccountByUsername(account.getUsername());
         if(temp.getType().getType().equals("ROLE_ADMIN")){
             authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
             dailyMissionService.initMission(temp.getAccountId(), 3);
             return "redirect:/admin/account";
         }
-//        if (principal != null) {
-//            Account account = accountService.getAccountByUsername(principal.getName());
-//            model.addAttribute("stats", dataPerDayService.getAccountStats(accountId));
-//            model.addAttribute("dayStats", dataPerDayService.getAccountDPDStat(accountId));
-//            model.addAttribute("friendsExps", friendService.getFollowingExps(accountId));
-//            model.addAttribute("current", false);
-//            List<DailyMission> dailyMissions = dailyMissionService.getMissionByAccountId(dataPerDayService.getDayId(), account.getAccountId());
-//            model.addAttribute("dailyMissions", dailyMissions);
-//
-//            if (requestSource == null) {
-//                model.addAttribute("userData", accountService.getAccountInfoByUsername(principal.getName()));
-//                return "main";
-//            }
-//        }
-//        model.addAttribute("friendsExps", friendService.getFollowingExps(temp.getAccountId()));
-//        model.addAttribute("current", true);
         authenticationService.getLoginTimes().put(temp.getAccountId(), LocalDateTime.now());
         botRestController.updateSentences(temp.getAccountId(), 13, false);
         dailyMissionService.initMission(temp.getAccountId(), 3);
         dataPerDayService.updateAccountDPD(temp.getAccountId(),0,0);
 
-        System.out.println(token);
+
 
         return "redirect:/learn";
     }
@@ -155,13 +152,17 @@ public class AuthController {
     }
     @PostMapping("/forgot")
     public String sendOTP(@ModelAttribute("account") Account account,Model model,HttpServletResponse response){
-        System.out.println("mail: " + account.getEmail());
-        Account getAcount = accountService.getAccountByEmail(account.getEmail());
+        List<Account> getAccount = accountService.getAccountByUsernameAndEmail(account.getUsername(),account.getEmail());
+        if(getAccount.size() == 0){
+            model.addAttribute("msg","Không tìm thấy tài khoản");
+            return "ForgotPassword";
+        }
         boolean rs = mailSender.sendOTP(account.getEmail(),response);
         if (rs){
-            currentAcount = getAcount;
-
-            return "redirect:/public/verifyOTP";
+            currentMapAccount.put(getAccount.get(0).getAccountId(),getAccount.get(0));
+            model.addAttribute("msgSC","Kiểm tra mail để xem mã OTP");
+            model.addAttribute("accountId",getAccount.get(0).getAccountId());
+            return "VerifyOTP";
         }
         else {
             model.addAttribute("msg","Không tìm thấy tài khoản");
@@ -169,28 +170,28 @@ public class AuthController {
         }
 
     }
-    @GetMapping("/verifyOTP")
-    public String verifyOTP(){
-        return "VerifyOTP";
-    }
+
     @PostMapping("/verifyOTP")
     public String checkOTP(@RequestParam("pr1") int num1, @RequestParam("pr2") int num2,
                            @RequestParam("pr3") int num3, @RequestParam("pr4") int num4,
                            @RequestParam("pr5") int num5, @RequestParam("pr6") int num6,
+                           @RequestParam("accountId") int accountId,
                            Model model, HttpServletRequest request){
         String otp = num1+""+num2+num3+num4+num5+num6;
-        boolean check = mailSender.verifyOtp(currentAcount.getEmail(),otp,request);
+        boolean check = mailSender.verifyOtp(currentMapAccount.get(accountId).getEmail(),otp,request);
         if(!check){
             model.addAttribute("msg","Nhập sai otp");
             return "VerifyOTP";
         }
         System.out.println(otp);
+        model.addAttribute("accountId",accountId);
         return "ChangePassword";
     }
     @PostMapping("/changePassword")
-    public String changePassword(@RequestParam("password")String newPassword){
-        accountService.changePassword(currentAcount,newPassword);
-        mailSender.sendPassword(currentAcount.getEmail(),newPassword);
+    public String changePassword(@RequestParam("password")String newPassword,
+                                 @RequestParam("accountId") int accountId){
+        accountService.changePassword(currentMapAccount.get(accountId),newPassword);
+        mailSender.sendPassword(currentMapAccount.get(accountId).getEmail(),newPassword);
         return "redirect:/public/login";
     }
 

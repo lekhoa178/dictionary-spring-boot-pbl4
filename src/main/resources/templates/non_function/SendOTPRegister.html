@@ -22,8 +22,27 @@
 </head>
 
 <body>
+<!-- Add this block in your signUp.html file to display the alert message -->
+
 
 <div class="limiter">
+    <div th:if="${msg}" class="alert alert-danger">
+        <div id="container-alert">
+            <div id="error-box">
+                <div class="dot" onclick="closeAleart()"></div>
+                <div class="dot two" onclick="closeAleart()"></div>
+                <div class="face2">
+                    <div class="eye"></div>
+                    <div class="eye right"></div>
+                    <div class="mouth sad"></div>
+                </div>
+                <div class="shadow move"></div>
+                <div class="message"><h1 class="alert">Error!</h1><p th:text="${msg}"></div>
+                <button class="button-box"><h1 class="red" onclick="closeAleart()">try again</h1></button>
+            </div>
+
+        </div>
+    </div>
     <div class="container-login100">
         <div class="wrap-login100">
             <div class="login100-pic js-tilt" data-tilt>
@@ -32,7 +51,7 @@
 
             <form class="login100-form validate-form" method="post" action="/public/sendOTP" >
 					<span class="login100-form-title">
-						Quên mật khẩu
+						Gửi mail đăng kí tài khoản
 					</span>
                 <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                     <input class="input100" type="text" name="email" placeholder="Email">
@@ -50,9 +69,9 @@
                 </div>
 
                 <div class="text-center p-t-136">
-                    <a class="txt2" href="/public/signup">
+                    <a class="txt2" href="/public/login">
                         <!--						<a class="txt2" th:href="@{/signUp.html}">-->
-                        Chưa có tài khoản,Tạo tài khoản
+                        Trở lại đăng nhập
                         <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                     </a>
                 </div>

@@ -22,6 +22,40 @@
 </head>
 
 <body>
+<div th:if="${msg}" class="alert alert-danger">
+    <div id="container-alert">
+        <div id="error-box">
+            <div class="dot" onclick="closeAleart()"></div>
+            <div class="dot two" onclick="closeAleart()"></div>
+            <div class="face2">
+                <div class="eye"></div>
+                <div class="eye right"></div>
+                <div class="mouth sad"></div>
+            </div>
+            <div class="shadow move"></div>
+            <div class="message"><h1 class="alert">Error!</h1><p th:text="${msg}"></div>
+            <button class="button-box"><h1 class="red" onclick="closeAleart()">try again</h1></button>
+        </div>
+
+    </div>
+</div>
+<div th:if="${msgSC}" class="alert alert-light">
+    <div id="container-success">
+        <div id="success-box">
+            <div class="dot" onclick="closeAlertSuccess()"></div>
+            <div class="dot two" onclick="closeAlertSuccess()"></div>
+            <div class="face">
+                <div class="eye"></div>
+                <div class="eye right"></div>
+                <div class="mouth happy"></div>
+            </div>
+            <div class="shadow scale"></div>
+            <div class="message"><h1 class="alert">Success!</h1><p th:text="${msgSC}"></p></div>
+            <button class="button-box"><h1 class="green" onclick="closeAlertSuccess()">continue</h1></button>
+        </div>
+    </div>
+
+</div>
 
 <div class="limiter">
     <div class="container-login100">
@@ -42,6 +76,7 @@
                     <input class="in-num" type="number" name="pr4" placeholder="_" >
                     <input class="in-num" type="number" name="pr5" placeholder="_" >
                     <input class="in-num" type="number" name="pr6" placeholder="_" >
+                    <input hidden="hidden" type="number" th:value="${accountId}" name="accountId">
                 </div>
 
                 <div class="container-login100-form-btn">
@@ -82,13 +117,14 @@
 <script th:src="@{/vendor/select2/select2.min.js}"></script>
 <!--	<script src="../static/vendor/tilt/tilt.jquery.min.js"></script>-->
 <script th:src="@{/vendor/tilt/tilt.jquery.min.js}"></script>
+<script th:src="@{/javascript/login.js}"></script>
+
 
 <script>
     $('.js-tilt').tilt({
         scale: 1.1
     })
 </script>
-<script src="../static/javascript/login.js"></script>
 
 </body>
 

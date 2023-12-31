@@ -127,6 +127,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public List<Account> searchAccountByEmail(String email) {
+        return accountRepository.searchAccountByEmail(email);
+    }
+
+    @Override
     public Account getAccountByEmail(String mail) {
         return accountRepository.findByEmail(mail);
     }
@@ -140,5 +145,15 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void updateProfile(String name, boolean gender, Date birthDate, String email) {
 
+    }
+
+    @Override
+    public List<Account> getAccountByUsernameAndEmail(String username, String email) {
+        return accountRepository.getAccountByUsernameAndEmail(username,email);
+    }
+
+    @Override
+    public List<Account> searchAccountByUsername(String username) {
+        return accountRepository.getAccountByUsername(username);
     }
 }

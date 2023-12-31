@@ -70,12 +70,12 @@
 					</span>
 
                 <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                    <input class="in-num" type="number" name="pr1" placeholder="_" >
-                    <input class="in-num" type="number" name="pr2" placeholder="_" >
-                    <input class="in-num" type="number" name="pr3" placeholder="_" >
-                    <input class="in-num" type="number" name="pr4" placeholder="_" >
-                    <input class="in-num" type="number" name="pr5" placeholder="_" >
-                    <input class="in-num" type="number" name="pr6" placeholder="_" >
+                    <input class="in-num" type="number" name="pr1" placeholder="_" id="input1" maxlength="1" oninput="jumpToNext(this)" >
+                    <input class="in-num" type="number" name="pr2" placeholder="_" id="input2" maxlength="1" oninput="jumpToNext(this)">
+                    <input class="in-num" type="number" name="pr3" placeholder="_" id="input3" maxlength="1" oninput="jumpToNext(this)">
+                    <input class="in-num" type="number" name="pr4" placeholder="_" id="input4" maxlength="1" oninput="jumpToNext(this)">
+                    <input class="in-num" type="number" name="pr5" placeholder="_" id="input5" maxlength="1" oninput="jumpToNext(this)">
+                    <input class="in-num" type="number" name="pr6" placeholder="_" id="input6" maxlength="1" >
                     <input hidden="hidden" type="number" th:value="${accountId}" name="accountId">
                 </div>
 

@@ -363,7 +363,6 @@ function showNotify(message) {
                 friendElement.innerHTML = contentMess;
                 friendChat.appendChild(friendElement);
                 friendChat.scrollTop = friendChat.scrollHeight;
-                refreshStyleSheet();
             }
             refreshStyleSheet();
         },

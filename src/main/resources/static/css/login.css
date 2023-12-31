@@ -510,7 +510,15 @@ input[type="number"] {
   top: 20%;
   z-index: 100;
 }
-
+#container-success{
+  position: fixed;
+  overflow: hidden;
+  width: 900px;
+  height: 300px;
+  right: 30%;
+  top: 20%;
+  z-index: 100;
+}
 h1 {
   font-size: 0.9em;
   font-weight: 100;
@@ -551,7 +559,7 @@ button,
   position: absolute;
   width: 35%;
   height: 100%;
-  left: 12%;
+  left: 50%;
   background: linear-gradient(to bottom right, #b0db7d 40%, #99dbb4 100%);
   border-radius: 20px;
   box-shadow: 5px 5px 20px rgba(203, 205, 211, 0.1);

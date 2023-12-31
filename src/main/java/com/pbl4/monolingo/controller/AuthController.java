@@ -53,8 +53,8 @@ public class AuthController {
     }
     @PostMapping("/signup")
     public String handleSignUp(@Valid @ModelAttribute("account") Account account,Model model){
-        Account checkAccount = accountService.searchAccountByUsername(account.getUsername()).get(0);
-        if(checkAccount == null){
+        List<Account> checkAccount = accountService.searchAccountByUsername(account.getUsername());
+        if(checkAccount.size() == 0){
             authenticationService.register(RegisterRequest.builder()
                     .username(account.getUsername())
                     .password(account.getPassword())
@@ -160,6 +160,7 @@ public class AuthController {
         boolean rs = mailSender.sendOTP(account.getEmail(),response);
         if (rs){
             currentMapAccount.put(getAccount.get(0).getAccountId(),getAccount.get(0));
+            model.addAttribute("msgSC","Kiểm tra mail để xem mã OTP");
             model.addAttribute("accountId",getAccount.get(0).getAccountId());
             return "VerifyOTP";
         }

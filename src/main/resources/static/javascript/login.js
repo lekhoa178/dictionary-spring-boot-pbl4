@@ -57,5 +57,12 @@
 })(jQuery);
 function closeAleart(){
     var containerAlert = document.getElementById("container-alert");
+
     containerAlert.remove();
+}
+function closeAlertSuccess(){
+    var containerAlertSuccess = document.getElementById("container-success");
+    if (containerAlertSuccess != null){
+        containerAlertSuccess.remove();
+    }
 }

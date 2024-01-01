@@ -17,14 +17,16 @@ public class Synset {
 
     @Column(name = "definition")
     private String definition;
-
-    public Synset() {}
-
     public Synset(BigDecimal synsetId, String definition) {
         this.synsetId = synsetId;
         this.definition = definition;
     }
 
+    public Synset() {}
+
+    public void setDefinition(String definition) {
+        this.definition = definition;
+    }
     public BigDecimal getSynsetId() {
         return this.synsetId;
     }
@@ -35,10 +37,6 @@ public class Synset {
 
     public String getDefinition() {
         return this.definition;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
     }
 
     @Override

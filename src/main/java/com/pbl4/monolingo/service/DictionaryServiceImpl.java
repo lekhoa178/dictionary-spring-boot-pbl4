@@ -12,11 +12,11 @@ import java.util.*;
 @Service
 public class DictionaryServiceImpl implements DictionaryService {
 
+    private final DerivedRepository derivedRepository;
     private final LexiconRepository lexiconRepository;
     private final SynsetRepository synsetRepository;
     private final SimilarRepository similarRepository;
     private final AntonymRepository antonymRepository;
-    private final DerivedRepository derivedRepository;
     @Autowired
     public DictionaryServiceImpl(LexiconRepository lexiconRepository,
                                  SynsetRepository synsetRepository,
@@ -29,33 +29,6 @@ public class DictionaryServiceImpl implements DictionaryService {
         this.similarRepository = similarRepository;
         this.antonymRepository = antonymRepository;
         this.derivedRepository = derivedRepository;
-    }
-
-    @Override
-    public List<Synset> getSynsetsByWord(String word) {
-        return lexiconRepository.findByWord(word).stream().map(Lexicon::getSynset).toList();
-    }
-
-    @Override
-    public List<Lexicon> searchByWord(String word) {
-        return lexiconRepository.findByWordStartsWith(word);
-    }
-    @Override
-    public List<Lexicon> searchByWord(String word,int limit) {
-        List<String> listWord = lexiconRepository.findDistinctByWordStartsWith(word).stream().limit(limit).toList();
-        System.out.println(listWord);
-        List<Lexicon> rs = new ArrayList<>();
-        for (String vocab:
-                listWord) {
-            rs.addAll(lexiconRepository.findByWord(vocab).stream().limit(1).toList());
-        }
-        System.out.println(rs);
-        return rs;
-    }
-
-    @Override
-    public List<String> searchDistinctByWord(String word) {
-        return lexiconRepository.findDistinctByWordStartsWith(word);
     }
 
     @Override
@@ -86,27 +59,33 @@ public class DictionaryServiceImpl implements DictionaryService {
         return getDefDetailMap(defMap);
 
     }
-
-
     @Override
-    public List<Lexicon> getSimilarsBySynsetId(BigDecimal synsetId) {
-
-        List<BigDecimal> synsetIds = similarRepository
-                .findByIdSynsetId1(synsetId)
-                .stream().map(sim -> sim.getId().getSynsetId2()).toList();
-
-        return getLexiconsBySynsetsId(synsetIds);
-
+    public List<Synset> getSynsetsByWord(String word) {
+        return lexiconRepository.findByWord(word).stream().map(Lexicon::getSynset).toList();
     }
 
     @Override
-    public List<Lexicon> getAntonymsBySynsetId(BigDecimal synsetId) {
-        List<BigDecimal> synsetIds = antonymRepository
-                .findByIdLexiconId1SynsetId(synsetId)
-                .stream().map(ant -> ant.getId().getLexiconId2().getSynsetId()).toList();
-
-        return getLexiconsBySynsetsId(synsetIds);
+    public List<Lexicon> searchByWord(String word) {
+        return lexiconRepository.findByWordStartsWith(word);
     }
+    @Override
+    public List<Lexicon> searchByWord(String word,int limit) {
+        List<String> listWord = lexiconRepository.findDistinctByWordStartsWith(word).stream().limit(limit).toList();
+        System.out.println(listWord);
+        List<Lexicon> rs = new ArrayList<>();
+        for (String vocab:
+                listWord) {
+            rs.addAll(lexiconRepository.findByWord(vocab).stream().limit(1).toList());
+        }
+        System.out.println(rs);
+        return rs;
+    }
+
+    @Override
+    public List<String> searchDistinctByWord(String word) {
+        return lexiconRepository.findDistinctByWordStartsWith(word);
+    }
+
 
     @Override
     public List<Lexicon> getDerivedBySynsetId(BigDecimal synsetId) {
@@ -128,6 +107,26 @@ public class DictionaryServiceImpl implements DictionaryService {
 
         return synset;
     }
+    @Override
+    public List<Lexicon> getSimilarsBySynsetId(BigDecimal synsetId) {
+
+        List<BigDecimal> synsetIds = similarRepository
+                .findByIdSynsetId1(synsetId)
+                .stream().map(sim -> sim.getId().getSynsetId2()).toList();
+
+        return getLexiconsBySynsetsId(synsetIds);
+
+    }
+
+    @Override
+    public List<Lexicon> getAntonymsBySynsetId(BigDecimal synsetId) {
+        List<BigDecimal> synsetIds = antonymRepository
+                .findByIdLexiconId1SynsetId(synsetId)
+                .stream().map(ant -> ant.getId().getLexiconId2().getSynsetId()).toList();
+
+        return getLexiconsBySynsetsId(synsetIds);
+    }
+
 
     private List<Synset> getSynsetsByIds(List<BigDecimal> ids) {
         return ids.stream().map(this::getSynsetById)

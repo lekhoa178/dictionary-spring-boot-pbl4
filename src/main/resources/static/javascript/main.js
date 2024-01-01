@@ -131,65 +131,59 @@ document.addEventListener('click', (e) => {
         searchResults.classList.add('hidden');
 });
 
-searchBar.addEventListener('keydown', (event) => {
-    const oldOption = searchResults.querySelector(
-        `.search--result--${searchSelected}`
-    );
-    oldOption?.classList.remove('search--result--selected');
 
-    if (event.key === 'ArrowUp') {
-        if (searchSelected === 0) searchSelected = searchData.length - 1;
-        else searchSelected--;
-    } else if (event.key === 'ArrowDown') {
-        searchSelected = (searchSelected + 1) % searchData.length;
+
+async function AJAX(fragment, json = false) {
+    // var token = sessionStorage.getItem('jwtToken');
+    // if (token) {
+    //   $.ajaxSetup({
+    //     headers: {
+    //       Authorization: 'Bearer ' + token,
+    //     },
+    //   });
+    // }
+    // console.log('Token: ', token);
+
+    try {
+        const response = await fetch(fragment, {
+            method: 'GET',
+            headers: {
+                'request-source': 'JS',
+            },
+        });
+
+        const data = json ? await response.json() : await response.text();
+
+        if (!response.ok) throw new Error('Error response');
+        return data;
+    } catch (e) {
+        console.error(e.message);
+    }
+}
+// ----------------- UTILITY --------------------
+searchResults.addEventListener('click', async function (e) {
+    const el = e.target.closest('.search--result');
+
+    if (el == null) return;
+
+    const word = e.target.innerText.replaceAll(' ', '_');
+    searchBar.value = e.target.innerText;
+
+    history.pushState(history.state, document.title, `/meaning/${word}`);
+    fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
+
+    const path = `/javascript/fragments/meaning.js`;
+    if (loadedScript.has(path)) {
+        return;
     }
 
-    const newOption = searchResults.querySelector(
-        `.search--result--${searchSelected}`
-    );
-    newOption?.classList.add('search--result--selected');
-});
+    const script = document.createElement('script');
+    const text = document.createTextNode(await AJAX(path));
+    script.appendChild(text);
+    fragmentContainer.append(script);
 
-searchBar.addEventListener('input', async function (e) {
-    if (e.target.value) {
-        if (searchResults.classList.contains('hidden')) {
-            searchResults.classList.remove('hidden');
-            searchSelected = 0;
-        }
-
-    const word = e.target.value.replaceAll('/', '');
-    const data = await AJAX(`/dictionary/search-web/${word}/10`, true);
-    searchData = data;
-
-        let results = '';
-
-        for (let i = 0; i < data.length; ++i) {
-            results += `
-                        <li class="search--result
-                            ${i === 0 ? 'search--result--selected' : ''}
-                            search--result--${i}">
-                            ${data[i].replaceAll('_', ' ')}
-                        </li>`;
-        }
-
-        if (data.length === 0) {
-            results += `
-                        <li class="search--result
-                            search--result--selected
-                            search--result--0">
-                            ${e.target.value}
-                        </li>`;
-        }
-
-        const oldOption = searchResults.querySelector(
-            `.search--result--${searchSelected}`
-        );
-        oldOption?.classList.remove('search--result--selected');
-        searchSelected = 0;
-        searchResults.innerHTML = results;
-    } else {
-        searchResults.classList.add('hidden');
-    }
+    searchBar.blur();
+    searchResults.classList.add('hidden');
 });
 searchForm.addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -221,58 +215,64 @@ searchForm.addEventListener('submit', async function (e) {
 
     searchResults.classList.add('hidden');
 });
+searchBar.addEventListener('input', async function (e) {
+    if (e.target.value) {
+        if (searchResults.classList.contains('hidden')) {
+            searchResults.classList.remove('hidden');
+            searchSelected = 0;
+        }
 
-searchResults.addEventListener('click', async function (e) {
-    const el = e.target.closest('.search--result');
+        const word = e.target.value.replaceAll('/', '');
+        const data = await AJAX(`/dictionary/search-web/${word}/10`, true);
+        searchData = data;
 
-    if (el == null) return;
+        let results = '';
 
-    const word = e.target.innerText.replaceAll(' ', '_');
-    searchBar.value = e.target.innerText;
+        for (let i = 0; i < data.length; ++i) {
+            results += `
+                        <li class="search--result
+                            ${i === 0 ? 'search--result--selected' : ''}
+                            search--result--${i}">
+                            ${data[i].replaceAll('_', ' ')}
+                        </li>`;
+        }
 
-    history.pushState(history.state, document.title, `/meaning/${word}`);
-    fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
+        if (data.length === 0) {
+            results += `
+                        <li class="search--result
+                            search--result--selected
+                            search--result--0">
+                            ${e.target.value}
+                        </li>`;
+        }
 
-    const path = `/javascript/fragments/meaning.js`;
-    if (loadedScript.has(path)) {
-        return;
+        const oldOption = searchResults.querySelector(
+            `.search--result--${searchSelected}`
+        );
+        oldOption?.classList.remove('search--result--selected');
+        searchSelected = 0;
+        searchResults.innerHTML = results;
+    } else {
+        searchResults.classList.add('hidden');
     }
-
-    const script = document.createElement('script');
-    const text = document.createTextNode(await AJAX(path));
-    script.appendChild(text);
-    fragmentContainer.append(script);
-
-    searchBar.blur();
-    searchResults.classList.add('hidden');
 });
 
-// ----------------- UTILITY --------------------
+searchBar.addEventListener('keydown', (event) => {
+    const oldOption = searchResults.querySelector(
+        `.search--result--${searchSelected}`
+    );
+    oldOption?.classList.remove('search--result--selected');
 
-async function AJAX(fragment, json = false) {
-    // var token = sessionStorage.getItem('jwtToken');
-    // if (token) {
-    //   $.ajaxSetup({
-    //     headers: {
-    //       Authorization: 'Bearer ' + token,
-    //     },
-    //   });
-    // }
-    // console.log('Token: ', token);
-
-    try {
-        const response = await fetch(fragment, {
-            method: 'GET',
-            headers: {
-                'request-source': 'JS',
-            },
-        });
-
-        const data = json ? await response.json() : await response.text();
-
-        if (!response.ok) throw new Error('Error response');
-        return data;
-    } catch (e) {
-        console.error(e.message);
+    if (event.key === 'ArrowUp') {
+        if (searchSelected === 0) searchSelected = searchData.length - 1;
+        else searchSelected--;
+    } else if (event.key === 'ArrowDown') {
+        searchSelected = (searchSelected + 1) % searchData.length;
     }
-}
+
+    const newOption = searchResults.querySelector(
+        `.search--result--${searchSelected}`
+    );
+    newOption?.classList.add('search--result--selected');
+});
+

@@ -22,13 +22,13 @@ public class Lexicon {
 
     @Column(name = "word")
     private String word;
+
+    public Lexicon() {}
     public Lexicon(LexiconId id, Synset synset, String word) {
         this.id = id;
         this.synset = synset;
         this.word = word;
     }
-
-    public Lexicon() {}
 
 
     public void setId(LexiconId id) {

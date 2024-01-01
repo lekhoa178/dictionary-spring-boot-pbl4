@@ -185,36 +185,7 @@ searchResults.addEventListener('click', async function (e) {
     searchBar.blur();
     searchResults.classList.add('hidden');
 });
-searchForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
 
-    if (searchBar.value.length === 0) return;
-
-    let word;
-    if (searchData.length !== 0) {
-        searchBar.value = searchData[searchSelected];
-        word = searchData[searchSelected].replace(' ', '_');
-    } else word = searchBar.value.replaceAll(' ', '_');
-
-    history.pushState(history.state, document.title, `/meaning/${word}`);
-    fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
-
-    const path = `/javascript/fragments/meaning.js`;
-    if (loadedScript.has(path)) {
-        return;
-    }
-
-    const script = document.createElement('script');
-    const text = document.createTextNode(await AJAX(path));
-    script.appendChild(text);
-    fragmentContainer.append(script);
-
-    loadedScript.add(path);
-
-    searchBar.blur();
-
-    searchResults.classList.add('hidden');
-});
 searchBar.addEventListener('input', async function (e) {
     if (e.target.value) {
         if (searchResults.classList.contains('hidden')) {
@@ -256,7 +227,36 @@ searchBar.addEventListener('input', async function (e) {
         searchResults.classList.add('hidden');
     }
 });
+searchForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
+    if (searchBar.value.length === 0) return;
+
+    let word;
+    if (searchData.length !== 0) {
+        searchBar.value = searchData[searchSelected];
+        word = searchData[searchSelected].replace(' ', '_');
+    } else word = searchBar.value.replaceAll(' ', '_');
+
+    history.pushState(history.state, document.title, `/meaning/${word}`);
+    fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
+
+    const path = `/javascript/fragments/meaning.js`;
+    if (loadedScript.has(path)) {
+        return;
+    }
+
+    const script = document.createElement('script');
+    const text = document.createTextNode(await AJAX(path));
+    script.appendChild(text);
+    fragmentContainer.append(script);
+
+    loadedScript.add(path);
+
+    searchBar.blur();
+
+    searchResults.classList.add('hidden');
+});
 searchBar.addEventListener('keydown', (event) => {
     const oldOption = searchResults.querySelector(
         `.search--result--${searchSelected}`

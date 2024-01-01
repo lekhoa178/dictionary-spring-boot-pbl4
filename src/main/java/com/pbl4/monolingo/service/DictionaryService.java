@@ -9,19 +9,19 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface DictionaryService {
-    List<Lexicon> searchByWord(String word);
-    List<Lexicon> searchByWord(String word,int limit);
-    List<Synset> getSynsetsByWord(String word);
 
     List<String> searchDistinctByWord(String word);
+
     HashMap<String, List<DefinitionDetailView>> getDefinitionByWord(String word);
+    List<Lexicon> searchByWord(String word);
 
     List<Lexicon> getSimilarsBySynsetId(BigDecimal synsetId);
 
     List<Lexicon> getAntonymsBySynsetId(BigDecimal synsetId);
 
     List<Lexicon> getDerivedBySynsetId(BigDecimal synsetId);
-
+    List<Synset> getSynsetsByWord(String word);
+    List<Lexicon> searchByWord(String word,int limit);
 
 
 

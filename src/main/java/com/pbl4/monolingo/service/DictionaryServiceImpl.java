@@ -126,13 +126,6 @@ public class DictionaryServiceImpl implements DictionaryService {
 
         return getLexiconsBySynsetsId(synsetIds);
     }
-
-
-    private List<Synset> getSynsetsByIds(List<BigDecimal> ids) {
-        return ids.stream().map(this::getSynsetById)
-                .toList();
-    }
-
     private List<Lexicon> getLexiconsBySynsetsId(List<BigDecimal> ids) {
         List<Lexicon> results = new ArrayList<>();
 
@@ -142,6 +135,13 @@ public class DictionaryServiceImpl implements DictionaryService {
 
         return results;
     }
+
+
+    private List<Synset> getSynsetsByIds(List<BigDecimal> ids) {
+        return ids.stream().map(this::getSynsetById)
+                .toList();
+    }
+
 
     private HashMap<String, List<DefinitionDetailView>> getDefDetailMap(HashMap<String, List<Synset>> defMap) {
         HashMap<String, List<DefinitionDetailView>> results = new HashMap<>();

@@ -23,7 +23,7 @@ public class DailyMission {
     @JoinColumn(name = "mission_id")
     private Mission mission;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("accountId")
     @JoinColumn(name = "account_id")
     private Account account;

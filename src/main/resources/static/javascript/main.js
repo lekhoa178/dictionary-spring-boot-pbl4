@@ -53,7 +53,6 @@ menu.addEventListener('click', async function (e) {
     if (target == null) return;
 
     let fragment = target.id.replace('fragment-', '');
-    const baseFragment = fragment.split('/')[0];
     if (fragment === 'more') {
         const subTarget = e.target.closest('.menu--option--item');
         if (subTarget == null)
@@ -66,6 +65,8 @@ menu.addEventListener('click', async function (e) {
             return;
         }
     }
+    const baseFragment = fragment.split('/')[0];
+
     if (target.classList.contains('.menu--tab-active')) return;
 
     for (let i = 0; i < tabs.length; ++i) {
@@ -130,23 +131,59 @@ document.addEventListener('click', (e) => {
         searchResults.classList.add('hidden');
 });
 
-searchBar.addEventListener('keydown', (event) => {
-    const oldOption = searchResults.querySelector(
-        `.search--result--${searchSelected}`
-    );
-    oldOption?.classList.remove('search--result--selected');
 
-    if (event.key === 'ArrowUp') {
-        if (searchSelected === 0) searchSelected = searchData.length - 1;
-        else searchSelected--;
-    } else if (event.key === 'ArrowDown') {
-        searchSelected = (searchSelected + 1) % searchData.length;
+
+async function AJAX(fragment, json = false) {
+    // var token = sessionStorage.getItem('jwtToken');
+    // if (token) {
+    //   $.ajaxSetup({
+    //     headers: {
+    //       Authorization: 'Bearer ' + token,
+    //     },
+    //   });
+    // }
+    // console.log('Token: ', token);
+
+    try {
+        const response = await fetch(fragment, {
+            method: 'GET',
+            headers: {
+                'request-source': 'JS',
+            },
+        });
+
+        const data = json ? await response.json() : await response.text();
+
+        if (!response.ok) throw new Error('Error response');
+        return data;
+    } catch (e) {
+        console.error(e.message);
+    }
+}
+// ----------------- UTILITY --------------------
+searchResults.addEventListener('click', async function (e) {
+    const el = e.target.closest('.search--result');
+
+    if (el == null) return;
+
+    const word = e.target.innerText.replaceAll(' ', '_');
+    searchBar.value = e.target.innerText;
+
+    history.pushState(history.state, document.title, `/meaning/${word}`);
+    fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
+
+    const path = `/javascript/fragments/meaning.js`;
+    if (loadedScript.has(path)) {
+        return;
     }
 
-    const newOption = searchResults.querySelector(
-        `.search--result--${searchSelected}`
-    );
-    newOption?.classList.add('search--result--selected');
+    const script = document.createElement('script');
+    const text = document.createTextNode(await AJAX(path));
+    script.appendChild(text);
+    fragmentContainer.append(script);
+
+    searchBar.blur();
+    searchResults.classList.add('hidden');
 });
 
 searchBar.addEventListener('input', async function (e) {
@@ -156,9 +193,9 @@ searchBar.addEventListener('input', async function (e) {
             searchSelected = 0;
         }
 
-    const word = e.target.value.replaceAll('/', '');
-    const data = await AJAX(`/dictionary/search-web/${word}/10`, true);
-    searchData = data;
+        const word = e.target.value.replaceAll('/', '');
+        const data = await AJAX(`/dictionary/search-web/${word}/10`, true);
+        searchData = data;
 
         let results = '';
 
@@ -220,48 +257,22 @@ searchForm.addEventListener('submit', async function (e) {
 
     searchResults.classList.add('hidden');
 });
+searchBar.addEventListener('keydown', (event) => {
+    const oldOption = searchResults.querySelector(
+        `.search--result--${searchSelected}`
+    );
+    oldOption?.classList.remove('search--result--selected');
 
-searchResults.addEventListener('click', async function (e) {
-    const el = e.target.closest('.search--result');
+    if (event.key === 'ArrowUp') {
+        if (searchSelected === 0) searchSelected = searchData.length - 1;
+        else searchSelected--;
+    } else if (event.key === 'ArrowDown') {
+        searchSelected = (searchSelected + 1) % searchData.length;
+    }
 
-    if (el == null) return;
-
-    const word = e.target.innerText.replaceAll(' ', '_');
-    searchBar.value = e.target.innerText;
-
-    history.pushState(history.state, document.title, `/meaning/${word}`);
-    fragmentContainer.innerHTML = await AJAX(`/meaning/${word}`, false);
-
-    searchBar.blur();
-    searchResults.classList.add('hidden');
+    const newOption = searchResults.querySelector(
+        `.search--result--${searchSelected}`
+    );
+    newOption?.classList.add('search--result--selected');
 });
 
-// ----------------- UTILITY --------------------
-
-async function AJAX(fragment, json = false) {
-    // var token = sessionStorage.getItem('jwtToken');
-    // if (token) {
-    //   $.ajaxSetup({
-    //     headers: {
-    //       Authorization: 'Bearer ' + token,
-    //     },
-    //   });
-    // }
-    // console.log('Token: ', token);
-
-    try {
-        const response = await fetch(fragment, {
-            method: 'GET',
-            headers: {
-                'request-source': 'JS',
-            },
-        });
-
-        const data = json ? await response.json() : await response.text();
-
-        if (!response.ok) throw new Error('Error response');
-        return data;
-    } catch (e) {
-        console.error(e.message);
-    }
-}

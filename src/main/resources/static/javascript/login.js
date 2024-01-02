@@ -55,3 +55,29 @@
     
 
 })(jQuery);
+function closeAleart(){
+    var containerAlert = document.getElementById("container-alert");
+
+    containerAlert.remove();
+}
+function closeAlertSuccess(){
+    var containerAlertSuccess = document.getElementById("container-success");
+    if (containerAlertSuccess != null){
+        containerAlertSuccess.remove();
+    }
+}
+function jumpToNext(currentInput) {
+    var maxLength = parseInt(currentInput.getAttribute('maxlength'));
+    var currentLength = currentInput.value.length;
+
+    if (currentLength >= maxLength) {
+        // Move focus to the next input field
+        var nextInputId = parseInt(currentInput.id.replace(/\D/g, '')) + 1; // Increment the number in the ID
+        console.log("Next input id",nextInputId);
+        var nextInput = document.getElementById('input' + nextInputId);
+
+        if (nextInput) {
+            nextInput.focus();
+        }
+    }
+}

@@ -22,7 +22,23 @@
 </head>
 
 <body>
+<div th:if="${msg}" class="alert alert-danger">
+    <div id="container-alert">
+        <div id="error-box">
+            <div class="dot" onclick="closeAleart()"></div>
+            <div class="dot two" onclick="closeAleart()"></div>
+            <div class="face2">
+                <div class="eye"></div>
+                <div class="eye right"></div>
+                <div class="mouth sad"></div>
+            </div>
+            <div class="shadow move"></div>
+            <div class="message"><h1 class="alert">Error!</h1><p th:text="${msg}"></div>
+            <button class="button-box"><h1 class="red" onclick="closeAleart()">try again</h1></button>
+        </div>
 
+    </div>
+</div>
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100">
@@ -36,12 +52,13 @@
 					</span>
 
                 <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                    <input class="in-num" type="number" name="pr1" placeholder="_" >
-                    <input class="in-num" type="number" name="pr2" placeholder="_" >
-                    <input class="in-num" type="number" name="pr3" placeholder="_" >
-                    <input class="in-num" type="number" name="pr4" placeholder="_" >
-                    <input class="in-num" type="number" name="pr5" placeholder="_" >
-                    <input class="in-num" type="number" name="pr6" placeholder="_" >
+                    <input class="in-num" type="number" name="pr1" placeholder="_" id="input1" maxlength="1" oninput="jumpToNext(this)" >
+                    <input class="in-num" type="number" name="pr2" placeholder="_" id="input2" maxlength="1" oninput="jumpToNext(this)">
+                    <input class="in-num" type="number" name="pr3" placeholder="_" id="input3" maxlength="1" oninput="jumpToNext(this)">
+                    <input class="in-num" type="number" name="pr4" placeholder="_" id="input4" maxlength="1" oninput="jumpToNext(this)">
+                    <input class="in-num" type="number" name="pr5" placeholder="_" id="input5" maxlength="1" oninput="jumpToNext(this)">
+                    <input class="in-num" type="number" name="pr6" placeholder="_" id="input6" maxlength="1" >
+                    <input type="hidden" name="email" th:value="${email != null ? email : null}">
                 </div>
 
                 <div class="container-login100-form-btn">
@@ -82,13 +99,14 @@
 <script th:src="@{/vendor/select2/select2.min.js}"></script>
 <!--	<script src="../static/vendor/tilt/tilt.jquery.min.js"></script>-->
 <script th:src="@{/vendor/tilt/tilt.jquery.min.js}"></script>
+<script th:src="@{/javascript/login.js}"></script>
+
 
 <script>
     $('.js-tilt').tilt({
         scale: 1.1
     })
 </script>
-<script src="../static/javascript/login.js"></script>
 
 </body>
 

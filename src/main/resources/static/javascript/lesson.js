@@ -279,12 +279,14 @@ async function setupRound() {
 
     console.log(jsonQuestions);
 
-    for (let i = 0; i < jsonQuestions.sentences.length; ++i) {
-      questions.push(
-        jsonQuestions.sentences[i].English +
-          '/' +
-          jsonQuestions.sentences[i].Vietnamese
-      );
+    for (const sentences in jsonQuestions) {
+      for (const sen of jsonQuestions[sentences]) {
+        questions.push(
+            sen.English +
+            '/' +
+            sen.Vietnamese
+        );
+      }
     }
 
     sortRandomly(jsonQuestions);

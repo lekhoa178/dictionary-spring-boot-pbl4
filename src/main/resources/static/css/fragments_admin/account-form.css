@@ -34,9 +34,11 @@ html, body {
     border-bottom: 1px solid black;
     outline: none;
 }
+
 .field {
     border: none;
 }
+
 .button-field {
     display: flex;
     justify-content: right;

@@ -38,6 +38,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/public/**")
                 .permitAll()
                 .requestMatchers("/template/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -14,11 +14,11 @@ public class Similar {
     })
     private SynsetRelId id;
 
+
+    public Similar() {}
     public Similar(SynsetRelId id) {
         this.id = id;
     }
-
-    public Similar() {}
 
     public SynsetRelId getId() {
         return id;

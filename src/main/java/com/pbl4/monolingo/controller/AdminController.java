@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -50,6 +51,11 @@ public class AdminController {
     public void initBinder(WebDataBinder dataBinder) {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         dataBinder.registerCustomEditor(String.class ,stringTrimmerEditor);
+    }
+
+    @GetMapping("")
+    public String showAdmin(RedirectAttributes redirectAttributes) {
+        return "redirect:/admin/account";
     }
 
     @GetMapping("/account")
@@ -177,38 +183,38 @@ public class AdminController {
         return "fragments_admin/account-form";
     }
 
-    @PostMapping("/account/delete")
-
-    public String delete(@RequestParam("accountId") int accountId, Model model) {
-        accountService.deleteAccountById(accountId);
-        Page<Account> pages = accountService.getAccountWithPage(0, 10);
-        List<Account> accounts = pages.getContent();
-
-        model.addAttribute("accounts", accounts);
-        model.addAttribute("totalPage", pages.getTotalPages());
-        model.addAttribute("currentPage", 0);
-
-        return "fragments_admin/account";
-    }
-
-    @PostMapping("/account/deleteMany")
-
-    public String deleteMany(Model model, @RequestParam("selected-rows") List<Integer> accountIds) {
-
-        if (!accountIds.isEmpty()) {
-            for (int accountId : accountIds) {
-                accountService.deleteAccountById(accountId);
-            }
-        }
-        Page<Account> pages = accountService.getAccountWithPage(0, 10);
-        List<Account> accounts = pages.getContent();
-
-        model.addAttribute("accounts", accounts);
-        model.addAttribute("totalPage", pages.getTotalPages());
-        model.addAttribute("currentPage", 0);
-
-        return "fragments_admin/account";
-    }
+//    @PostMapping("/account/delete")
+//
+//    public String delete(@RequestParam("accountId") int accountId, Model model) {
+//        accountService.deleteAccountById(accountId);
+//        Page<Account> pages = accountService.getAccountWithPage(0, 10);
+//        List<Account> accounts = pages.getContent();
+//
+//        model.addAttribute("accounts", accounts);
+//        model.addAttribute("totalPage", pages.getTotalPages());
+//        model.addAttribute("currentPage", 0);
+//
+//        return "fragments_admin/account";
+//    }
+//
+//    @PostMapping("/account/deleteMany")
+//
+//    public String deleteMany(Model model, @RequestParam("selected-rows") List<Integer> accountIds) {
+//
+//        if (!accountIds.isEmpty()) {
+//            for (int accountId : accountIds) {
+//                accountService.deleteAccountById(accountId);
+//            }
+//        }
+//        Page<Account> pages = accountService.getAccountWithPage(0, 10);
+//        List<Account> accounts = pages.getContent();
+//
+//        model.addAttribute("accounts", accounts);
+//        model.addAttribute("totalPage", pages.getTotalPages());
+//        model.addAttribute("currentPage", 0);
+//
+//        return "fragments_admin/account";
+//    }
 
     @PostMapping("/account/save")
     public String saveAccount(@ModelAttribute("account") Account account) {
@@ -346,7 +352,6 @@ public class AdminController {
 
     @PostMapping("/mission/save")
     public String saveMission(Model model, Principal principal, @Valid @ModelAttribute("mission") Mission mission, BindingResult bindingResult) {
-        System.out.println(mission);
         if (bindingResult.hasErrors()){
             return "fragments_admin/mission-form";
         }

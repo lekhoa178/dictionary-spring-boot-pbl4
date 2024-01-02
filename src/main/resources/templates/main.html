@@ -16,6 +16,7 @@
     <link rel="stylesheet" th:href="@{/css/fragments/storeStyle.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/searchFriend.css}">
     <link rel="stylesheet" th:href="@{/css/util.css}">
+    <link id="ChatStyleSheet" rel="stylesheet" th:href="@{/css/chatWindow.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/missionStyle.css}">
 
     <title>Monolingo - Học tiếng anh vui vẻ</title>
@@ -26,6 +27,9 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
     <script defer th:src="@{/javascript/main.js}"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script th:src="@{/javascript/chat.js}"></script>
 
 </head>
 <div id="metadata" th:data-account-id="${accountId}"></div>
@@ -81,7 +85,7 @@
             <span class="menu--tabs-text ">XEM THÊM</span>
             <div class="menu-content">
                 <a id="fragment-profile" class="menu--option--item">
-                    <h3 class="menu--tabs-text">Tạo hồ sơ</h3>
+                    <h3 class="menu--tabs-text">Hồ sơ</h3>
                     <img th:src="@{/img/boy.png}" class="icon--option" alt="">
                 </a>
                 <a class="menu--option--item">
@@ -116,7 +120,7 @@
                            name="word"
                            class="search--bar"
                            placeholder="Tìm kiếm từ vựng"
-                           autocomplete="false"
+                           autocomplete="off"
                            maxlength="50">
 
                     <div class="search--results-panel">
@@ -169,6 +173,7 @@
             </div>
 
 
+
         </div>
     </div>
 
@@ -178,7 +183,7 @@
         </div>
 
         <aside class="aside-container">
-            <div class="mission-container">
+            <div class="mission-container" id="mission-container-side">
                 <div class="mission--header">
                     <h2>Nhiệm Vụ Hằng Ngày</h2>
                     <a href="#" class="mission--header-detail">Xem tất cả</a>
@@ -196,7 +201,7 @@
 
                         <div class="mission--progress-bound">
                             <div class="mission--progress-bar">
-                                <div class="mission--progress" th:style="|width: ${mission.getProgress() / mission.getMission().getTarget() * 100}%|"></div>
+                                <div class="mission--progress" th:style="|width: ${mission.getProgress() / mission.getMission().getTarget() * 100}%; max-width:100%|" style="max-width: 100% !important;"></div>
                                 <h3 class="mission--progress-text" th:text="${mission.getProgress()} + '/' + ${#strings.toString(mission.getMission().getTarget())}"></h3>
                             </div>
 
@@ -209,8 +214,46 @@
                 </div>
 
             </div>
-        </aside>
 
+        </aside>
+        <div class="friend-icon-toggle " id="show-follow-button" onclick="openPanelFollow()">
+            <img th:src="@{/img/group.png}">
+        </div>
+        <div class="chat-container-message">
+        </div>
+
+        <div class="following-container" id="follow-panel" hidden>
+            <div class="friend-follow" th:if="${current}">
+                <div class="friend-follower">
+                    <div class="header-follow" style="display: flex;align-items: center;padding-top: 15px;margin-bottom: 15px;justify-content: space-between">
+                        <div style="display: flex;align-items: center">
+                            <p style="font-weight: bold; font-size: 20px;padding-left: 30px" >
+                                Đang theo dõi
+                            </p>
+                            <img th:src="@{/img/interview.png}" style="width: 30px;object-fit: contain;margin-left: 10px">
+                        </div>
+                        <img th:src="@{/img/close.png}" style="width: 20px;margin-right: 30px;cursor: pointer" onclick="closePanelFollow()">
+
+                    </div>
+
+                    <div class="friend--followers" th:each="friendExp, stat : ${friendsExps}" style="padding-left: 15px">
+                        <div
+                                class="friend--follower"
+                                th:data-id="${friendExp.getFriend().getId().getFollowingId()}"
+                        >
+                            <div class="friend--follower-index" th:text="${stat.index + 1}"></div>
+                            <p
+                                class="friend--follower-name"
+                                th:text="${friendExp.getFriend().getFollowing().getName()}"
+                            ></p>
+                            <img class ="chat-friend" th:src="@{/img/chat.png}" style="width: 30px;object-fit: contain" th:data-friend-id="${friendExp.getFriend().getId().getFollowingId()}" onclick="handleOnclickChatFriend(event)">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
 </main>

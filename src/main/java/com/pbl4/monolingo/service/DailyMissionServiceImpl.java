@@ -103,7 +103,7 @@ public class DailyMissionServiceImpl implements DailyMissionService {
     }
 
     private boolean isCorrect(DailyMission dailyMission) {
-        return dailyMission.getProgress().equals(dailyMission.getMission().getTarget());
+        return dailyMission.getProgress() >= (dailyMission.getMission().getTarget());
     }
 
 }

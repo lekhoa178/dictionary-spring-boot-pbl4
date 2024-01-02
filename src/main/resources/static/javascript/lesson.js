@@ -22,7 +22,7 @@ let answerResults = [];
 let orViSentence = '';
 let correctAns = 0;
 let progress = 0;
-let totalQuestion = 3;
+let totalQuestion = 2;
 let heart = document.querySelector('.resource--items-text-heart');
 let type = 0;
 
@@ -386,7 +386,7 @@ async function AJAX(fragment, json = false) {
   }
 }
 function closeAlertSuccess(){
-  var containerAlertSuccess = document.getElementById("container-success");
+  var containerAlertSuccess = document.getElementById("success-box");
   if (containerAlertSuccess != null){
     containerAlertSuccess.remove();
   }

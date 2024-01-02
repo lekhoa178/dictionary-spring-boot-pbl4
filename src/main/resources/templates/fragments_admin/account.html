@@ -8,9 +8,8 @@
 
             </div>
             <div class="action-field">
-                <!--                    <a id="add-btn" th:href ="${'/admin/account/add'}">Add</a>-->
                 <button id="add-btn" class="action-btn action-add">Add</button>
-                <button type="button" id="delete-many-btn" class="action-btn action-delete-many">Delete All</button>
+<!--                <button type="button" id="delete-many-btn" class="action-btn action-delete-many">Delete All</button>-->
             </div>
         </div>
         <div class="table-container">
@@ -18,7 +17,6 @@
                 <table class="account-list">
                     <thead>
                     <tr>
-                        <th></th>
                         <th>UID</th>
                         <th>Tài khoản</th>
                         <th>Email</th>
@@ -28,8 +26,8 @@
                     </thead>
                     <tbody>
                     <tr th:each="account : ${accounts}">
-                        <th><input id="delete-checkbox" class="checkboxes" type="checkbox" name="selected-rows"
-                                   th:value="*{account.accountId}"></th>
+<!--                        <th><input id="delete-checkbox" class="checkboxes" type="checkbox" name="selected-rows"-->
+<!--                                   th:value="*{account.accountId}"></th>-->
                         <td th:text="*{account.accountId}"></td>
                         <td th:text="*{account.username}"></td>
                         <td th:text="*{account.email}"></td>
@@ -38,10 +36,10 @@
                             <button type="button" th:attr="value=${account.accountId}" class="action-btn action-update">
                                 <i class="fa-solid fa-pen"></i>
                             </button>
-                            <button type="button" class="action-btn action-delete" th:attr="value=${account.accountId}"
-                                    id="delete-btn">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+<!--                            <button type="button" class="action-btn action-delete" th:attr="value=${account.accountId}"-->
+<!--                                    id="delete-btn">-->
+<!--                                <i class="fa-solid fa-trash"></i>-->
+<!--                            </button>-->
                         </td>
                     </tr>
                     </tbody>

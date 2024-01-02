@@ -5,7 +5,6 @@
                 <div class="field" style="display: flex; flex-direction: row;">
                     <input type="text" th:field="*{name}" id="name-txt" placeholder="Tên nhiệm vụ"/>
                     <div class="error" th:if="${#fields.hasErrors('name')}">
-                        <!--                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red"></span>-->
                         <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
                     </div>
                 </div>

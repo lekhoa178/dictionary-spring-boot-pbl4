@@ -70,8 +70,7 @@ public class Account implements UserDetails {
     @JsonIgnore
     private Set<DataPerDay> dataPerDay;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private Set<DailyMission> dailyMissions;
+
 
     public Account() {}
 
@@ -275,13 +274,6 @@ public class Account implements UserDetails {
         this.dataPerDay = dataPerDay;
     }
 
-    public Set<DailyMission> getDailyMissions() {
-        return dailyMissions;
-    }
-
-    public void setDailyMissions(Set<DailyMission> dailyMissions) {
-        this.dailyMissions = dailyMissions;
-    }
     @Override
     public String toString() {
         return "Account{" +

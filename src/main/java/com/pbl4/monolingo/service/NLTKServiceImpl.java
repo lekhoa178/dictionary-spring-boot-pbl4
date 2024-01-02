@@ -31,7 +31,7 @@ public class NLTKServiceImpl implements NLTKService {
 
         List<Vocabulary> vocabs = vocabularyRepository.findAllByIdLevelId(id);
 
-        SentenceBuilder sentenceBuilder = cfg.getSentenceBuilder();
+         SentenceBuilder sentenceBuilder = cfg.getSentenceBuilder();
         setupBuilder(sentenceBuilder, vocabs);
 
         System.out.println(sentenceBuilder.getTemplateSentence() + "----");
@@ -43,6 +43,7 @@ public class NLTKServiceImpl implements NLTKService {
         HashMap<String, List<String>> vocabMap = analyzeVocabs(vocabs);
 
         for (Map.Entry<String, List<String>> v : vocabMap.entrySet()) {
+            System.out.println("Key:" + v.getKey());
             switch (v.getKey()) {
                 case "Nom":
                     sentenceBuilder.setNominals(v.getValue());
@@ -53,6 +54,10 @@ public class NLTKServiceImpl implements NLTKService {
                     break;
 
                 case "AdjVerb":
+                    System.out.println("Value: " + v.getValue());
+                    for (String j : v.getValue()) {
+                        System.out.println(j);
+                    }
                     sentenceBuilder.setAdjectives(v.getValue());
                     break;
 
@@ -61,6 +66,8 @@ public class NLTKServiceImpl implements NLTKService {
                     break;
             }
         }
+
+        System.out.println("eending");
     }
 
     private HashMap<String, List<String>> analyzeVocabs(List<Vocabulary> vocabs) {
@@ -70,9 +77,9 @@ public class NLTKServiceImpl implements NLTKService {
             List<String> words = vocabMap.get(v.getType());
             if (words == null) {
                 words = new ArrayList<>();
-            } else {
-                words.add(v.getWord() + "," + v.getMeaning());
             }
+
+            words.add(v.getWord() + "," + v.getMeaning());
 
             vocabMap.put(v.getType(), words);
         }

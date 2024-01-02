@@ -201,7 +201,7 @@
 
                         <div class="mission--progress-bound">
                             <div class="mission--progress-bar">
-                                <div class="mission--progress" th:style="|width: ${mission.getProgress() / mission.getMission().getTarget() * 100}%|"></div>
+                                <div class="mission--progress" th:style="|width: ${mission.getProgress() / mission.getMission().getTarget() * 100}%; max-width:100%|" style="max-width: 100% !important;"></div>
                                 <h3 class="mission--progress-text" th:text="${mission.getProgress()} + '/' + ${#strings.toString(mission.getMission().getTarget())}"></h3>
                             </div>
 

@@ -15,10 +15,10 @@ public interface LexiconRepository extends JpaRepository<Lexicon, LexiconId> {
 
     List<Lexicon> findByIdSynsetId(BigDecimal synsetId);
     List<Lexicon> findByWordStartsWith(String word);
-    @Query("SELECT DISTINCT word FROM Lexicon WHERE word LIKE :word%")
-    List<String> findDistinctByWordStartsWith(@Param("word") String word);
 
     List<Lexicon> findByWord(String word);
+    @Query("SELECT DISTINCT word FROM Lexicon WHERE word LIKE :word%")
+    List<String> findDistinctByWordStartsWith(@Param("word") String word);
 
 
 

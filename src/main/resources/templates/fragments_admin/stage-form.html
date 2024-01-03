@@ -1,14 +1,25 @@
-<div class="form-container">
-    <form th:action="${'/admin/stage/save'}" th:object="${stage}" method="POST" id="stage-form" >
+<div class="form-container" id="stage-form-container">
+    <form th:object="${stage}" method="POST" id="stage-form" >
         <div class="input-field">
             <div class="row">
-                <input type="hidden" name="" th:field="*{stageId}">
-                <input  type="text" th:field="*{title}" placeholder="Tiêu đề"/>
-                <input type="text" th:field="*{depiction}" placeholder="Mô tả"/>
+                <div class="field" style="display: flex; flex-direction: row;">
+                    <input  type="text" th:field="*{title}" id="stage-title" placeholder="Tiêu đề"/>
+                    <div class="error" th:if="${#fields.hasErrors('title')}">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                    </div>
+                </div>
+
+                <div class="field" style="display: flex; flex-direction: row;">
+                    <input type="text" th:field="*{depiction}" id="stage-depiction" placeholder="Mô tả"/>
+                    <div class="error" th:if="${#fields.hasErrors('depiction')}">
+                        <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                    </div>
+                </div>
+                <input type="hidden" name="" th:field="*{stageId}" id="stage-id-txt">
             </div>
         </div>
         <div class="button-field">
-            <button type="submit" class="form-btn"><b>Submit</b></button>
+            <button type="submit" class="form-btn submit-stage"><b>Submit</b></button>
             <button type="reset" class="form-btn"><b>Reset</b></button>
         </div>
     </form>

@@ -1,16 +1,46 @@
  <div class="form-container" id="account-form">
-        <form th:action="${'/admin/account/save'}" th:object="${account}" method="POST" class = "account-form" id="form-account" >
+        <form th:object="${account}" method="POST" class = "account-form" id="form-account" >
             <div class="input-field">
                 <div class="row">
-                    <input  type="text" th:field="*{username}" id="user-txt" placeholder="Tài khoản"/>
-                    <input type="text" th:field="*{password}" th:if="*{accountId == 0}" id="pass-txt" placeholder="Mật khẩu"/>
-                    <input type="text" th:field="*{email}" id="email-txt" placeholder="Email"/>
+                    <div class="field" style="display: flex; flex-direction: row;">
+                        <input  type="text" th:field="*{username}" id="user-txt" placeholder="Tài khoản"/>
+                        <div class="error" th:if="${#fields.hasErrors('username')}">
+                            <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                        </div>
+                    </div>
+                    <div class="field" style="display: flex; flex-direction: row;"  th:if="*{accountId == 0}">
+                        <input type="text" th:field="*{password}" id="pass-txt" placeholder="Mật khẩu"/>
+                        <div class="error" th:if="${#fields.hasErrors('password')}">
+                            <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                        </div>
+                    </div>
+                    <div class="field" style="display: flex; flex-direction: row;">
+                        <input type="text" th:field="*{email}" id="email-txt" placeholder="Email"/>
+                        <div class="error" th:if="${#fields.hasErrors('email')}">
+                            <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="row">
-                    <input type="hidden" name="" th:field="*{accountId}">
-                    <input type="text" th:field="*{name}" id="name-txt" placeholder="Tên"/>
-                    <input type="date" th:field="*{birthdate}" id="date-picker" placeholder="Ngày sinh"/>
-                    <div class="field">
+                    <input type="hidden" name="" id="account-id-txt" th:field="*{accountId}">
+                    <input type="hidden" name="" id="account-pass-txt" th:field="*{password}">
+
+                    <div class="field" style="display: flex; flex-direction: row;">
+                        <input type="text" th:field="*{name}" id="name-txt" placeholder="Tên"/>
+                        <div class="error" th:if="${#fields.hasErrors('name')}">
+                            <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                        </div>
+                    </div>
+
+                    <div class="field" style="display: flex; flex-direction: row;">
+                        <input type="date" th:field="*{birthdate}" id="date-picker" placeholder="Ngày sinh"/>
+                        <div class="error" th:if="${#fields.hasErrors('birthdate')}">
+                            <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                        </div>
+                    </div>
+
+                    <div class="field radio">
                         <span style="font-size: 17px; margin-right: 10px;" >Giới tính</span>
                         <input type="radio"  th:field="*{gender}" value="true" name="gender-rd" id="male-btn">
                         <label for="male-btn">Nam</label>
@@ -18,17 +48,29 @@
                         <label for="female-btn">Nữ</label>
                     </div>
                 </div>
+
                 <div class="row">
-                    <input type="hidden" th:field="*{extraInformation.accountId}"/>
-                    <input type="text" th:field="*{extraInformation.balance}" placeholder="Balance"/>
+                    <input type="hidden" th:field="*{extraInformation.accountId}" id = "extra-accountId"/>
                     <div class="field">
-                        <span style="font-size: 17px; margin-right: 10px;" >Quyền</span>
-                        <input type="radio"  th:field="*{type}" value="4" id="admin-btn">
-                        <label for="admin-btn">Admin</label>
-                        <input type="radio"  th:field="*{type}" value="5" id="user-btn">
-                        <label for="user-btn">User</label>
+                        <input type="text" th:field="*{extraInformation.balance}" id="account-balance" placeholder="Balance"/>
                     </div>
-                    <div class="field">
+
+                    <div class="field" style="display: flex; flex-direction: row;">
+                        <div class="radio">
+                            <span style="font-size: 17px; margin-right: 10px;" >Quyền</span>
+                            <input type="radio"  th:field="*{type}" value="4" id="admin-btn">
+                            <label for="admin-btn">Admin</label>
+                            <input type="radio"  th:field="*{type}" value="5" id="user-btn">
+                            <label for="user-btn">User</label>
+                        </div>
+
+                        <div class="error" th:if="${#fields.hasErrors('type')}">
+                            <i class="fa-solid fa-circle-exclamation" style="color: #ff0000;"></i>
+                        </div>
+                    </div>
+
+
+                    <div class="field radio">
                         <span style="font-size: 17px; margin-right: 10px;" >Trạng thái</span>
                         <input type="radio"  th:field="*{enabled}" value="true" id="enable-btn">
                         <label for="enable-btn">Kích khoạt</label>
@@ -38,7 +80,7 @@
                 </div>
             </div>
             <div class="button-field">
-                <button type="submit" class="form-btn"><b>Submit</b></button>
+                <button type="button" class="form-btn submit-account"><b>Submit</b></button>
                 <button type="reset" class="form-btn"><b>Reset</b></button>
             </div>
         </form>

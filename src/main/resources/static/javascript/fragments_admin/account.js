@@ -133,3 +133,55 @@ fragmentContainer.addEventListener('click', async function (e) {
         });
     }
 })
+
+fragmentContainer.addEventListener('click', async function (e) {
+    if (e.target.closest('.submit-account')) {
+        let accountId = document.getElementById('extra-accountId').value
+
+        $.ajax({
+            type: 'GET',
+            url: `/dictionary/account/extra/${accountId}`,
+            success: function (response) {
+                let extra = response;
+                let balance= (!(document.getElementById('account-balance').value === "")) ? parseInt(document.getElementById('account-balance').value) : 0;
+                console.log(balance)
+                let account = {
+                    accountId: document.getElementById('account-id-txt').value,
+                    username: document.getElementById('user-txt').value,
+                    password: document.getElementById('account-pass-txt').value,
+                    name: document.getElementById('name-txt').value,
+                    birthdate: document.getElementById('date-picker').value,
+                    email: document.getElementById('email-txt').value,
+                    gender: (document.getElementById('male-btn').checked),
+                    enabled: document.getElementById('enable-btn').checked,
+                    type: null
+                }
+
+                if (document.getElementById('admin-btn').checked)
+                    account.type = 4
+                else if (document.getElementById('user-btn').checked)
+                    account.type = 5
+
+                if (document.getElementById('pass-txt') != null)
+                    account.password = document.getElementById('pass-txt').value
+
+                console.log(account)
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/account/save/' + balance,
+                    data: account,
+                    success: function (response) {
+                        $(fragmentContainer).html(response)
+                    },
+                    error: function (error) {
+                        alert('fail')
+                    }
+                });
+            },
+            error: function (error) {
+                alert('fail')
+            }
+        });
+
+    }
+})

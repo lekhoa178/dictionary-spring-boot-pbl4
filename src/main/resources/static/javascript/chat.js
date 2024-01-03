@@ -373,7 +373,7 @@ function showNotify(message) {
                 friendChat.appendChild(friendElement);
                 friendChat.scrollTop = friendChat.scrollHeight;
             }
-            refreshStyleSheet();
+            //refreshStyleSheet();
         },
         error: function (error) {
             alert(error);

@@ -124,6 +124,10 @@ public class LessonController {
         dataPerDayService.updateAccountDPD(accountId, exp, 0);
 
         int earned = dailyMissionService.updateDailyMission(accountId, exp, precise, type);
+        if(earned > 0){
+            System.out.println("Earned coin = "+ earned);
+            model.addAttribute("msg","Bạn vừa hoàn thành nhiệm vụ,nhận được "+ earned +" kim cương");
+        }
         extraInfoService.updateCoin(accountId, earned);
 
         model.addAttribute("dailyMissions",

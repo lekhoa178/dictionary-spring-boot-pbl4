@@ -24,16 +24,12 @@ public class Lexicon {
     private String word;
 
     public Lexicon() {}
-
     public Lexicon(LexiconId id, Synset synset, String word) {
         this.id = id;
         this.synset = synset;
         this.word = word;
     }
 
-    public LexiconId getId() {
-        return id;
-    }
 
     public void setId(LexiconId id) {
         this.id = id;
@@ -54,6 +50,11 @@ public class Lexicon {
     public void setWord(String word) {
         this.word = word;
     }
+
+    public LexiconId getId() {
+        return id;
+    }
+
 
     @Override
     public String toString() {

@@ -202,7 +202,7 @@ function handleOnclickChatFriend(e){
 function loadChatbox(friendId) {
     const token = getCookie("jwtToken");
     const accountId = document.getElementById("metadata").dataset.accountId;
-    closeChat(friendId);
+    // closeChat(friendId);
     let friend = {};
     $.ajax({
         type: 'GET',
@@ -318,10 +318,19 @@ function showNotify(message) {
             'Content-Type': 'application/json'
         },
         success: function (response) {
+            console.log("Response: ",response);
             const name = response.name;
             const letterFirst = name[0].toUpperCase();
             let containerElement = document.querySelector('.main-container');
             let notify = document.createElement("div");
+            console.log("Name sender: ",response.name);
+            notify.id = `notify-${response.name}`;
+            // notify.onclick = loadChatbox(response.accountId);
+            notify.addEventListener('click',function (){
+                let friendId = response.accountId;
+                loadChatbox(friendId);
+                closeNotify();
+            })
             notify.classList.add("notification");
             let content = `
                                 <div class="notification-header">

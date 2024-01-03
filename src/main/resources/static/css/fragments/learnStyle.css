@@ -66,12 +66,20 @@ span {
     box-shadow: 0px 5px 0px 0px #999;
     cursor: pointer;
 }
+.level:active {
+    transform: translateY(4px);
+    box-shadow: 0px 1px 0px 0px #999;
+}
 
 .level--inactive {
     background-color: #CCC;
     box-shadow: 0px 3px 0px 0px #AAA;
 }
 
+.level--inactive:active{
+    transform: translateY(1px);
+    box-shadow: 0px 2px 0px 0px #AAA !important;
+}
 .floating-start-panel {
     display: flex;
     position: absolute;
@@ -108,6 +116,10 @@ span {
     color: #00cd9c;
     box-shadow: 0px 5px 0px 0px #bbb;
     cursor: pointer;
+}
+.floating-start--btn:active {
+    transform: translateY(4px);
+    box-shadow: 0px 1px 0px 0px #bbb;
 }
 
 .floating-start--btn-inactive {

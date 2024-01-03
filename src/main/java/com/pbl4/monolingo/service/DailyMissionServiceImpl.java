@@ -92,7 +92,7 @@ public class DailyMissionServiceImpl implements DailyMissionService {
                 dailyMission.setProgress((double) Math.round(dailyMission.getProgress() + exp));
             }
 
-            if (dailyMission.getProgress().equals(dailyMission.getMission().getTarget())) {
+            if (dailyMission.getProgress() >= dailyMission.getMission().getTarget()) {
                 earned += dailyMission.getMission().getPoint();
             }
         }

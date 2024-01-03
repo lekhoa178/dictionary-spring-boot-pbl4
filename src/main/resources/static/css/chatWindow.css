@@ -237,6 +237,7 @@ strong {
     transform: translateY(200%);
     -webkit-animation: noti 1.5s forwards alternate ease-in;
     animation: noti 10s forwards alternate ease-in;
+    cursor: pointer;
 }
 @-webkit-keyframes noti {
     20% {

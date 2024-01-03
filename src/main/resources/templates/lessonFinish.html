@@ -2,7 +2,7 @@
 <link rel="stylesheet" th:href="@{/css/lessonStyle.css}">
 
 
-<div id="success-box" th:if="${msg}">
+<div id="success-box" th:if="${msg}" >
     <div class="dot" onclick="closeAlertSuccess()"></div>
     <div class="dot two" onclick="closeAlertSuccess()"></div>
     <div class="face">
@@ -12,7 +12,7 @@
     </div>
     <div class="shadow scale"></div>
     <!--            <p th:text="${msg}"></p>-->
-    <div class="message"><h1 class="alert">Hoàn thành nhiệm vụ!</h1><p>Hoàn thành nhiệm vụ được cộng 20 kim cương</p></div>
+    <div class="message"><h1 class="alert">Hoàn thành nhiệm vụ!</h1><p th:text="${msg}"></p></div>
     <button class="button-box"><h1 class="green" onclick="closeAlertSuccess()">continue</h1></button>
 </div>
 <!--    <div id="container-success">-->

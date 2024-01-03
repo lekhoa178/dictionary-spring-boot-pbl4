@@ -22,7 +22,7 @@ let answerResults = [];
 let orViSentence = '';
 let correctAns = 0;
 let progress = 0;
-let totalQuestion = 2;
+let totalQuestion = 13;
 let heart = document.querySelector('.resource--items-text-heart');
 let type = 0;
 

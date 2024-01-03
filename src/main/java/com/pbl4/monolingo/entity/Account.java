@@ -3,6 +3,8 @@ package com.pbl4.monolingo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,19 +29,28 @@ public class Account implements UserDetails {
     private Integer accountId;
 
     @Column(name = "username")
+    @NotNull(message = "Không được bỏ trống mục này")
+    @Size(min = 4, message = "Tài khoản phải có ít nhất 4 kí tự")
     private String username;
 
     @Column(name = "password")
+    @NotNull(message = "Không được bỏ trống mục này")
+    @Size(min = 4, message = "Mật khẩu phải có ít nhất 4 kí tự")
     private String password;
 
     @Column(name = "name")
+    @NotNull(message = "Không được bỏ trống mục này")
+    @Size(min = 1, message = "Không được bỏ trống mục này")
     private String name;
 
     @Column(name = "birthdate")
+    @NotNull(message = "Không được bỏ trống mục này")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthdate;
 
     @Column(name = "email")
+    @NotNull(message = "Không được bỏ trống mục này")
+    @Size(min = 11, message = "Email không hợp lệ")
     private String email;
 
     @Column(name = "gender")
@@ -58,6 +69,7 @@ public class Account implements UserDetails {
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "type_id")
+    @NotNull(message = "Không được bỏ trống mục này")
     private AccountType type;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, optional = false)
@@ -69,9 +81,6 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<DataPerDay> dataPerDay;
-
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private Set<DailyMission> dailyMissions;
 
     public Account() {}
 
@@ -273,14 +282,6 @@ public class Account implements UserDetails {
 
     public void setDataPerDay(Set<DataPerDay> dataPerDay) {
         this.dataPerDay = dataPerDay;
-    }
-
-    public Set<DailyMission> getDailyMissions() {
-        return dailyMissions;
-    }
-
-    public void setDailyMissions(Set<DailyMission> dailyMissions) {
-        this.dailyMissions = dailyMissions;
     }
     @Override
     public String toString() {

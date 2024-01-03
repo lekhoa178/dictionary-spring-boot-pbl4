@@ -1,6 +1,7 @@
 package com.pbl4.monolingo.rest;
 
 import com.pbl4.monolingo.entity.Account;
+import com.pbl4.monolingo.entity.ExtraInformation;
 import com.pbl4.monolingo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,5 +23,10 @@ public class AccountRestController {
     public Account getAccountByAccountId(@PathVariable Integer accountId){
         Account account = accountService.getAccountById(accountId);
         return account;
+    }
+    @GetMapping("/account/extra/{accountId}")
+    public ExtraInformation getExtraInfoByAccountId(@PathVariable Integer accountId) {
+        ExtraInformation extraInformation = accountService.getAccountById(accountId).getExtraInformation();
+        return extraInformation;
     }
 }

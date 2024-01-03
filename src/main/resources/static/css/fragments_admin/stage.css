@@ -1,3 +1,8 @@
+#stage-form-container .row {
+    display: flex;
+    line-height: 35px;
+    align-items: center;
+}
 .stage-container {
     display: flex;
     flex-direction: column;
@@ -21,12 +26,32 @@
     border-collapse: collapse;
 }
 
-#stage-form .input-field input[type = text], input[type = date], .field{
+/*#stage-form .input-field input[type = text], input[type = date], .field{*/
+/*    width: 250px;*/
+/*    height: 40px;*/
+/*    margin: 15px 30px;*/
+/*    padding: 0 10px;*/
+/*    border: none;*/
+/*    border-bottom: 1px solid black;*/
+/*    outline: none;*/
+/*}*/
+
+#stage-form-container .input-field .field{
+    display: flex;
+    justify-content: space-between;
+
+    margin: 15px 30px;
     width: 250px;
     height: 40px;
-    margin: 15px 30px;
-    padding: 0 10px;
     border: none;
     border-bottom: 1px solid black;
     outline: none;
 }
+
+#stage-form-container .input-field .field input[type=text]{
+    border: none;
+    outline:none;
+
+    width: 80%;
+}
+

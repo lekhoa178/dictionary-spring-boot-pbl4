@@ -1,6 +1,8 @@
 package com.pbl4.monolingo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -14,9 +16,13 @@ public class Stage {
     private Integer stageId;
 
     @Column(name = "title")
+    @NotNull(message = "Không được bỏ trống mục này")
+    @Size(min = 1, message = "Không được bỏ trống mục này")
     private String title;
 
     @Column(name = "depiction")
+    @NotNull(message = "Không được bỏ trống mục này")
+    @Size(min = 1, message = "Không được bỏ trống mục này")
     private String depiction;
 
     @OneToMany

@@ -58,8 +58,14 @@ public class AccountServiceImpl implements AccountService {
             MD5PasswordEncoder md5PasswordEncoder = new MD5PasswordEncoder();
             account.setPassword(md5PasswordEncoder.encode(account.getPassword()));
 
+            if(account.getExtraInformation() == null)
+            {
+                account.setExtraInformation(new ExtraInformation());
+            }
+
             ExtraInformation newExtra = account.getExtraInformation();
             newExtra.setHearts(5);
+            newExtra.setBalance(0);
             newExtra.setNumberOfConsecutiveDay(0);
             newExtra.setNumberOfLoginDay(0);
             newExtra.setAccount(account);
@@ -72,14 +78,14 @@ public class AccountServiceImpl implements AccountService {
             temp.setName(account.getName());
             temp.setBirthdate(account.getBirthdate());
             temp.setGender(account.getGender());
+
+            System.out.println(account.getExtraInformation());
             temp.getExtraInformation().setBalance(account.getExtraInformation().getBalance());
             temp.setType(account.getType());
             temp.setEnabled(account.getEnabled());
 
             accountRepository.save(temp);
         }
-
-
     }
 
     @Override

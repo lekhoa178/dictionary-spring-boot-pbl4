@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.net.http.HttpRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,18 +34,20 @@ public class AdminController {
     private LevelService levelService;
     private VocabularyService vocabularyService;
     private MissionService missionService;
-
+    private  ExtraInfoService extraInfoService;
 
     @Autowired
     public AdminController(DictionaryService dictionaryController,
                            AccountService accountService, StageService stageService, LevelService levelService,
-                           VocabularyService vocabularyService, MissionService missionService) {
+                           VocabularyService vocabularyService, MissionService missionService,
+                           ExtraInfoService extraInfoService) {
         this.dictionaryService = dictionaryController;
         this.accountService = accountService;
         this.stageService = stageService;
         this.levelService = levelService;
         this.vocabularyService = vocabularyService;
         this.missionService = missionService;
+        this.extraInfoService = extraInfoService;
     }
 
 
@@ -217,13 +221,59 @@ public class AdminController {
 //    }
 
     @PostMapping("/account/save")
-    public String saveAccount(@ModelAttribute("account") Account account) {
+    public String saveAccount(Model model, Principal principal, @Valid @ModelAttribute("account") Account account,
+                               BindingResult bindingResult) {
+        System.out.println("incontroller");
+        System.out.println(account);
+        System.out.println(account.getExtraInformation());
+
         if (account.getAccountId() != 0)
             account.setPassword(accountService.getAccountById(account.getAccountId()).getPassword());
 
-        accountService.saveAccount(account);
-        return "redirect:/admin/account";
+        if (bindingResult.hasErrors())
+        {
+            System.out.println(bindingResult.getAllErrors());
+            System.out.println(account.getPassword());
+            return "fragments_admin/account-form";
+        }
+        else
+        {
+            System.out.println(account);
+            accountService.saveAccount(account);
+            return showAdminAccount(model, principal,"request-resource");
+        }
     }
+
+    @PostMapping("/account/save/{balance}")
+    public String saveAccount(Model model, Principal principal, @Valid @ModelAttribute("account") Account account,
+                              @PathVariable int balance,
+                              BindingResult bindingResult) {
+        System.out.println("incontroller");
+        System.out.println(account);
+        System.out.println(balance);
+
+        if (account.getAccountId() != 0)
+        {
+            account.setPassword(accountService.getAccountById(account.getAccountId()).getPassword());
+            ExtraInformation extraInformation = accountService.getAccountById(account.getAccountId()).getExtraInformation();
+            extraInformation.setBalance(balance);
+            account.setExtraInformation(extraInformation);
+        }
+
+        if (bindingResult.hasErrors())
+        {
+            System.out.println(bindingResult.getAllErrors());
+            System.out.println(account.getPassword());
+            return "fragments_admin/account-form";
+        }
+        else
+        {
+            System.out.println(account);
+            accountService.saveAccount(account);
+            return showAdminAccount(model, principal,"request-resource");
+        }
+    }
+
 
     @GetMapping("/stage/add")
 
@@ -250,12 +300,16 @@ public class AdminController {
     }
 
     @PostMapping("/stage/save")
-    public String saveStage(@ModelAttribute("stage") Stage stage) {
+    public String saveStage(Model model, Principal principal, @Valid @ModelAttribute("stage") Stage stage, BindingResult bindingResult) {
         List<Level> levels = levelService.getLevelByStageId(stage.getStageId());
         stage.setLevels(levels);
 
-        stageService.save(stage);
-        return "redirect:/admin/stage";
+        if (bindingResult.hasErrors())
+            return "fragments_admin/stage-form";
+        else {
+            stageService.save(stage);
+            return showAdminStage(model, principal, "request-source");
+        }
     }
 
     @PostMapping("/level/add")
@@ -360,6 +414,7 @@ public class AdminController {
             return showAdminMission(model, principal, "request-source");
         }
     }
+
 
 }
 

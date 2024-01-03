@@ -55,4 +55,27 @@ fragmentContainer.addEventListener('click', async function (e) {
             }
         });
     }
+    else if (e.target.closest('.submit-stage')) {
+        e.preventDefault()
+        let stage = {
+            stageId: document.getElementById('stage-id-txt').value,
+            title: document.getElementById('stage-title').value,
+            depiction: document.getElementById('stage-depiction').value
+        }
+
+        console.log(stage)
+        $.ajax({
+            type: 'POST',
+            url: '/admin/stage/save',
+            data: stage,
+            success: function (response) {
+                console.log("success")
+                $(fragmentContainer).html(response)
+            },
+            error: function (error) {
+                console.log("fail")
+                alert('fail')
+            }
+        });
+    }
 })

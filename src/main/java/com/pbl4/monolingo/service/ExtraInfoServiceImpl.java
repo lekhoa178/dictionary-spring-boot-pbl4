@@ -84,12 +84,12 @@ public class ExtraInfoServiceImpl implements ExtraInfoService {
 
         ExtraInformation extraInformation = extraInformationRepository.findExtraInformationByAccountId(account.getAccountId());
 
-        if (currentDayInfo == null) {
-            if (yesterdayInfo == null)
-                extraInformation.setNumberOfConsecutiveDay(1);
-            else
-                extraInformation.setNumberOfConsecutiveDay(extraInformation.getNumberOfConsecutiveDay() + 1);
+        if (yesterdayInfo == null)
+            extraInformation.setNumberOfConsecutiveDay(1);
+        else
+            extraInformation.setNumberOfConsecutiveDay(extraInformation.getNumberOfConsecutiveDay() + 1);
 
+        if (currentDayInfo == null) {
             extraInformation.setNumberOfLoginDay(extraInformation.getNumberOfLoginDay() + 1);
             DataPerDay newDataPerDay = new DataPerDay(new DataPerDayId(currentDayId, account.getAccountId()), 0, 0F);
             newDataPerDay.setAccount(account);

@@ -52,7 +52,7 @@ public class AuthController {
         return "signUp";
     }
     @PostMapping("/signup")
-    public String handleSignUp(@Valid @ModelAttribute("account") Account account,Model model){
+    public String handleSignUp(@ModelAttribute("account") Account account,Model model){
         List<Account> checkAccount = accountService.searchAccountByUsername(account.getUsername());
         if(checkAccount.size() == 0){
             authenticationService.register(RegisterRequest.builder()
